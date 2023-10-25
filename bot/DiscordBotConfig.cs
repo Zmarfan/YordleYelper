@@ -1,8 +1,5 @@
-﻿using System;
-using System.Threading;
-using DSharpPlus;
+﻿using DSharpPlus;
 using DSharpPlus.CommandsNext;
-using DSharpPlus.Interactivity;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
@@ -46,6 +43,7 @@ public struct DiscordBotConfig {
         TokenType = TokenType,
         AutoReconnect = AutoReconnect,
         MinimumLogLevel = MinimumLogLevel,
+        Intents = DiscordIntents.AllUnprivileged | DiscordIntents.MessageContents
     };
     
     public CommandsNextConfiguration CommandsNextConfiguration => new() {

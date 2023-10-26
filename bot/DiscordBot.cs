@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using DSharpPlus;
+using DSharpPlus.EventArgs;
 using DSharpPlus.SlashCommands;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
@@ -22,7 +23,7 @@ public class DiscordBot {
             })
             .RegisterCommands<SlashCommands>();
     }
-        
+
     public async Task Start() {
         await _client.ConnectAsync();
         await Task.Delay(-1);

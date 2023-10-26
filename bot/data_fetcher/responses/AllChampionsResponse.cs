@@ -5,10 +5,10 @@ namespace YordleYelper.bot.data_fetcher.responses;
 
 public struct AllChampionsResponse {
     [JsonProperty("data")]
-    public Dictionary<string, ChampionInfo> Data { get; set; }
+    public Dictionary<string, BasicChampionInfo> Data { get; set; }
 }
 
-public struct ChampionInfo {
+public struct BasicChampionInfo {
     [JsonProperty("id")]
     public string Id { get; set; }
     

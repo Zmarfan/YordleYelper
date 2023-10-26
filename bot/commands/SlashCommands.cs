@@ -7,18 +7,20 @@ using YordleYelper.bot.data_fetcher;
 namespace YordleYelper.bot.commands; 
 
 public class SlashCommands : ApplicationCommandModule {
-    public DataFetcher DataFetcher { private get; set; }
+    public DataFetcher DataFetcher {
+        private get => DATA_FETCHER;
+        set {
+            DATA_FETCHER = value;
+        }
+    }
+    public static DataFetcher DATA_FETCHER { get; private set; }
     
-    [SlashCommand("ping", "todo")]
-    public async Task Ping(InteractionContext context) {
-        await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder().WithContent("Pong!"));
-    } 
-    
+
     [SlashCommand("champion", "todo")]
     public async Task Champion(
         InteractionContext context, 
         [Option("name", "todo")] string championName
     ) {
-        await new ChampionCommand(DataFetcher, championName).Execute(context);
+        await new ChampionCommand(championName).Execute(context);
     }
 }

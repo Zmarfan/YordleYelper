@@ -128,13 +128,19 @@
         <Compile Include="bot\commands\ChampionCommand.cs" />
         <Compile Include="bot\commands\CommandBase.cs" />
         <Compile Include="bot\commands\SlashCommands.cs" />
-        <Compile Include="bot\data_fetcher\DataDragonEndpoints.cs" />
+        <Compile Include="bot\data_fetcher\DataDragonProxy.cs" />
         <Compile Include="bot\data_fetcher\DataFetcher.cs" />
         <Compile Include="bot\data_fetcher\responses\AllChampionsResponse.cs" />
+        <Compile Include="bot\data_fetcher\responses\champion_info\ChampionInfoResponse.cs" />
+        <Compile Include="bot\data_fetcher\responses\champion_info\ChampionPassiveResponse.cs" />
+        <Compile Include="bot\data_fetcher\responses\champion_info\ChampionSpellsResponse.cs" />
+        <Compile Include="bot\data_fetcher\responses\champion_info\TopChampionInfoResponse.cs" />
+        <Compile Include="bot\data_fetcher\word_similarity\WordSimilarityChecker.cs" />
         <Compile Include="bot\DiscordBot.cs" />
         <Compile Include="bot\DiscordBotConfig.cs" />
         <Compile Include="bot\http_client\HttpClient.cs" />
         <Compile Include="bot\logger\Logger.cs" />
+        <Compile Include="bot\response_creator\ResponseCreator.cs" />
         <Compile Include="Program.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>

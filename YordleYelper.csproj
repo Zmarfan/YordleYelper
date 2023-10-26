@@ -121,9 +121,12 @@
         <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
           <HintPath>packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
         </Reference>
+        <Reference Include="System.Web" />
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="bot\commands\ChampionCommand.cs" />
+        <Compile Include="bot\commands\CommandBase.cs" />
         <Compile Include="bot\commands\SlashCommands.cs" />
         <Compile Include="bot\data_fetcher\DataDragonEndpoints.cs" />
         <Compile Include="bot\data_fetcher\DataFetcher.cs" />
@@ -131,6 +134,7 @@
         <Compile Include="bot\DiscordBot.cs" />
         <Compile Include="bot\DiscordBotConfig.cs" />
         <Compile Include="bot\http_client\HttpClient.cs" />
+        <Compile Include="bot\logger\Logger.cs" />
         <Compile Include="Program.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>

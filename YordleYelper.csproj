@@ -46,6 +46,9 @@
         <Reference Include="DSharpPlus.Interactivity, Version=4.4.2.0, Culture=neutral, processorArchitecture=MSIL">
           <HintPath>packages\DSharpPlus.Interactivity.4.4.2\lib\netstandard2.0\DSharpPlus.Interactivity.dll</HintPath>
         </Reference>
+        <Reference Include="DSharpPlus.SlashCommands, Version=4.4.2.0, Culture=neutral, processorArchitecture=MSIL">
+          <HintPath>packages\DSharpPlus.SlashCommands.4.4.2\lib\netstandard2.0\DSharpPlus.SlashCommands.dll</HintPath>
+        </Reference>
         <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
           <HintPath>packages\Microsoft.Bcl.AsyncInterfaces.5.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
         </Reference>
@@ -121,9 +124,13 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="bot\commands\Commands.cs" />
+        <Compile Include="bot\commands\SlashCommands.cs" />
+        <Compile Include="bot\data_fetcher\DataDragonEndpoints.cs" />
+        <Compile Include="bot\data_fetcher\DataFetcher.cs" />
+        <Compile Include="bot\data_fetcher\responses\AllChampionsResponse.cs" />
         <Compile Include="bot\DiscordBot.cs" />
         <Compile Include="bot\DiscordBotConfig.cs" />
+        <Compile Include="bot\http_client\HttpClient.cs" />
         <Compile Include="Program.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>

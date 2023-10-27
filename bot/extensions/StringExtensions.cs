@@ -8,7 +8,8 @@ namespace YordleYelper.bot.extensions;
 public static class StringExtensions {
     private static readonly Dictionary<string, string> FORMAT_TAG_EXCHANGES = new() {
         { "<li>", "\n- " },
-        { "<br>", " " }, { "</br >", " " },
+        { "<br>", "\n" }, { "<br />", "\n" },
+        { "</span>", "**" },
         { "<toggle>", "**" }, { "</toggle>", "**" },
         { "<tap>", "**" }, { "</tap>", "**" },
         { "<hold>", "**" }, { "</hold>", "**" },
@@ -20,6 +21,7 @@ public static class StringExtensions {
         { "<spellActive>", "**" }, { "</spellActive>", "**" },
         { "<active>", "**" }, { "</active>", "**" },
         { "<spellPassive>", "**" }, { "</spellPassive>", "**" },
+        { "<passive>", "**" }, { "</passive>", "**" },
         { "<recast>", "**" }, { "</recast>", "**" },
         { "<keywordName>", "*" }, { "</keywordName>", "*" },
         { "<keywordStealth>", "*" }, { "</keywordStealth>", "*" },
@@ -52,6 +54,7 @@ public static class StringExtensions {
             "?"
         );
         formattedText = FORMAT_TAG_EXCHANGES.Aggregate(formattedText, (current, pair) => current.Replace(pair.Key, pair.Value));
+        formattedText = Regex.Replace(formattedText, @"<span.*?>", "**");
         return Regex.Replace(formattedText, @"<.*?>", string.Empty).TrimEnd('?');
     }
 }

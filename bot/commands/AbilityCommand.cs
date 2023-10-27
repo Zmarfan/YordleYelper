@@ -55,7 +55,8 @@ public class AbilityCommand : CommandBase {
 
 :small_blue_diamond: **Description:** {abilityInfo.response.Description.FormatLeagueTextForEmbed()}
 
-:small_blue_diamond: **Tooltip:** {abilityInfo.response.Tooltip.FormatLeagueTextForEmbed()}
+:small_blue_diamond: **Tooltip:** 
+{abilityInfo.response.Tooltip.FormatLeagueTextForEmbed()}
 """;
     }
     

@@ -10,13 +10,15 @@ namespace YordleYelper.bot.data_fetcher;
 
 public class DataDragonProxy {
     public const string CONTENT_BASE = "https://ddragon.leagueoflegends.com/";
+    private const string API = $"{CONTENT_BASE}api/";
+    private string Data => $"{CONTENT_BASE}cdn/{_version}/data/en_US/";
 
     private readonly string _version;
-    private readonly List<BasicChampionInfo> _championBasicInfos = new();
+    private readonly List<BasicChampionInfo> _championBasicInfos;
 
     public DataDragonProxy() {
         _version = GetCurrentVersion();
-        AllChampionsResponse response = HttpClient.Get<AllChampionsResponse>($"{CONTENT_BASE}cdn/{_version}/data/en_US/champion.json").Result;
+        AllChampionsResponse response = HttpClient.Get<AllChampionsResponse>($"{Data}champion.json").Result;
         _championBasicInfos = response.Data.Values.ToList();
     }
     
@@ -31,11 +33,11 @@ public class DataDragonProxy {
     }
     
     public TopChampionInfoResponse GetChampionInfo(BasicChampionInfo basicInfo) {
-        return HttpClient.Get<TopChampionInfoResponse>($"{CONTENT_BASE}cdn/{_version}/data/en_US/champion/{basicInfo.Id}.json").Result;
+        return HttpClient.Get<TopChampionInfoResponse>($"{Data}champion/{basicInfo.Id}.json").Result;
     }
 
     private static string GetCurrentVersion() {
-        List<string> versions = HttpClient.Get<List<string>>(CONTENT_BASE + "api/versions.json").Result;
+        List<string> versions = HttpClient.Get<List<string>>($"{API}versions.json").Result;
         return versions.First();
     }
 }

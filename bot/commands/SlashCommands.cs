@@ -7,10 +7,10 @@ namespace YordleYelper.bot.commands;
 public class SlashCommands : ApplicationCommandModule {
     public DataDragonProxy DataDragonProxy { private get; set; }
     
-    [SlashCommand("champion", "todo")]
+    [SlashCommand("champion", "General overview of a champion: Name, title, lore and tips!")]
     public async Task Champion(
         InteractionContext context, 
-        [Option("name", "todo")] string championName
+        [Option("champion", "Champion name.")] string championName
     ) {
         await new ChampionCommand(DataDragonProxy, championName).Execute(context);
     }

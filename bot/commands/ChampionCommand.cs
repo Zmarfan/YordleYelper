@@ -11,40 +11,20 @@ using YordleYelper.bot.response_creator;
 namespace YordleYelper.bot.commands; 
 
 public class ChampionCommand : CommandBase {
-    private const string COMMAND_NAME = "YordleYelper Champion Command";
-
+    private readonly BasicChampionInfo _basicChampionInfo;
     private readonly DataDragonProxy _dataDragonProxy;
-    private readonly string _championName;
     
-    public ChampionCommand(DataDragonProxy dataDragonProxy, string championName) {
+    public ChampionCommand(BasicChampionInfo basicChampionInfo, DataDragonProxy dataDragonProxy) {
+        _basicChampionInfo = basicChampionInfo;
         _dataDragonProxy = dataDragonProxy;
-        _championName = championName;
     }
 
     protected override async Task Run(InteractionContext context) {
-        if (!_dataDragonProxy.TryGetBasicChampionInfo(_championName, out BasicChampionInfo basicInfo)) {
-            (BasicChampionInfo, int) similarChampion = _dataDragonProxy.GetMostSimilarChampionBasicInfo(_championName);
-            if (similarChampion.Item2 > 3) {
-                await NoSuchChampionResponse(context);
-                return;
-            }
-
-            basicInfo = similarChampion.Item1;
-        }
-
-        TopChampionInfoResponse fullInfo = _dataDragonProxy.GetChampionInfo(basicInfo);
+        TopChampionInfoResponse fullInfo = _dataDragonProxy.GetChampionInfo(_basicChampionInfo);
         
-        await context.Create(new DiscordEmbedBuilder()
-            .WithTitle($":sparkles: {COMMAND_NAME}")
+        await context.CreateCommandOk(new DiscordEmbedBuilder()
             .WithDescription(CreateDescription(fullInfo))
             .WithThumbnail(fullInfo.PortraitImageUrl)
-        );
-    }
-
-    private static async Task NoSuchChampionResponse(BaseContext context) {
-        await context.Create(new DiscordEmbedBuilder()
-            .WithTitle($":question: {COMMAND_NAME}")
-            .WithDescription("Provided champion does not exist!")
         );
     }
     

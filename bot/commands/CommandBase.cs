@@ -19,7 +19,7 @@ public abstract class CommandBase {
     }
 
     protected abstract Task Run(InteractionContext context);
-    
+
     private static async Task CreateDefaultErrorResponse(BaseContext context) {
         await context.Create(new DiscordEmbedBuilder()
             .WithTitle(":scream::scream: Yikes! :scream::scream:")

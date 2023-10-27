@@ -12,7 +12,7 @@
         <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>
         <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-        <LangVersion>latest</LangVersion>
+        <LangVersion>default</LangVersion>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
         <PlatformTarget>AnyCPU</PlatformTarget>
@@ -125,7 +125,9 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="bot\commands\AbilityCommand.cs" />
         <Compile Include="bot\commands\ChampionCommand.cs" />
+        <Compile Include="bot\commands\choices\ChampionAbility.cs" />
         <Compile Include="bot\commands\CommandBase.cs" />
         <Compile Include="bot\commands\SlashCommands.cs" />
         <Compile Include="bot\data_fetcher\DataDragonProxy.cs" />
@@ -138,6 +140,7 @@
         <Compile Include="bot\data_fetcher\word_similarity\WordSimilarityChecker.cs" />
         <Compile Include="bot\DiscordBot.cs" />
         <Compile Include="bot\DiscordBotConfig.cs" />
+        <Compile Include="bot\extensions\StringExtensions.cs" />
         <Compile Include="bot\http_client\HttpClient.cs" />
         <Compile Include="bot\logger\Logger.cs" />
         <Compile Include="bot\response_creator\ResponseCreator.cs" />

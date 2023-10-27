@@ -23,15 +23,21 @@ public class DataDragonProxy {
     }
     
     public bool TryGetBasicChampionInfo(string championName, out BasicChampionInfo championInfo) {
+        championInfo = default;
         List<BasicChampionInfo> matches = _championBasicInfos.FindAll(info => string.Equals(info.Name, championName, StringComparison.CurrentCultureIgnoreCase));
-        championInfo = matches.Any() ? matches.First() : default;
-        return matches.Any();
+        if (matches.Any()) {
+            championInfo = matches.First();
+            return true;
+        }
+        (BasicChampionInfo, int) similarChampion = WordSimilarityChecker.FindMostSimilarEntry(championName, _championBasicInfos, champion => champion.Name);
+        if (similarChampion.Item2 <= 3) {
+            championInfo = similarChampion.Item1;
+            return true;
+        }
+
+        return false;
     }
-    
-    public (BasicChampionInfo, int) GetMostSimilarChampionBasicInfo(string championName) {
-        return WordSimilarityChecker.FindMostSimilarEntry(championName, _championBasicInfos, champion => champion.Name);
-    }
-    
+
     public TopChampionInfoResponse GetChampionInfo(BasicChampionInfo basicInfo) {
         return HttpClient.Get<TopChampionInfoResponse>($"{Data}champion/{basicInfo.Id}.json").Result;
     }

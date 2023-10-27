@@ -11,38 +11,37 @@ namespace YordleYelper.bot.data_fetcher;
 public class DataDragonProxy {
     public const string CONTENT_BASE = "https://ddragon.leagueoflegends.com/";
 
-    private bool _isValidated;
-    
-    private readonly List<BasicChampionInfo> _championBasicInfos = new();
-    private string _getChampionInfoUrl;
+    private static bool _isValidated;
 
-    public bool TryGetBasicChampionInfo(string championName, out BasicChampionInfo championInfo) {
+    private static string _version;
+    private static readonly List<BasicChampionInfo> CHAMPION_BASIC_INFOS = new();
+
+    public static bool TryGetBasicChampionInfo(string championName, out BasicChampionInfo championInfo) {
         Validate();
         
-        List<BasicChampionInfo> matches = _championBasicInfos.FindAll(info => string.Equals(info.Name, championName, StringComparison.CurrentCultureIgnoreCase));
+        List<BasicChampionInfo> matches = CHAMPION_BASIC_INFOS.FindAll(info => string.Equals(info.Name, championName, StringComparison.CurrentCultureIgnoreCase));
         championInfo = matches.Any() ? matches.First() : default;
         return matches.Any();
     }
     
-    public BasicChampionInfo GetMostSimilarChampionBasicInfo(string championName) {
+    public static (BasicChampionInfo, int) GetMostSimilarChampionBasicInfo(string championName) {
         Validate();
-        return WordSimilarityChecker.FindMostSimilarEntry(championName, _championBasicInfos, champion => champion.Name);
+        return WordSimilarityChecker.FindMostSimilarEntry(championName, CHAMPION_BASIC_INFOS, champion => champion.Name);
     }
     
-    public TopChampionInfoResponse GetChampionInfo(BasicChampionInfo basicInfo) {
-        return HttpClient.Get<TopChampionInfoResponse>($"{_getChampionInfoUrl}{basicInfo.Id}.json").Result;
+    public static TopChampionInfoResponse GetChampionInfo(BasicChampionInfo basicInfo) {
+        Validate();
+        return HttpClient.Get<TopChampionInfoResponse>($"{CONTENT_BASE}cdn/{_version}/data/en_US/champion/{basicInfo.Id}.json").Result;
     }
     
-    private void Validate() {
+    private static void Validate() {
         if (_isValidated) {
             return;
         }
         
-        string version = GetCurrentVersion();
-        AllChampionsResponse response = HttpClient.Get<AllChampionsResponse>($"{CONTENT_BASE}cdn/{version}/data/en_US/champion.json").Result;
-        _championBasicInfos.AddRange(response.Data.Values);
-
-        _getChampionInfoUrl = $"{CONTENT_BASE}cdn/{version}/data/en_US/champion/";
+        _version = GetCurrentVersion();
+        AllChampionsResponse response = HttpClient.Get<AllChampionsResponse>($"{CONTENT_BASE}cdn/{_version}/data/en_US/champion.json").Result;
+        CHAMPION_BASIC_INFOS.AddRange(response.Data.Values);
         
         _isValidated = true;
     }

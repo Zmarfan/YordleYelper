@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using DSharpPlus;
 using DSharpPlus.Entities;
 using DSharpPlus.SlashCommands;
 using YordleYelper.bot.logger;
@@ -22,7 +21,7 @@ public abstract class CommandBase {
     protected abstract Task Run(InteractionContext context);
     
     private static async Task CreateDefaultErrorResponse(BaseContext context) {
-        await context.CreateResponse(new DiscordEmbedBuilder()
+        await context.Create(new DiscordEmbedBuilder()
             .WithTitle(":scream::scream: Yikes! :scream::scream:")
             .WithDescription("There was an internal error! Please try again later!")
         );

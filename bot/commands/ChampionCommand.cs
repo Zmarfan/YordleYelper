@@ -1,11 +1,9 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DSharpPlus;
 using DSharpPlus.Entities;
-using DSharpPlus.EventArgs;
 using DSharpPlus.SlashCommands;
+using YordleYelper.bot.data_fetcher;
 using YordleYelper.bot.data_fetcher.responses;
 using YordleYelper.bot.data_fetcher.responses.champion_info;
 using YordleYelper.bot.response_creator;
@@ -13,7 +11,6 @@ using YordleYelper.bot.response_creator;
 namespace YordleYelper.bot.commands; 
 
 public class ChampionCommand : CommandBase {
-    public const string BUTTON_UNIQUE_IDENTIFIER = "ChampionCommandDidYouMean";
     private const string COMMAND_NAME = "YordleYelper Champion Command";
     
     private readonly string _championName;
@@ -23,16 +20,34 @@ public class ChampionCommand : CommandBase {
     }
 
     protected override async Task Run(InteractionContext context) {
-        if (!SlashCommands.DATA_FETCHER.DataDragonProxy.TryGetBasicChampionInfo(_championName, out BasicChampionInfo basicInfo)) {
-            await NoSuchChampionResponse(context);
-            return;
+        if (!DataDragonProxy.TryGetBasicChampionInfo(_championName, out BasicChampionInfo basicInfo)) {
+            (BasicChampionInfo, int) similarChampion = DataDragonProxy.GetMostSimilarChampionBasicInfo(_championName);
+            if (similarChampion.Item2 > 2) {
+                await NoSuchChampionResponse(context);
+                return;
+            }
+
+            basicInfo = similarChampion.Item1;
         }
 
-        TopChampionInfoResponse fullInfo = SlashCommands.DATA_FETCHER.DataDragonProxy.GetChampionInfo(basicInfo);
+        TopChampionInfoResponse fullInfo = DataDragonProxy.GetChampionInfo(basicInfo);
         
-        await context.CreateResponse(new DiscordEmbedBuilder()
+        await context.Create(new DiscordEmbedBuilder()
             .WithTitle($":sparkles: {COMMAND_NAME}")
-            .WithDescription($"""
+            .WithDescription(CreateDescription(fullInfo))
+            .WithThumbnail(fullInfo.PortraitImageUrl)
+        );
+    }
+
+    private static async Task NoSuchChampionResponse(BaseContext context) {
+        await context.Create(new DiscordEmbedBuilder()
+            .WithTitle($":question: {COMMAND_NAME}")
+            .WithDescription("Provided champion does not exist?")
+        );
+    }
+    
+    private static string CreateDescription(TopChampionInfoResponse fullInfo) {
+        return $"""
 :small_blue_diamond: **Name:** {fullInfo.Data.Name}
 
 :small_blue_diamond: **Title:** {fullInfo.Data.Title}
@@ -45,16 +60,6 @@ public class ChampionCommand : CommandBase {
 :small_orange_diamond: **Enemy Tips:**
 
 {fullInfo.Data.EnemyTips.Aggregate(new StringBuilder(), (acc, tip) => acc.AppendLine($":white_small_square: {tip}\n"))}
-""")
-            .WithThumbnail(fullInfo.PortraitImageUrl)
-        );
-    }
-
-    private async Task NoSuchChampionResponse(BaseContext context) {
-        string similarChampionName = SlashCommands.DATA_FETCHER.DataDragonProxy.GetMostSimilarChampionBasicInfo(_championName).Name;
-        await context.CreateResponse(new DiscordEmbedBuilder()
-            .WithTitle($":question: {COMMAND_NAME}")
-            .WithDescription($"Provided champion does not exist, did you mean **{similarChampionName}**?")
-        );
+""";
     }
 }

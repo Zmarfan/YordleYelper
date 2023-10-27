@@ -5,8 +5,11 @@ using System.Linq;
 namespace YordleYelper.bot.data_fetcher.word_similarity; 
 
 public static class WordSimilarityChecker {
-    public static T FindMostSimilarEntry<T>(string text, IEnumerable<T> entries, Func<T, string> stringProvider) {
-        return entries.OrderBy(entry => CheckWorldSimilarity(text, stringProvider.Invoke(entry))).First();
+    public static (T, int) FindMostSimilarEntry<T>(string text, IEnumerable<T> entries, Func<T, string> stringProvider) {
+        return entries
+            .Select(entry => (entry, CheckWorldSimilarity(text, stringProvider.Invoke(entry))))
+            .OrderBy(entry => entry.Item2)
+            .First();
     }
     
     private static int CheckWorldSimilarity(string text1, string text2) {

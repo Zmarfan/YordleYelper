@@ -1,9 +1,9 @@
 ﻿namespace YordleYelper.bot.commands.choices; 
 
 public enum ChampionAbility {
-    Q,
-    W,
-    E,
-    R,
-    Passive
+    Q = 0,
+    W = 1,
+    E = 2,
+    R = 3,
+    Passive = 4
 }

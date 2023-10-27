@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using YordleYelper.bot.data_fetcher.responses;
 using YordleYelper.bot.data_fetcher.responses.champion_info;
 using YordleYelper.bot.data_fetcher.word_similarity;

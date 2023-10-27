@@ -129,7 +129,7 @@
         <Compile Include="bot\commands\CommandBase.cs" />
         <Compile Include="bot\commands\SlashCommands.cs" />
         <Compile Include="bot\data_fetcher\DataDragonProxy.cs" />
-        <Compile Include="bot\data_fetcher\DataFetcher.cs" />
+        <Compile Include="bot\data_fetcher\LeagueApiProxy.cs" />
         <Compile Include="bot\data_fetcher\responses\AllChampionsResponse.cs" />
         <Compile Include="bot\data_fetcher\responses\champion_info\ChampionInfoResponse.cs" />
         <Compile Include="bot\data_fetcher\responses\champion_info\ChampionPassiveResponse.cs" />

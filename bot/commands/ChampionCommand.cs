@@ -12,17 +12,19 @@ namespace YordleYelper.bot.commands;
 
 public class ChampionCommand : CommandBase {
     private const string COMMAND_NAME = "YordleYelper Champion Command";
-    
+
+    private readonly DataDragonProxy _dataDragonProxy;
     private readonly string _championName;
     
-    public ChampionCommand(string championName) {
+    public ChampionCommand(DataDragonProxy dataDragonProxy, string championName) {
+        _dataDragonProxy = dataDragonProxy;
         _championName = championName;
     }
 
     protected override async Task Run(InteractionContext context) {
-        if (!DataDragonProxy.TryGetBasicChampionInfo(_championName, out BasicChampionInfo basicInfo)) {
-            (BasicChampionInfo, int) similarChampion = DataDragonProxy.GetMostSimilarChampionBasicInfo(_championName);
-            if (similarChampion.Item2 > 2) {
+        if (!_dataDragonProxy.TryGetBasicChampionInfo(_championName, out BasicChampionInfo basicInfo)) {
+            (BasicChampionInfo, int) similarChampion = _dataDragonProxy.GetMostSimilarChampionBasicInfo(_championName);
+            if (similarChampion.Item2 > 3) {
                 await NoSuchChampionResponse(context);
                 return;
             }
@@ -30,7 +32,7 @@ public class ChampionCommand : CommandBase {
             basicInfo = similarChampion.Item1;
         }
 
-        TopChampionInfoResponse fullInfo = DataDragonProxy.GetChampionInfo(basicInfo);
+        TopChampionInfoResponse fullInfo = _dataDragonProxy.GetChampionInfo(basicInfo);
         
         await context.Create(new DiscordEmbedBuilder()
             .WithTitle($":sparkles: {COMMAND_NAME}")
@@ -42,7 +44,7 @@ public class ChampionCommand : CommandBase {
     private static async Task NoSuchChampionResponse(BaseContext context) {
         await context.Create(new DiscordEmbedBuilder()
             .WithTitle($":question: {COMMAND_NAME}")
-            .WithDescription("Provided champion does not exist?")
+            .WithDescription("Provided champion does not exist!")
         );
     }
     

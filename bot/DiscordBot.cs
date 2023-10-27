@@ -2,8 +2,10 @@
 using System.Threading.Tasks;
 using DSharpPlus;
 using DSharpPlus.SlashCommands;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using YordleYelper.bot.commands;
+using YordleYelper.bot.data_fetcher;
 
 namespace YordleYelper.bot; 
 
@@ -14,7 +16,9 @@ public class DiscordBot {
         DiscordBotConfig config = JsonConvert.DeserializeObject<DiscordBotConfig>(File.ReadAllText(@"src\config.json"));
 
         _client = new DiscordClient(config.DiscordConfiguration);
-        _client.UseSlashCommands(new SlashCommandsConfiguration()).RegisterCommands<SlashCommands>();
+        _client.UseSlashCommands(new SlashCommandsConfiguration {
+            Services = new ServiceCollection().AddSingleton<DataDragonProxy>().BuildServiceProvider()
+        }).RegisterCommands<SlashCommands>();
     }
 
     public async Task Start() {

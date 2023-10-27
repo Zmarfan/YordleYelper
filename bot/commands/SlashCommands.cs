@@ -8,7 +8,7 @@ using YordleYelper.bot.response_creator;
 namespace YordleYelper.bot.commands; 
 
 public class SlashCommands : ApplicationCommandModule {
-    public DataDragonProxy DataDragonProxy { private get; set; }
+    public static DataDragonProxy DataDragonProxy;
     
     [SlashCommand("champion", "General overview of a champion: Name, title, lore and tips!")]
     public async Task Champion(

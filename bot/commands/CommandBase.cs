@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using DSharpPlus.Entities;
 using DSharpPlus.SlashCommands;
-using YordleYelper.bot.logger;
+using Microsoft.Extensions.Logging;
 using YordleYelper.bot.response_creator;
 
 namespace YordleYelper.bot.commands; 
@@ -10,10 +10,10 @@ namespace YordleYelper.bot.commands;
 public abstract class CommandBase {
     public async Task Execute(InteractionContext context) {
         try {
-            Logger.Info($"Running: {GetType()}");
+            context.Client.Logger.Log(LogLevel.Information, $"Running: {GetType()}");
             await Run(context);
         } catch (Exception e) {
-            Logger.Error(e, $"Command error in {GetType()}!");
+            context.Client.Logger.Log(LogLevel.Error, e, $"Command error in {GetType()}!");
             await CreateDefaultErrorResponse(context);
         }
     }

@@ -14,10 +14,12 @@ public class DataDragonProxy {
 
     private readonly string _version;
     private readonly List<BasicChampionInfo> _championBasicInfos;
-
-    public DataDragonProxy() {
+    private readonly HttpClient _httpClient;
+    
+    public DataDragonProxy(HttpClient httpClient) {
+        _httpClient = httpClient;
         _version = GetCurrentVersion();
-        AllChampionsResponse response = HttpClient.Get<AllChampionsResponse>($"{Data}champion.json").Result;
+        AllChampionsResponse response = _httpClient.Get<AllChampionsResponse>($"{Data}champion.json").Result;
         _championBasicInfos = response.Data.Values.ToList();
     }
 
@@ -26,11 +28,11 @@ public class DataDragonProxy {
     }
 
     public TopChampionInfoResponse GetChampionInfo(BasicChampionInfo basicInfo) {
-        return HttpClient.Get<TopChampionInfoResponse>($"{Data}champion/{basicInfo.Id}.json").Result;
+        return _httpClient.Get<TopChampionInfoResponse>($"{Data}champion/{basicInfo.Id}.json").Result;
     }
 
-    private static string GetCurrentVersion() {
-        List<string> versions = HttpClient.Get<List<string>>($"{API}versions.json").Result;
+    private string GetCurrentVersion() {
+        List<string> versions = _httpClient.Get<List<string>>($"{API}versions.json").Result;
         return versions.First();
     }
 }

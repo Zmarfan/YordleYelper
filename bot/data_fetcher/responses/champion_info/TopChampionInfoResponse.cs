@@ -23,7 +23,10 @@ public struct TopChampionInfoResponse {
     public ChampionInfoResponse Data => DataDictionary.First().Value;
     public string PortraitImageUrl => $"{DataDragonProxy.CONTENT_BASE}cdn/{Version}/img/champion/{Data.Id}.png";
 
-    public (ChampionPassiveResponse, string) Passive => (Data.Passive, PassiveSpellImageUrl);
+    public PassiveInfo Passive => new() {
+        response = Data.Passive,
+        spellIconUrl = $"{DataDragonProxy.CONTENT_BASE}cdn/{Version}/img/passive/{Data.Passive.ImageName}"
+    };
 
     public AbilityInfo GetAbility(ChampionAbility ability) {
         (int, string) data = ABILITY_DATA[ability];
@@ -34,8 +37,6 @@ public struct TopChampionInfoResponse {
             spellEmoji = $":regional_indicator_{data.Item2}:"
         };
     }
-    
-    private string PassiveSpellImageUrl => $"{DataDragonProxy.CONTENT_BASE}cdn/{Version}/img/passive/{Data.Passive.ImageName}";
     
     private string BaseSpellImageUrl => $"{DataDragonProxy.CONTENT_BASE}cdn/{Version}/img/spell/";
 }

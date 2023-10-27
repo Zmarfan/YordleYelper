@@ -27,6 +27,11 @@ public class AbilityCommand : CommandBase {
         TopChampionInfoResponse fullInfo = _dataDragonProxy.GetChampionInfo(_basicChampionInfo);
 
         if (_ability == ChampionAbility.Passive) {
+            PassiveInfo passiveInfo = fullInfo.Passive;
+            await context.CreateCommandOk(new DiscordEmbedBuilder()
+                .WithDescription(CreatePassiveDescription(fullInfo, passiveInfo))
+                .WithThumbnail(passiveInfo.spellIconUrl)
+            );
             return;
         }
 
@@ -46,9 +51,21 @@ public class AbilityCommand : CommandBase {
 
 :small_blue_diamond: **Ability Name:** {abilityInfo.response.Name}
 
+:small_blue_diamond: **Cooldowns:** {abilityInfo.response.Cooldowns}
+
 :small_blue_diamond: **Description:** {abilityInfo.response.Description.FormatLeagueTextForEmbed()}
 
 :small_blue_diamond: **Tooltip:** {abilityInfo.response.Tooltip.FormatLeagueTextForEmbed()}
+""";
+    }
+    
+    private static string CreatePassiveDescription(TopChampionInfoResponse championInfo, PassiveInfo passiveInfo) {
+        return $"""
+:small_blue_diamond: **Champion:** {championInfo.Data.Name}
+
+:small_blue_diamond: **Passive Name:** {passiveInfo.response.Name}
+
+:small_blue_diamond: **Description:** {passiveInfo.response.Description.FormatLeagueTextForEmbed()}
 """;
     }
 }

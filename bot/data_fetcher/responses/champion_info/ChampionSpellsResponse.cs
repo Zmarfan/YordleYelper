@@ -18,8 +18,8 @@ public struct ChampionSpellsResponse {
     [JsonProperty("tooltip")]
     public string Tooltip { get; set; }
     
-    [JsonProperty("cooldown")]
-    public List<float> Cooldowns { get; set; }
+    [JsonProperty("cooldownBurn")]
+    public string Cooldowns { get; set; }
     
     [JsonProperty("cost")]
     public List<int> Cost { get; set; }

@@ -137,6 +137,7 @@
         <Compile Include="bot\data_fetcher\responses\champion_info\ChampionInfoResponse.cs" />
         <Compile Include="bot\data_fetcher\responses\champion_info\ChampionPassiveResponse.cs" />
         <Compile Include="bot\data_fetcher\responses\champion_info\ChampionSpellsResponse.cs" />
+        <Compile Include="bot\data_fetcher\responses\champion_info\PassiveInfo.cs" />
         <Compile Include="bot\data_fetcher\responses\champion_info\TopChampionInfoResponse.cs" />
         <Compile Include="bot\data_fetcher\word_similarity\WordSimilarityChecker.cs" />
         <Compile Include="bot\DiscordBot.cs" />

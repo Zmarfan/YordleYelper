@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace YordleYelper.bot.extensions; 
@@ -38,6 +39,12 @@ public static class StringExtensions {
         { "<shield>", "**" }, { "</shield>", "**:shield:" },
         { "<attackSpeed>", "**" }, { "</attackSpeed>", "**:wave:" },
     };
+
+    public static StringBuilder AppendNewLine(this StringBuilder builder, string line) {
+        builder.AppendLine();
+        builder.AppendLine(line);
+        return builder;
+    }
     
     public static string FirstCharToUpper(this string input) {
         return input switch {

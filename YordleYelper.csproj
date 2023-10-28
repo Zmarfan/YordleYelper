@@ -146,6 +146,7 @@
         <Compile Include="bot\data_fetcher\responses\items\ItemsResponse.cs" />
         <Compile Include="bot\DiscordBot.cs" />
         <Compile Include="bot\DiscordBotConfig.cs" />
+        <Compile Include="bot\extensions\Emote.cs" />
         <Compile Include="bot\extensions\ListExtensions.cs" />
         <Compile Include="bot\extensions\StringExtensions.cs" />
         <Compile Include="bot\extensions\word_similarity\WordSimilarityChecker.cs" />

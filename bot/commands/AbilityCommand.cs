@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Text;
+using System.Threading.Tasks;
 using DSharpPlus.Entities;
 using DSharpPlus.SlashCommands;
 using YordleYelper.bot.commands.choices;
@@ -11,8 +12,6 @@ using YordleYelper.bot.response_creator;
 namespace YordleYelper.bot.commands; 
 
 public class AbilityCommand : CommandBase {
-    public const string COMMAND_NAME = "ability";
-
     private readonly BasicChampionInfo _basicChampionInfo;
     private readonly ChampionAbility _ability;
     private readonly DataDragonProxy _dataDragonProxy;
@@ -44,29 +43,30 @@ public class AbilityCommand : CommandBase {
     }
     
     private static string CreateSpellDescription(TopChampionInfoResponse championInfo, AbilityInfo abilityInfo) {
-        return $"""
-:small_blue_diamond: **Champion:** {championInfo.Data.Name}
-
-:small_blue_diamond: **Ability Spell:** {abilityInfo.spellEmoji}
-
-:small_blue_diamond: **Ability Name:** {abilityInfo.response.Name}
-
-:small_blue_diamond: **Cooldowns:** {abilityInfo.response.Cooldowns}
-
-:small_blue_diamond: **Description:** {abilityInfo.response.Description.FormatLeagueTextForEmbed()}
-
-:small_blue_diamond: **Tooltip:** 
-{abilityInfo.response.Tooltip.FormatLeagueTextForEmbed()}
-""";
+        return new StringBuilder()
+            .AppendListEntry(Emote.BULLET_BLUE, $"**Champion:** {championInfo.Data.Name}")
+            .AppendLine()
+            .AppendListEntry(Emote.BULLET_BLUE, $"**Ability Spell:** {abilityInfo.spellEmoji}")
+            .AppendLine()
+            .AppendListEntry(Emote.BULLET_BLUE, $"**Ability Name:** {abilityInfo.response.Name}")
+            .AppendLine()
+            .AppendListEntry(Emote.BULLET_BLUE, $"**Cooldowns:** {abilityInfo.response.Cooldowns}")
+            .AppendLine()
+            .AppendListEntry(Emote.BULLET_BLUE,
+                $"**Description:** {abilityInfo.response.Description.FormatLeagueTextForEmbed()}")
+            .AppendLine()
+            .AppendListEntry(Emote.BULLET_BLUE, $"**Tooltip:**")
+            .AppendLine(abilityInfo.response.Tooltip.FormatLeagueTextForEmbed())
+            .ToString();
     }
     
     private static string CreatePassiveDescription(TopChampionInfoResponse championInfo, PassiveInfo passiveInfo) {
-        return $"""
-:small_blue_diamond: **Champion:** {championInfo.Data.Name}
-
-:small_blue_diamond: **Passive Name:** {passiveInfo.response.Name}
-
-:small_blue_diamond: **Description:** {passiveInfo.response.Description.FormatLeagueTextForEmbed()}
-""";
+        return new StringBuilder()
+            .AppendListEntry(Emote.BULLET_BLUE, $"**Champion:** {championInfo.Data.Name}")
+            .AppendLine()
+            .AppendListEntry(Emote.BULLET_BLUE, $"**Passive Name:** {passiveInfo.response.Name}")
+            .AppendLine()
+            .AppendListEntry(Emote.BULLET_BLUE, $"**Description:** {passiveInfo.response.Description.FormatLeagueTextForEmbed()}")
+            .ToString();
     }
 }

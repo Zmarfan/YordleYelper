@@ -13,17 +13,17 @@ public static class ResponseCreator {
     }
     
     public static async Task CreateCommandOk(this InteractionContext context, DiscordEmbedBuilder builder) {
-        await context.CreateCommand(":sparkles:", builder);
+        await context.CreateCommand(Emote.OK, builder);
     }
     
     public static async Task CreateCommandError(this InteractionContext context, DiscordEmbedBuilder builder) {
-        await context.CreateCommand(":question:", builder);
+        await context.CreateCommand(Emote.ERROR, builder);
     }
     
-    public static async Task CreateCommand(this InteractionContext context, string emoji, DiscordEmbedBuilder builder) {
+    public static async Task CreateCommand(this InteractionContext context, Emote emote, DiscordEmbedBuilder builder) {
         await context.CreateResponseAsync(new DiscordEmbedBuilder(builder)
             .WithColor(MESSAGE_COLOR)
-            .WithTitle($"{emoji} YordleYelper {context.CommandName.FirstCharToUpper()} Command")
+            .WithTitle($"{emote} YordleYelper {context.CommandName.FirstCharToUpper()} Command")
             .Build());
     }
     

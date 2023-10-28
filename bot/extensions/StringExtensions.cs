@@ -7,45 +7,49 @@ using System.Text.RegularExpressions;
 namespace YordleYelper.bot.extensions; 
 
 public static class StringExtensions {
+    private const string BOLD = "**";
+    private const string ITALICS = "*";
     private static readonly Dictionary<string, string> FORMAT_TAG_EXCHANGES = new() {
-        { "<li>", "\n- " },
+        { "<li>", $"\n{Emote.BULLET_WHITE}" },
         { "<br>", "\n" }, { "<br />", "\n" },
-        { "</span>", "**" },
-        { "<toggle>", "**" }, { "</toggle>", "**" },
-        { "<tap>", "**" }, { "</tap>", "**" },
-        { "<hold>", "**" }, { "</hold>", "**" },
-        { "<charge>", "**" }, { "</charge>", "**" },
-        { "<release>", "**" }, { "</release>", "**" },
-        { "<evolve>", "**" }, { "</evolve>", "**" },
-        { "<danger>", "**" }, { "</danger>", "**" },
-        { "<specialRules>", "**" }, { "</specialRules>", "**" },
-        { "<spellActive>", "**" }, { "</spellActive>", "**" },
-        { "<active>", "**" }, { "</active>", "**" },
-        { "<spellPassive>", "**" }, { "</spellPassive>", "**" },
-        { "<passive>", "**" }, { "</passive>", "**" },
-        { "<recast>", "**" }, { "</recast>", "**" },
-        { "<keywordName>", "*" }, { "</keywordName>", "*" },
-        { "<keywordStealth>", "*" }, { "</keywordStealth>", "*" },
-        { "<status>", "*" }, { "</status>", "*" },
-        { "<rules>", "*" }, { "</rules>", "*" },
-        { "<spellName>", "*" }, { "</spellName>", "*" },
-        { "<keywordMajor>", "*" }, { "</keywordMajor>", "*" },
-        { "<physicalDamage>", "**" }, { "</physicalDamage>", "**:small_orange_diamond:" },
-        { "<magicDamage>", "**" }, { "</magicDamage>", "**:small_blue_diamond:" },
-        { "<trueDamage>", "**" }, { "</trueDamage>", "**:white_small_square:" },
-        { "<lifeSteal>", "**" }, { "</lifeSteal>", "**:small_red_triangle_down:" },
-        { "<speed>", "**" }, { "</speed>", "**:man_running:" },
-        { "<healing>", "**" }, { "</healing>", "**:heart_decoration:" },
-        { "<shield>", "**" }, { "</shield>", "**:shield:" },
-        { "<attackSpeed>", "**" }, { "</attackSpeed>", "**:wave:" },
+        { "</span>", BOLD },
+        { "<toggle>", BOLD }, { "</toggle>", BOLD },
+        { "<tap>", BOLD }, { "</tap>", BOLD },
+        { "<hold>", BOLD }, { "</hold>", BOLD },
+        { "<charge>", BOLD }, { "</charge>", BOLD },
+        { "<release>", BOLD }, { "</release>", BOLD },
+        { "<evolve>", BOLD }, { "</evolve>", BOLD },
+        { "<danger>", BOLD }, { "</danger>", BOLD },
+        { "<specialRules>", BOLD }, { "</specialRules>", BOLD },
+        { "<spellActive>", BOLD }, { "</spellActive>", BOLD },
+        { "<active>", BOLD }, { "</active>", BOLD },
+        { "<spellPassive>", BOLD }, { "</spellPassive>", BOLD },
+        { "<passive>", BOLD }, { "</passive>", BOLD },
+        { "<recast>", BOLD }, { "</recast>", BOLD },
+        { "<keywordName>",ITALICS }, { "</keywordName>",ITALICS },
+        { "<keywordStealth>",ITALICS }, { "</keywordStealth>",ITALICS },
+        { "<status>",ITALICS }, { "</status>",ITALICS },
+        { "<rules>",ITALICS }, { "</rules>",ITALICS },
+        { "<spellName>",ITALICS }, { "</spellName>",ITALICS },
+        { "<keywordMajor>",ITALICS }, { "</keywordMajor>",ITALICS },
+        { "<physicalDamage>", BOLD }, { "</physicalDamage>", $"{BOLD}{Emote.PHYSICAL_DAMAGE}" },
+        { "<magicDamage>", BOLD }, { "</magicDamage>", $"{BOLD}{Emote.MAGIC_DAMAGE}" },
+        { "<trueDamage>", BOLD }, { "</trueDamage>", $"{BOLD}{Emote.TRUE_DAMAGE}" },
+        { "<lifeSteal>", BOLD }, { "</lifeSteal>", $"{BOLD}{Emote.LIFE_STEAL}" },
+        { "<speed>", BOLD }, { "</speed>", $"{BOLD}{Emote.SPEED}" },
+        { "<healing>", BOLD }, { "</healing>", $"{BOLD}{Emote.HEALING}" },
+        { "<shield>", BOLD }, { "</shield>", $"{BOLD}{Emote.SHIELD}" },
+        { "<attackSpeed>", BOLD }, { "</attackSpeed>", $"{BOLD}{Emote.ATTACK_SPEED}" },
     };
 
-    public static StringBuilder AppendNewLine(this StringBuilder builder, string line) {
-        builder.AppendLine();
-        builder.AppendLine(line);
-        return builder;
+    public static string ToString<T>(this IEnumerable<T> iEnumerable, Func<StringBuilder, T, StringBuilder> fromEntry) {
+        return iEnumerable.Aggregate(new StringBuilder(), fromEntry.Invoke).ToString();
     }
-    
+
+    public static StringBuilder AppendListEntry(this StringBuilder builder, Emote emote, string line) {
+        return builder.AppendLine($"{emote} {line}");
+    }
+
     public static string FirstCharToUpper(this string input) {
         return input switch {
             null => throw new ArgumentNullException(nameof(input)),
@@ -61,7 +65,7 @@ public static class StringExtensions {
             "?"
         );
         formattedText = FORMAT_TAG_EXCHANGES.Aggregate(formattedText, (current, pair) => current.Replace(pair.Key, pair.Value));
-        formattedText = Regex.Replace(formattedText, @"<span.*?>", "**");
+        formattedText = Regex.Replace(formattedText, @"<span.*?>", BOLD);
         return Regex.Replace(formattedText, @"<.*?>", string.Empty).TrimEnd('?');
     }
 }

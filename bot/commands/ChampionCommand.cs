@@ -30,18 +30,21 @@ public class ChampionCommand : CommandBase {
     }
     
     private static string CreateDescription(TopChampionInfoResponse fullInfo) {
-        StringBuilder builder = new($":small_blue_diamond: **Name:** {fullInfo.Data.Name}");
-        builder.AppendNewLine($":small_blue_diamond: **Title:** {fullInfo.Data.Title}");
-        builder.AppendNewLine($":small_blue_diamond: **Lore:** {fullInfo.Data.Lore}");
+        StringBuilder builder = new StringBuilder()
+            .AppendListEntry(Emote.BULLET_BLUE, $"**Name:** {fullInfo.Data.Name}")
+            .AppendLine()
+            .AppendListEntry(Emote.BULLET_BLUE, $"**Title:** {fullInfo.Data.Title}")
+            .AppendLine()
+            .AppendListEntry(Emote.BULLET_BLUE, $"**Lore:** {fullInfo.Data.Lore}");
 
-        if (fullInfo.Data.AllyTips.Any()) {
-            builder.AppendNewLine(":small_blue_diamond: **Ally Tips:**");
-            builder.AppendLine(fullInfo.Data.AllyTips.Aggregate(new StringBuilder(), (acc, tip) => acc.AppendLine($":white_small_square: {tip}\n")).ToString());
-        }
-        
-        if (fullInfo.Data.EnemyTips.Any()) {
-            builder.AppendNewLine(":small_orange_diamond: **Enemy Tips:**");
-            builder.AppendLine(fullInfo.Data.EnemyTips.Aggregate(new StringBuilder(), (acc, tip) => acc.AppendLine($":white_small_square: {tip}\n")).ToString());
+        if (fullInfo.Data.AllyTips.Any() || fullInfo.Data.EnemyTips.Any()) {
+            builder
+                .AppendLine()
+                .AppendListEntry(Emote.BULLET_BLUE, "**Ally Tips:**")
+                .AppendLine(fullInfo.Data.AllyTips.Aggregate(new StringBuilder(), (acc, tip) => acc.AppendListEntry(Emote.BULLET_WHITE, $"{tip}\n")).ToString())
+                .AppendLine(fullInfo.Data.AllyTips.ToString((acc, tip) => acc.AppendListEntry(Emote.BULLET_WHITE, $"{tip}\n")).ToString())
+                .AppendListEntry(Emote.BULLET_ORANGE, "**Enemy Tips:**")
+                .AppendLine(fullInfo.Data.EnemyTips.ToString((acc, tip) => acc.AppendListEntry(Emote.BULLET_WHITE, $"{tip}\n")).ToString());
         }
 
         return builder.ToString();

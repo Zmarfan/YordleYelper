@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using DSharpPlus.Entities;
 using DSharpPlus.SlashCommands;
 using Microsoft.Extensions.Logging;
+using YordleYelper.bot.extensions;
 using YordleYelper.bot.response_creator;
 
 namespace YordleYelper.bot.commands; 
@@ -22,7 +23,7 @@ public abstract class CommandBase {
 
     private static async Task CreateDefaultErrorResponse(BaseContext context) {
         await context.Create(new DiscordEmbedBuilder()
-            .WithTitle(":scream::scream: Yikes! :scream::scream:")
+            .WithTitle($"{Emote.INTERNAL_ERROR}{Emote.INTERNAL_ERROR} Yikes! {Emote.INTERNAL_ERROR}{Emote.INTERNAL_ERROR}")
             .WithDescription("There was an internal error! Please try again later!")
         );
     }

@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 using YordleYelper.bot.commands.choices;
+using YordleYelper.bot.extensions;
 
 namespace YordleYelper.bot.data_fetcher.responses.champion_info; 
 
 public struct TopChampionInfoResponse {
     private static readonly Dictionary<ChampionAbility, (int, string)> ABILITY_DATA = new() {
-        { ChampionAbility.Q, (0, "q") },
-        { ChampionAbility.W, (1, "w") },
-        { ChampionAbility.E, (2, "e") },
-        { ChampionAbility.R, (3, "r") },
+        { ChampionAbility.Q, (0, "Q") },
+        { ChampionAbility.W, (1, "W") },
+        { ChampionAbility.E, (2, "E") },
+        { ChampionAbility.R, (3, "R") },
     };
 
     [JsonProperty("version")]
@@ -33,8 +34,8 @@ public struct TopChampionInfoResponse {
         return new AbilityInfo {
             response = Data.Spells[data.Item1],
             spellIconUrl = $"{BaseSpellImageUrl}{Data.Spells[data.Item1].ImageName}",
-            spellUsageGifUrl = $"https://baron-discord-bot-assets.s3.eu-central-1.amazonaws.com/abilities-gifs/{Data.Key}-{data.Item2.ToUpper()}.gif",
-            spellEmoji = $":regional_indicator_{data.Item2}:"
+            spellUsageGifUrl = $"https://baron-discord-bot-assets.s3.eu-central-1.amazonaws.com/abilities-gifs/{Data.Key}-{data.Item2}.gif",
+            spellEmoji = Emote.FromAbility(ability)
         };
     }
     

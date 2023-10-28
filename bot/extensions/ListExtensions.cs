@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using YordleYelper.bot.data_fetcher.word_similarity;
+using YordleYelper.bot.extensions.word_similarity;
 
 namespace YordleYelper.bot.extensions; 
 
 public static class ListExtensions {
-    public static bool TryGetSimilarEntry<T>(this List<T> list, string searchPhrase, Func<T, string> nameGetter, out T data) {
+    public static bool TryGetSimilarEntry<T>(this IEnumerable<T> iEnumerable, string searchPhrase, Func<T, string> nameGetter, out T data) {
+        List<T> list = iEnumerable.ToList();
         data = default;
         List<T> matches = list.FindAll(item => string.Equals(nameGetter.Invoke(item), searchPhrase, StringComparison.CurrentCultureIgnoreCase));
         if (matches.Any()) {

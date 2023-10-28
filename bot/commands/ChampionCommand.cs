@@ -29,19 +29,20 @@ public class ChampionCommand : CommandBase {
     }
     
     private static string CreateDescription(TopChampionInfoResponse fullInfo) {
-        return $"""
-:small_blue_diamond: **Name:** {fullInfo.Data.Name}
+        StringBuilder builder = new($":small_blue_diamond: **Name:** {fullInfo.Data.Name}");
+        builder.AppendLine($"\n:small_blue_diamond: **Title:** {fullInfo.Data.Title}");
+        builder.AppendLine($"\n:small_blue_diamond: **Lore:** {fullInfo.Data.Lore}");
 
-:small_blue_diamond: **Title:** {fullInfo.Data.Title}
+        if (fullInfo.Data.AllyTips.Any()) {
+            builder.AppendLine("\n:small_blue_diamond: **Ally Tips:**");
+            builder.AppendLine(fullInfo.Data.AllyTips.Aggregate(new StringBuilder(), (acc, tip) => acc.AppendLine($":white_small_square: {tip}\n")).ToString());
+        }
+        
+        if (fullInfo.Data.EnemyTips.Any()) {
+            builder.AppendLine("\n:small_orange_diamond: **Enemy Tips:**");
+            builder.AppendLine(fullInfo.Data.EnemyTips.Aggregate(new StringBuilder(), (acc, tip) => acc.AppendLine($":white_small_square: {tip}\n")).ToString());
+        }
 
-:small_blue_diamond: **Lore:** {fullInfo.Data.Lore}
-
-:small_blue_diamond: **Ally Tips:**
-
-{fullInfo.Data.AllyTips.Aggregate(new StringBuilder(), (acc, tip) => acc.AppendLine($":white_small_square: {tip}\n"))}
-:small_orange_diamond: **Enemy Tips:**
-
-{fullInfo.Data.EnemyTips.Aggregate(new StringBuilder(), (acc, tip) => acc.AppendLine($":white_small_square: {tip}\n"))}
-""";
+        return builder.ToString();
     }
 }

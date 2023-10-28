@@ -13,22 +13,29 @@ public static class ResponseCreator {
     }
     
     public static async Task CreateCommandOk(this InteractionContext context, DiscordEmbedBuilder builder) {
-        await context.CreateResponseAsync(new DiscordEmbedBuilder(builder)
-            .WithColor(MESSAGE_COLOR)
-            .WithTitle($":sparkles: YordleYelper {context.CommandName.FirstCharToUpper()} Command")
-            .Build());
+        await context.CreateCommand(":sparkles:", builder);
     }
     
     public static async Task CreateCommandError(this InteractionContext context, DiscordEmbedBuilder builder) {
+        await context.CreateCommand(":question:", builder);
+    }
+    
+    public static async Task CreateCommand(this InteractionContext context, string emoji, DiscordEmbedBuilder builder) {
         await context.CreateResponseAsync(new DiscordEmbedBuilder(builder)
             .WithColor(MESSAGE_COLOR)
-            .WithTitle($":question: YordleYelper {context.CommandName.FirstCharToUpper()} Command")
+            .WithTitle($"{emoji} YordleYelper {context.CommandName.FirstCharToUpper()} Command")
             .Build());
     }
     
     public static async Task NoSuchChampionResponse(this InteractionContext context) {
         await context.CreateCommandError(new DiscordEmbedBuilder()
             .WithDescription("Provided champion does not exist!")
+        );
+    }
+    
+    public static async Task NoSuchItemResponse(this InteractionContext context) {
+        await context.CreateCommandError(new DiscordEmbedBuilder()
+            .WithDescription("Provided item does not exist!")
         );
     }
 }

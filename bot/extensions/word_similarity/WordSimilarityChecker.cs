@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace YordleYelper.bot.data_fetcher.word_similarity; 
+namespace YordleYelper.bot.extensions.word_similarity; 
 
 public static class WordSimilarityChecker {
     public static (T, int) FindMostSimilarEntry<T>(string text, IEnumerable<T> entries, Func<T, string> stringProvider) {

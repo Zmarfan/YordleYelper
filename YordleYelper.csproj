@@ -129,6 +129,7 @@
         <Compile Include="bot\commands\ChampionCommand.cs" />
         <Compile Include="bot\commands\choices\ChampionAbility.cs" />
         <Compile Include="bot\commands\CommandBase.cs" />
+        <Compile Include="bot\commands\ItemCommand.cs" />
         <Compile Include="bot\commands\SlashCommands.cs" />
         <Compile Include="bot\data_fetcher\DataDragonProxy.cs" />
         <Compile Include="bot\data_fetcher\LeagueApiProxy.cs" />
@@ -143,11 +144,11 @@
         <Compile Include="bot\data_fetcher\responses\items\ItemInfo.cs" />
         <Compile Include="bot\data_fetcher\responses\items\ItemResponse.cs" />
         <Compile Include="bot\data_fetcher\responses\items\ItemsResponse.cs" />
-        <Compile Include="bot\data_fetcher\word_similarity\WordSimilarityChecker.cs" />
         <Compile Include="bot\DiscordBot.cs" />
         <Compile Include="bot\DiscordBotConfig.cs" />
         <Compile Include="bot\extensions\ListExtensions.cs" />
         <Compile Include="bot\extensions\StringExtensions.cs" />
+        <Compile Include="bot\extensions\word_similarity\WordSimilarityChecker.cs" />
         <Compile Include="bot\http_client\HttpClient.cs" />
         <Compile Include="bot\response_creator\ResponseCreator.cs" />
         <Compile Include="Program.cs" />

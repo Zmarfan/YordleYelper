@@ -2,6 +2,7 @@
 using System.Linq;
 using YordleYelper.bot.data_fetcher.responses;
 using YordleYelper.bot.data_fetcher.responses.champion_info;
+using YordleYelper.bot.data_fetcher.responses.items;
 using YordleYelper.bot.extensions;
 using YordleYelper.bot.http_client;
 
@@ -11,16 +12,23 @@ public class DataDragonProxy {
     public const string CONTENT_BASE = "https://ddragon.leagueoflegends.com/";
     private const string API = $"{CONTENT_BASE}api/";
     private string Data => $"{CONTENT_BASE}cdn/{_version}/data/en_US/";
+    private string Images => $"{CONTENT_BASE}cdn/{_version}/img/";
 
     private readonly string _version;
     private readonly List<BasicChampionInfo> _championBasicInfos;
+    private readonly Dictionary<string, ItemInfo> _itemInfos;
     private readonly HttpClient _httpClient;
     
     public DataDragonProxy(HttpClient httpClient) {
         _httpClient = httpClient;
         _version = GetCurrentVersion();
-        AllChampionsResponse response = _httpClient.Get<AllChampionsResponse>($"{Data}champion.json").Result;
-        _championBasicInfos = response.Data.Values.ToList();
+        _championBasicInfos = _httpClient.Get<AllChampionsResponse>($"{Data}champion.json").Result.Data.Values.ToList();
+        _itemInfos = _httpClient.Get<AllItemsResponse>($"{Data}item.json").Result.Items
+            .ToDictionary(entry => entry.Key, entry => new ItemInfo {
+                id = entry.Key,
+                response = entry.Value,
+                iconUrl = $"{Images}item/{entry.Value.ImageName}"
+            });
     }
 
     public bool TryGetBasicChampionInfo(string championName, out BasicChampionInfo championInfo) {
@@ -29,6 +37,10 @@ public class DataDragonProxy {
 
     public TopChampionInfoResponse GetChampionInfo(BasicChampionInfo basicInfo) {
         return _httpClient.Get<TopChampionInfoResponse>($"{Data}champion/{basicInfo.Id}.json").Result;
+    }
+    
+    public bool TryGetItemInfo(string itemName, out ItemInfo itemInfo) {
+        return _itemInfos.Values.TryGetSimilarEntry(itemName, info => info.response.Name, out itemInfo);
     }
 
     private string GetCurrentVersion() {

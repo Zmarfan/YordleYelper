@@ -22,6 +22,8 @@ public static class StringExtensions {
         { "<danger>", BOLD }, { "</danger>", BOLD },
         { "<specialRules>", BOLD }, { "</specialRules>", BOLD },
         { "<spellActive>", BOLD }, { "</spellActive>", BOLD },
+        { "<rarityMythic>", BOLD }, { "</rarityMythic>", BOLD },
+        { "<rarityLegendary>", BOLD }, { "</rarityLegendary>", BOLD },
         { "<active>", BOLD }, { "</active>", BOLD },
         { "<spellPassive>", BOLD }, { "</spellPassive>", BOLD },
         { "<passive>", BOLD }, { "</passive>", BOLD },
@@ -59,6 +61,7 @@ public static class StringExtensions {
     }
     
     public static string FormatLeagueTextForEmbed(this string text) {
+        // TODO: try to grab some stats
         string formattedText = Regex.Replace(
             text,
             @"{{(?>[^{}]+|(?<Open>)\{{|(?<Close-Open>)\}})*(?(Open)(?!))}}",

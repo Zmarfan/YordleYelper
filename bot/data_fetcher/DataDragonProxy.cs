@@ -24,6 +24,7 @@ public class DataDragonProxy {
         _version = GetCurrentVersion();
         _championBasicInfos = _httpClient.Get<AllChampionsResponse>($"{Data}champion.json").Result.Data.Values.ToList();
         _itemInfos = _httpClient.Get<AllItemsResponse>($"{Data}item.json").Result.Items
+            .Where(entry => entry.Value.Description != string.Empty)
             .ToDictionary(entry => entry.Key, entry => new ItemInfo {
                 id = entry.Key,
                 response = entry.Value,

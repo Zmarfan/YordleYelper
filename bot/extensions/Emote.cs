@@ -20,6 +20,8 @@ public class Emote {
     public static readonly Emote HEALING = new(":heart_decoration:");
     public static readonly Emote SHIELD = new(":shield:");
     public static readonly Emote ATTACK_SPEED = new(":wave:");
+    
+    public static readonly Emote GOLD = new(":coin:");
 
     private static readonly Emote ABILITY_Q = new(":regional_indicator_q:");
     private static readonly Emote ABILITY_W = new(":regional_indicator_w:");

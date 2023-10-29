@@ -143,6 +143,7 @@
         <Compile Include="bot\data_fetcher\data_dragon\responses\items\ItemResponse.cs" />
         <Compile Include="bot\data_fetcher\data_dragon\responses\items\ItemsResponse.cs" />
         <Compile Include="bot\data_fetcher\league_api\data\Puuid.cs" />
+        <Compile Include="bot\data_fetcher\league_api\data\SummonerId.cs" />
         <Compile Include="bot\data_fetcher\league_api\LeagueApiProxy.cs" />
         <Compile Include="bot\data_fetcher\league_api\responses\ChampionMasteryResponse.cs" />
         <Compile Include="bot\DiscordBot.cs" />

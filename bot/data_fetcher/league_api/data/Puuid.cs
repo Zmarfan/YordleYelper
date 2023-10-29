@@ -1,12 +1,15 @@
-﻿using Newtonsoft.Json;
+﻿using System;
 
 namespace YordleYelper.bot.data_fetcher.league_api.data; 
 
 public readonly struct Puuid {
     private readonly string _id;
 
-    [JsonConstructor]
     public Puuid(string id) {
+        if (id.Length != 78) {
+            throw new ArgumentException("Invalid Player Universal Unique Identifier due to length!");
+        }
+        
         _id = id;
     }
 

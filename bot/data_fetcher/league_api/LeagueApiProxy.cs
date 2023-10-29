@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using Microsoft.Extensions.Logging;
@@ -25,13 +28,13 @@ public class LeagueApiProxy {
 
     public bool TryGetPuuidByRiotId(string riotId, out Puuid puuid) {
         try {
-            Dictionary<string, string> data = _httpClient
-                .Get<Dictionary<string, string>>($"{API_BASE}/riot/account/v1/accounts/by-riot-id/{riotId}/EUW").Result;
+            Dictionary<string, string> data = _httpClient.Get<Dictionary<string, string>>($"{API_BASE}/riot/account/v1/accounts/by-riot-id/{riotId}/EUW").Result;
             puuid = new Puuid(data["puuid"]);
             return true;
         }
-        catch (HttpException e) {
-            if (e.GetHttpCode() != 404) {
+        catch (AggregateException exception) {
+            Exception innerException = exception.InnerExceptions.First();
+            if (innerException is HttpStatusException httpStatusException && httpStatusException.statusCode != HttpStatusCode.NotFound) {
                 throw;
             }
             puuid = default;

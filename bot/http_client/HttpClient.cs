@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -27,7 +28,13 @@ public class HttpClient {
     public async Task<string> GetRaw(string endpoint) {
         _logger.Log(LogLevel.Information, $"Http get request for: {endpoint}");
         HttpResponseMessage response = await _client.GetAsync(endpoint);
-        response.EnsureSuccessStatusCode();
-        return await response.Content.ReadAsStringAsync();
+        HttpStatusCode statusCode = response.StatusCode;
+        try {
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadAsStringAsync();
+        }
+        catch (Exception exception) {
+            throw new HttpStatusException(statusCode, exception);
+        }
     }
 }

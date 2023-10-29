@@ -157,6 +157,7 @@
         <Compile Include="bot\extensions\TimeSpanExtensions.cs" />
         <Compile Include="bot\extensions\word_similarity\WordSimilarityChecker.cs" />
         <Compile Include="bot\http_client\HttpClient.cs" />
+        <Compile Include="bot\http_client\HttpStatusException.cs" />
         <Compile Include="bot\response_creator\ResponseCreator.cs" />
         <Compile Include="bot\SlashCommands.cs" />
         <Compile Include="Program.cs" />

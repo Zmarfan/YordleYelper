@@ -30,7 +30,7 @@ public class LastPlayedCommand : CommandBase {
         try {
             ChampionMasteryResponse mastery = await _leagueApiProxy.GetChampionMastery(_leagueAccount, _basicChampionInfo);
             string timeSince = (DateTimeOffset.Now - mastery.lastPlayed).ToTimeSinceString();
-            await context.CreateCommandOk(new DiscordEmbedBuilder()
+            await context.CreateCommandOk(b => b
                 .WithDescription($"The last time **{_leagueAccount.gameName}** played **{_basicChampionInfo.Name}** was {timeSince} ago")
                 .WithThumbnail(_basicChampionInfo.PortraitImageUrl)
             );
@@ -40,7 +40,7 @@ public class LastPlayedCommand : CommandBase {
                 throw;
             }
             
-            await context.CreateCommandOk(new DiscordEmbedBuilder()
+            await context.CreateCommandOk(b => b
                 .WithDescription($"As far as I can tell; **{_leagueAccount.gameName}** has not played **{_basicChampionInfo.Name}** yet!")
                 .WithThumbnail(_basicChampionInfo.PortraitImageUrl)
             );

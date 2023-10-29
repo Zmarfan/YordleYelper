@@ -27,7 +27,7 @@ public class AbilityCommand : CommandBase {
 
         if (_ability == ChampionAbility.Passive) {
             PassiveInfo passiveInfo = fullInfo.Passive;
-            await context.CreateCommandOk(new DiscordEmbedBuilder()
+            await context.CreateCommandOk(b => b
                 .WithDescription(CreatePassiveDescription(fullInfo, passiveInfo))
                 .WithThumbnail(passiveInfo.spellIconUrl)
             );
@@ -35,7 +35,7 @@ public class AbilityCommand : CommandBase {
         }
 
         AbilityInfo abilityInfo = fullInfo.GetAbility(_ability);
-        await context.CreateCommandOk(new DiscordEmbedBuilder()
+        await context.CreateCommandOk(b => b
             .WithDescription(CreateSpellDescription(fullInfo, abilityInfo))
             .WithThumbnail(abilityInfo.spellIconUrl)
             .WithImageUrl(abilityInfo.spellUsageGifUrl)

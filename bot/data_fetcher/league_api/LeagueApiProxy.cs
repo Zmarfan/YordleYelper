@@ -45,4 +45,8 @@ public class LeagueApiProxy {
     public async Task<ChampionMasteryResponse> GetChampionMastery(LeagueAccount leagueAccount, BasicChampionInfo basicInfo) {
         return await _httpClient.Get<ChampionMasteryResponse>($"{REGION_API_BASE}/lol/champion-mastery/v4/champion-masteries/by-puuid/{leagueAccount.puuid}/by-champion/{basicInfo.Key}");
     }
+
+    public async Task<List<ChampionMasteryResponse>> GetChampionMasteries(LeagueAccount leagueAccount) {
+        return await _httpClient.Get<List<ChampionMasteryResponse>>($"{REGION_API_BASE}/lol/champion-mastery/v4/champion-masteries/by-puuid/{leagueAccount.puuid}");
+    }
 }

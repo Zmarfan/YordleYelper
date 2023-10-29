@@ -56,7 +56,7 @@ public class SlashCommands : ApplicationCommandModule {
         await new ItemCommand(itemInfo, DataDragonProxy).Execute(context);
     }
     
-    [SlashCommand("lastplayed", "Showed when a player last played a given champion!")]
+    [SlashCommand("lastplayed", "Shows when a player last played a given champion!")]
     public async Task LastPlayed(
         InteractionContext context, 
         [Option("riotId", "Riot Id.")] string riotId,
@@ -75,6 +75,19 @@ public class SlashCommands : ApplicationCommandModule {
         await new LastPlayedCommand(leagueAccount, champion, LeagueApiProxy).Execute(context);
     }
 
+    [SlashCommand("lastPlayedAll", "Shows when a player last played all champions!")]
+    public async Task lastPlayedAll(
+        InteractionContext context, 
+        [Option("riotId", "Riot Id.")] string riotId
+    ) {
+        if (!TryGetLeagueAccount(riotId, out LeagueAccount leagueAccount)) {
+            await context.NoSuchRiotIdResponse();
+            return;
+        }
+
+        await new LastPlayedAllCommand(leagueAccount, DataDragonProxy.AllChampionBasicInfos, LeagueApiProxy).Execute(context);
+    }
+    
     private static bool TryGetLeagueAccount(string riotId, out LeagueAccount leagueAccount) {
         if (!LeagueApiProxy.TryGetPuuidByRiotId(riotId, out Puuid puuid)) {
             leagueAccount = default;

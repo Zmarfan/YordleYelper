@@ -20,6 +20,8 @@ public class DataDragonProxy {
     private readonly List<BasicChampionInfo> _championBasicInfos;
     private readonly Dictionary<string, ItemInfo> _itemInfos;
     private readonly HttpClient _httpClient;
+
+    public List<BasicChampionInfo> AllChampionBasicInfos => _championBasicInfos.ToList();
     
     public DataDragonProxy(ILogger logger) {
         _httpClient = new HttpClient(logger);

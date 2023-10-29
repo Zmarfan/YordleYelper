@@ -130,6 +130,7 @@
         <Compile Include="bot\commands\choices\ChampionAbility.cs" />
         <Compile Include="bot\commands\CommandBase.cs" />
         <Compile Include="bot\commands\ItemCommand.cs" />
+        <Compile Include="bot\commands\LastPlayedAllCommand.cs" />
         <Compile Include="bot\commands\LastPlayedCommand.cs" />
         <Compile Include="bot\data_fetcher\data_dragon\DataDragonProxy.cs" />
         <Compile Include="bot\data_fetcher\data_dragon\responses\AllChampionsResponse.cs" />

@@ -60,7 +60,7 @@ public class ItemCommand : CommandBase {
             embed.AddField("Builds Into:", CreateItemList(_itemInfo.response.IntoItemsIds));
         }
 
-        await context.CreateCommandOk(embed.WithThumbnail(_itemInfo.iconUrl));
+        await context.CreateCommandOk(_ => embed.WithThumbnail(_itemInfo.iconUrl));
     }
 
     private string CreateStats() {

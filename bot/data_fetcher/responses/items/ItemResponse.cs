@@ -13,8 +13,23 @@ public struct ItemResponse {
     [JsonProperty("plaintext")]
     public string Plaintext { get; set; }
     
+    [JsonProperty("from")]
+    public List<string> FromItemsIds { get; set; }
+    
     [JsonProperty("into")]
     public List<string> IntoItemsIds { get; set; }
+    
+    [JsonProperty("inStore")]
+    public bool InStore { get; set; }
+    
+    [JsonProperty("requiredAlly")]
+    public string RequiredAlly { get; set; }
+    
+    [JsonProperty("requiredChampion")]
+    public string RequiredChampion { get; set; }
+    
+    [JsonProperty("maps")]
+    public Dictionary<string, bool> Maps { get; set; }
     
     [JsonProperty("gold")]
     public ItemGoldResponse GoldResponse { get; set; }

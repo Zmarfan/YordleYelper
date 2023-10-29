@@ -84,7 +84,7 @@ public static class StringExtensions {
     }
     
     public static string FormatLeagueTextForEmbed(this string text) {
-        // TODO: try to grab some stats
+        // TODO: try to grab some stats for abilities?
         string formattedText = Regex.Replace(
             text,
             @"{{(?>[^{}]+|(?<Open>)\{{|(?<Close-Open>)\}})*(?(Open)(?!))}}",

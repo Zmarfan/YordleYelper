@@ -29,6 +29,12 @@ public class ItemCommand : CommandBase {
         if (_itemInfo.response.GoldResponse.Sell != 0) {
             embed.AddExtraLargeField("Sell:", $"{Emote.GOLD} {_itemInfo.response.GoldResponse.Sell}", true);
         }
+        if (_itemInfo.response.RequiredChampion != null) {
+            embed.AddExtraLargeField("Champion:", $"{_itemInfo.response.RequiredChampion}", true);
+        }
+        if (_itemInfo.response.RequiredAlly != null) {
+            embed.AddExtraLargeField("Requires:", _itemInfo.response.RequiredAlly, true);
+        }
 
         string stats = CreateStats();
         if (stats != string.Empty) {
@@ -44,7 +50,6 @@ public class ItemCommand : CommandBase {
     }
 
     private string CreateStats() {
-        // TODO: fix so that stat effects have their emotes
         // TODO: get right items depending on map
         
         string content = _itemInfo.response.Description;

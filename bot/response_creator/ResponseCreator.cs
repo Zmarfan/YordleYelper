@@ -38,4 +38,10 @@ public static class ResponseCreator {
             .WithDescription("Provided item does not exist!")
         );
     }
+    
+    public static async Task NoSuchRiotIdResponse(this InteractionContext context) {
+        await context.CreateCommandError(new DiscordEmbedBuilder()
+            .WithDescription("Unable to find player with specified Riot Id!")
+        );
+    }
 }

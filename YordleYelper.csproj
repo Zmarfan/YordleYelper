@@ -130,6 +130,7 @@
         <Compile Include="bot\commands\choices\ChampionAbility.cs" />
         <Compile Include="bot\commands\CommandBase.cs" />
         <Compile Include="bot\commands\ItemCommand.cs" />
+        <Compile Include="bot\commands\LastPlayedCommand.cs" />
         <Compile Include="bot\data_fetcher\data_dragon\DataDragonProxy.cs" />
         <Compile Include="bot\data_fetcher\data_dragon\responses\AllChampionsResponse.cs" />
         <Compile Include="bot\data_fetcher\data_dragon\responses\champion_info\AbilityInfo.cs" />
@@ -142,6 +143,7 @@
         <Compile Include="bot\data_fetcher\data_dragon\responses\items\ItemInfo.cs" />
         <Compile Include="bot\data_fetcher\data_dragon\responses\items\ItemResponse.cs" />
         <Compile Include="bot\data_fetcher\data_dragon\responses\items\ItemsResponse.cs" />
+        <Compile Include="bot\data_fetcher\league_api\data\LeagueAccount.cs" />
         <Compile Include="bot\data_fetcher\league_api\data\Puuid.cs" />
         <Compile Include="bot\data_fetcher\league_api\data\SummonerId.cs" />
         <Compile Include="bot\data_fetcher\league_api\LeagueApiProxy.cs" />
@@ -152,6 +154,7 @@
         <Compile Include="bot\extensions\Emote.cs" />
         <Compile Include="bot\extensions\ListExtensions.cs" />
         <Compile Include="bot\extensions\StringExtensions.cs" />
+        <Compile Include="bot\extensions\TimeSpanExtensions.cs" />
         <Compile Include="bot\extensions\word_similarity\WordSimilarityChecker.cs" />
         <Compile Include="bot\http_client\HttpClient.cs" />
         <Compile Include="bot\response_creator\ResponseCreator.cs" />

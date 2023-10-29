@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using DSharpPlus.Entities;
 using DSharpPlus.SlashCommands;
 using YordleYelper.bot.commands;
 using YordleYelper.bot.commands.choices;
@@ -6,6 +7,7 @@ using YordleYelper.bot.data_fetcher.data_dragon;
 using YordleYelper.bot.data_fetcher.data_dragon.responses;
 using YordleYelper.bot.data_fetcher.data_dragon.responses.items;
 using YordleYelper.bot.data_fetcher.league_api;
+using YordleYelper.bot.data_fetcher.league_api.data;
 using YordleYelper.bot.response_creator;
 
 namespace YordleYelper.bot; 
@@ -52,5 +54,34 @@ public class SlashCommands : ApplicationCommandModule {
         }
         
         await new ItemCommand(itemInfo, DataDragonProxy).Execute(context);
+    }
+    
+    [SlashCommand("lastplayed", "Showed when a player last played a given champion!")]
+    public async Task LastPlayed(
+        InteractionContext context, 
+        [Option("riotId", "Riot Id.")] string riotId,
+        [Option("champion", "Champion name.")] string championName
+    ) {
+        if (!TryGetLeagueAccount(riotId, out LeagueAccount leagueAccount)) {
+            await context.NoSuchRiotIdResponse();
+            return;
+        }
+        
+        if (!DataDragonProxy.TryGetBasicChampionInfo(championName, out BasicChampionInfo champion)) {
+            await context.NoSuchChampionResponse();
+            return;
+        }
+
+        await new LastPlayedCommand(leagueAccount, champion, LeagueApiProxy).Execute(context);
+    }
+
+    private static bool TryGetLeagueAccount(string riotId, out LeagueAccount leagueAccount) {
+        if (!LeagueApiProxy.TryGetPuuidByRiotId(riotId, out Puuid puuid)) {
+            leagueAccount = default;
+            return false;
+        }
+
+        leagueAccount = LeagueApiProxy.GetLeagueAccountByPuuid(puuid);
+        return true;
     }
 }

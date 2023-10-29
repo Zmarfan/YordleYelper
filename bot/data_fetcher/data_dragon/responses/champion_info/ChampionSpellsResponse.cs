@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 
-namespace YordleYelper.bot.data_fetcher.responses.champion_info; 
+namespace YordleYelper.bot.data_fetcher.data_dragon.responses.champion_info; 
 
 public struct ChampionSpellsResponse {
     [JsonProperty("id")]

@@ -3,9 +3,9 @@ using System.Text;
 using System.Threading.Tasks;
 using DSharpPlus.Entities;
 using DSharpPlus.SlashCommands;
-using YordleYelper.bot.data_fetcher;
-using YordleYelper.bot.data_fetcher.responses;
-using YordleYelper.bot.data_fetcher.responses.champion_info;
+using YordleYelper.bot.data_fetcher.data_dragon;
+using YordleYelper.bot.data_fetcher.data_dragon.responses;
+using YordleYelper.bot.data_fetcher.data_dragon.responses.champion_info;
 using YordleYelper.bot.extensions;
 using YordleYelper.bot.response_creator;
 

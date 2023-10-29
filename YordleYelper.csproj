@@ -130,20 +130,21 @@
         <Compile Include="bot\commands\choices\ChampionAbility.cs" />
         <Compile Include="bot\commands\CommandBase.cs" />
         <Compile Include="bot\commands\ItemCommand.cs" />
-        <Compile Include="bot\commands\SlashCommands.cs" />
-        <Compile Include="bot\data_fetcher\DataDragonProxy.cs" />
-        <Compile Include="bot\data_fetcher\LeagueApiProxy.cs" />
-        <Compile Include="bot\data_fetcher\responses\AllChampionsResponse.cs" />
-        <Compile Include="bot\data_fetcher\responses\champion_info\AbilityInfo.cs" />
-        <Compile Include="bot\data_fetcher\responses\champion_info\ChampionInfoResponse.cs" />
-        <Compile Include="bot\data_fetcher\responses\champion_info\ChampionPassiveResponse.cs" />
-        <Compile Include="bot\data_fetcher\responses\champion_info\ChampionSpellsResponse.cs" />
-        <Compile Include="bot\data_fetcher\responses\champion_info\PassiveInfo.cs" />
-        <Compile Include="bot\data_fetcher\responses\champion_info\TopChampionInfoResponse.cs" />
-        <Compile Include="bot\data_fetcher\responses\items\ItemGoldResponse.cs" />
-        <Compile Include="bot\data_fetcher\responses\items\ItemInfo.cs" />
-        <Compile Include="bot\data_fetcher\responses\items\ItemResponse.cs" />
-        <Compile Include="bot\data_fetcher\responses\items\ItemsResponse.cs" />
+        <Compile Include="bot\data_fetcher\data_dragon\DataDragonProxy.cs" />
+        <Compile Include="bot\data_fetcher\data_dragon\responses\AllChampionsResponse.cs" />
+        <Compile Include="bot\data_fetcher\data_dragon\responses\champion_info\AbilityInfo.cs" />
+        <Compile Include="bot\data_fetcher\data_dragon\responses\champion_info\ChampionInfoResponse.cs" />
+        <Compile Include="bot\data_fetcher\data_dragon\responses\champion_info\ChampionPassiveResponse.cs" />
+        <Compile Include="bot\data_fetcher\data_dragon\responses\champion_info\ChampionSpellsResponse.cs" />
+        <Compile Include="bot\data_fetcher\data_dragon\responses\champion_info\PassiveInfo.cs" />
+        <Compile Include="bot\data_fetcher\data_dragon\responses\champion_info\TopChampionInfoResponse.cs" />
+        <Compile Include="bot\data_fetcher\data_dragon\responses\items\ItemGoldResponse.cs" />
+        <Compile Include="bot\data_fetcher\data_dragon\responses\items\ItemInfo.cs" />
+        <Compile Include="bot\data_fetcher\data_dragon\responses\items\ItemResponse.cs" />
+        <Compile Include="bot\data_fetcher\data_dragon\responses\items\ItemsResponse.cs" />
+        <Compile Include="bot\data_fetcher\league_api\data\Puuid.cs" />
+        <Compile Include="bot\data_fetcher\league_api\LeagueApiProxy.cs" />
+        <Compile Include="bot\data_fetcher\league_api\responses\ChampionMasteryResponse.cs" />
         <Compile Include="bot\DiscordBot.cs" />
         <Compile Include="bot\DiscordBotConfig.cs" />
         <Compile Include="bot\extensions\EmbedExtensions.cs" />
@@ -153,6 +154,7 @@
         <Compile Include="bot\extensions\word_similarity\WordSimilarityChecker.cs" />
         <Compile Include="bot\http_client\HttpClient.cs" />
         <Compile Include="bot\response_creator\ResponseCreator.cs" />
+        <Compile Include="bot\SlashCommands.cs" />
         <Compile Include="Program.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
@@ -164,6 +166,9 @@
       <Content Include="src\config.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="bot\attributes" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

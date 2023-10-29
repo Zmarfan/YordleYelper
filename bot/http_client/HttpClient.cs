@@ -14,20 +14,20 @@ public class HttpClient {
         _logger = logger;
     }
 
-    public async Task<(bool, T)> TryGet<T>(string endpoint) {
-        try {
-            return (true, await Get<T>(endpoint));
-        }
-        catch (Exception e) {
-            _logger.Log(LogLevel.Error, e, $"Http get request failed for endpoint: {endpoint}");
-            return (false, default);
-        }
+    public static HttpClient LeagueApiHttpClient(ILogger logger, string authToken) {
+        HttpClient client = new(logger);
+        client._client.DefaultRequestHeaders.Add("X-Riot-Token", authToken);
+        return client;
+    }
+
+    public async Task<T> Get<T>(string endpoint) {
+        return JsonConvert.DeserializeObject<T>(await GetRaw(endpoint));
     }
     
-    public async Task<T> Get<T>(string endpoint) {
+    public async Task<string> GetRaw(string endpoint) {
         _logger.Log(LogLevel.Information, $"Http get request for: {endpoint}");
         HttpResponseMessage response = await _client.GetAsync(endpoint);
         response.EnsureSuccessStatusCode();
-        return JsonConvert.DeserializeObject<T>(await response.Content.ReadAsStringAsync());
+        return await response.Content.ReadAsStringAsync();
     }
 }

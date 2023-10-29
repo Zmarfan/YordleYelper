@@ -1,15 +1,18 @@
 ﻿using System.Threading.Tasks;
 using DSharpPlus.SlashCommands;
+using YordleYelper.bot.commands;
 using YordleYelper.bot.commands.choices;
-using YordleYelper.bot.data_fetcher;
-using YordleYelper.bot.data_fetcher.responses;
-using YordleYelper.bot.data_fetcher.responses.items;
+using YordleYelper.bot.data_fetcher.data_dragon;
+using YordleYelper.bot.data_fetcher.data_dragon.responses;
+using YordleYelper.bot.data_fetcher.data_dragon.responses.items;
+using YordleYelper.bot.data_fetcher.league_api;
 using YordleYelper.bot.response_creator;
 
-namespace YordleYelper.bot.commands; 
+namespace YordleYelper.bot; 
 
 public class SlashCommands : ApplicationCommandModule {
     public static DataDragonProxy DataDragonProxy;
+    public static LeagueApiProxy LeagueApiProxy;
     
     [SlashCommand("champion", "General overview of a champion: Name, title, lore and tips!")]
     public async Task Champion(

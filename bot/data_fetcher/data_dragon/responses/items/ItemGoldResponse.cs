@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace YordleYelper.bot.data_fetcher.responses.items; 
+namespace YordleYelper.bot.data_fetcher.data_dragon.responses.items; 
 
 public struct ItemGoldResponse {
     [JsonProperty("base")]

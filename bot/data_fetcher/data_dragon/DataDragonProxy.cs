@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using YordleYelper.bot.data_fetcher.responses;
-using YordleYelper.bot.data_fetcher.responses.champion_info;
-using YordleYelper.bot.data_fetcher.responses.items;
+using Microsoft.Extensions.Logging;
+using YordleYelper.bot.data_fetcher.data_dragon.responses;
+using YordleYelper.bot.data_fetcher.data_dragon.responses.champion_info;
+using YordleYelper.bot.data_fetcher.data_dragon.responses.items;
 using YordleYelper.bot.extensions;
 using YordleYelper.bot.http_client;
 
-namespace YordleYelper.bot.data_fetcher; 
+namespace YordleYelper.bot.data_fetcher.data_dragon; 
 
 public class DataDragonProxy {
     public const string CONTENT_BASE = "https://ddragon.leagueoflegends.com/";
@@ -19,8 +20,8 @@ public class DataDragonProxy {
     private readonly Dictionary<string, ItemInfo> _itemInfos;
     private readonly HttpClient _httpClient;
     
-    public DataDragonProxy(HttpClient httpClient) {
-        _httpClient = httpClient;
+    public DataDragonProxy(ILogger logger) {
+        _httpClient = new HttpClient(logger);
         _version = GetCurrentVersion();
         _championBasicInfos = _httpClient.Get<AllChampionsResponse>($"{Data}champion.json").Result.Data.Values.ToList();
         _itemInfos = _httpClient.Get<AllItemsResponse>($"{Data}item.json").Result.Items

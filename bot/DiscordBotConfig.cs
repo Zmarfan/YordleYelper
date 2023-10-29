@@ -5,8 +5,11 @@ using Newtonsoft.Json;
 namespace YordleYelper.bot; 
 
 public struct DiscordBotConfig {
-    [JsonProperty("token")]
-    public string Token { get; private set; }
+    [JsonProperty("discordAuthToken")]
+    public string DiscordAuthToken { get; private set; }
+    
+    [JsonProperty("leagueApiAuthToken")]
+    public string LeagueApiAuthToken { get; private set; }
     
     [JsonProperty("tokenType")]
     public TokenType TokenType { get; private set; }
@@ -18,7 +21,7 @@ public struct DiscordBotConfig {
     public LogLevel MinimumLogLevel { get; private set; }
 
     public DiscordConfiguration DiscordConfiguration => new() {
-        Token = Token,
+        Token = DiscordAuthToken,
         TokenType = TokenType,
         AutoReconnect = AutoReconnect,
         MinimumLogLevel = MinimumLogLevel,

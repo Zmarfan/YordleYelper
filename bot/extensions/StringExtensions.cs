@@ -38,10 +38,33 @@ public static class StringExtensions {
         { "<magicDamage>", BOLD }, { "</magicDamage>", $"{BOLD}{Emote.MAGIC_DAMAGE}" },
         { "<trueDamage>", BOLD }, { "</trueDamage>", $"{BOLD}{Emote.TRUE_DAMAGE}" },
         { "<lifeSteal>", BOLD }, { "</lifeSteal>", $"{BOLD}{Emote.LIFE_STEAL}" },
-        { "<speed>", BOLD }, { "</speed>", $"{BOLD}{Emote.SPEED}" },
+        { "<speed>", BOLD }, { "</speed>", $"{BOLD}{Emote.MOVE_SPEED}" },
         { "<healing>", BOLD }, { "</healing>", $"{BOLD}{Emote.HEALING}" },
         { "<shield>", BOLD }, { "</shield>", $"{BOLD}{Emote.SHIELD}" },
         { "<attackSpeed>", BOLD }, { "</attackSpeed>", $"{BOLD}{Emote.ATTACK_SPEED}" },
+    };
+
+    private static List<(string, Emote)> PHRASE_TO_STAT_EMOTE = new() {
+        ( "Base Health Regen", Emote.HEALTH_REGEN ),
+        ( "Health", Emote.HEALTH ),
+        ( "Base Mana Regen", Emote.MANA_REGEN ),
+        ( "Mana", Emote.MANA ),
+        ( "Ability Haste", Emote.ABILITY_HASTE ),
+        ( "Attack Damage", Emote.ATTACK_DAMAGE ),
+        ( "Ability Power", Emote.ABILITY_POWER ),
+        ( "Life Steal", Emote.LIFE_STEAL ),
+        ( "Omnivamp", Emote.OMNIVAMP ),
+        ( "Critical Strike Chance", Emote.CRITICAL_STRIKE_CHANCE ),
+        ( "Attack Speed", Emote.ATTACK_SPEED ),
+        ( "Armor Penetration", Emote.ARMOR_PENETRATION ),
+        ( "Armor", Emote.ARMOR ),
+        ( "Magic Resist", Emote.MAGIC_RESIST ),
+        ( "Magic Penetration", Emote.MAGIC_PENETRATION ),
+        ( "Gold Per", Emote.GOLD ),
+        ( "Heal and Shield", Emote.HEAL_AND_SHIELD ),
+        ( "Move Speed", Emote.MOVE_SPEED ),
+        ( "Tenacity", Emote.TENACITY ),
+        ( "Lethality", Emote.LETHALITY ),
     };
 
     public static string ToString<T>(this IEnumerable<T> iEnumerable, Func<StringBuilder, T, StringBuilder> fromEntry) {
@@ -70,5 +93,11 @@ public static class StringExtensions {
         formattedText = FORMAT_TAG_EXCHANGES.Aggregate(formattedText, (current, pair) => current.Replace(pair.Key, pair.Value));
         formattedText = Regex.Replace(formattedText, @"<span.*?>", BOLD);
         return Regex.Replace(formattedText, @"<.*?>", string.Empty).TrimEnd('?');
+    }
+
+    public static string FormatLeagueStat(this string text) {
+        string formatted = text.FormatLeagueTextForEmbed();
+        Emote statEmote = PHRASE_TO_STAT_EMOTE.First(stat => formatted.Contains(stat.Item1)).Item2;
+        return $"{statEmote} {formatted}";
     }
 }

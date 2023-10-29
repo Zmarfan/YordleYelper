@@ -52,7 +52,7 @@ public class ItemCommand : CommandBase {
         int endIndex = content.IndexOf("</stats>", StringComparison.Ordinal);
         return content.Substring(startIndex + 7, endIndex - startIndex - 7)
             .Split(new[] { "<br>" }, StringSplitOptions.RemoveEmptyEntries)
-            .ToString((acc, stat) => acc.AppendListEntry(Emote.BULLET_WHITE, stat.FormatLeagueTextForEmbed()));
+            .ToString((acc, stat) => acc.AppendLine(stat.FormatLeagueStat()));
     }
     
     private string CreateDescription() {

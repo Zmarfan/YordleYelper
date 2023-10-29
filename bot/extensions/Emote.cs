@@ -8,6 +8,9 @@ public class Emote {
     public static readonly Emote BULLET_ORANGE = new(":small_orange_diamond:");
     public static readonly Emote BULLET_WHITE = new(":white_small_square:");
 
+    public static readonly Emote TRUE = new(":white_check_mark:");
+    public static readonly Emote FALSE = new(":x:");
+    
     public static readonly Emote OK = new(":sparkles:");
     public static readonly Emote ERROR = new(":question:");
     public static readonly Emote INTERNAL_ERROR = new(":scream:");
@@ -62,5 +65,9 @@ public class Emote {
             ChampionAbility.R => ABILITY_R,
             _ => throw new ArgumentOutOfRangeException(nameof(ability), ability, null)
         };
+    }
+
+    public static Emote FromBool(bool value) {
+        return value ? TRUE : FALSE;
     }
 }

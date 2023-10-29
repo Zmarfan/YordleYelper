@@ -48,6 +48,6 @@ public class SlashCommands : ApplicationCommandModule {
             return;
         }
         
-        await new ItemCommand(itemInfo).Execute(context);
+        await new ItemCommand(itemInfo, DataDragonProxy).Execute(context);
     }
 }

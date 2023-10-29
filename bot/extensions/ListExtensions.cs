@@ -18,4 +18,8 @@ public static class ListExtensions {
         data = similarEntry.Item1;
         return similarEntry.Item2 <= 3;
     }
+
+    public static bool NullOrEmpty<T>(this IEnumerable<T> iEnumerable) {
+        return iEnumerable == null || !iEnumerable.Any();
+    }
 }

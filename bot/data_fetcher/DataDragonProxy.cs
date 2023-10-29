@@ -44,9 +44,12 @@ public class DataDragonProxy {
     public bool TryGetItemInfo(string itemName, out ItemInfo itemInfo) {
         return _itemInfos.Values.TryGetSimilarEntry(itemName, info => info.response.Name, out itemInfo);
     }
+    
+    public IEnumerable<string> ItemNamesFromIds(IEnumerable<string> itemIds) {
+        return itemIds.Where(id => _itemInfos.ContainsKey(id)).Select(id => _itemInfos[id].response.Name);
+    }
 
     private string GetCurrentVersion() {
-        List<string> versions = _httpClient.Get<List<string>>($"{API}versions.json").Result;
-        return versions.First();
+        return _httpClient.Get<List<string>>($"{API}versions.json").Result.First();
     }
 }

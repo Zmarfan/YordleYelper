@@ -18,10 +18,7 @@ public struct ItemResponse {
     
     [JsonProperty("into")]
     public List<string> IntoItemsIds { get; set; }
-    
-    [JsonProperty("inStore")]
-    public bool InStore { get; set; }
-    
+
     [JsonProperty("requiredAlly")]
     public string RequiredAlly { get; set; }
     

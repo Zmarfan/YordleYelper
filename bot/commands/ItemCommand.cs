@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Xml;
 using DSharpPlus.Entities;
 using DSharpPlus.SlashCommands;
+using YordleYelper.bot.data_fetcher;
 using YordleYelper.bot.data_fetcher.responses.items;
 using YordleYelper.bot.extensions;
 using YordleYelper.bot.response_creator;
@@ -13,9 +12,11 @@ namespace YordleYelper.bot.commands;
 
 public class ItemCommand : CommandBase {
     private readonly ItemInfo _itemInfo;
+    private readonly DataDragonProxy _dataDragonProxy;
 
-    public ItemCommand(ItemInfo itemInfo) {
+    public ItemCommand(ItemInfo itemInfo, DataDragonProxy dataDragonProxy) {
         _itemInfo = itemInfo;
+        _dataDragonProxy = dataDragonProxy;
     }
 
     protected override async Task Run(InteractionContext context) {
@@ -29,6 +30,7 @@ public class ItemCommand : CommandBase {
         if (_itemInfo.response.GoldResponse.Sell != 0) {
             embed.AddExtraLargeField("Sell:", $"{Emote.GOLD} {_itemInfo.response.GoldResponse.Sell}", true);
         }
+        embed.AddExtraLargeField("Purchasable:", Emote.FromBool(_itemInfo.response.GoldResponse.Purchasable).ToString(), true);
         if (_itemInfo.response.RequiredChampion != null) {
             embed.AddExtraLargeField("Champion:", $"{_itemInfo.response.RequiredChampion}", true);
         }
@@ -36,22 +38,31 @@ public class ItemCommand : CommandBase {
             embed.AddExtraLargeField("Requires:", _itemInfo.response.RequiredAlly, true);
         }
 
+        if (embed.Fields.Count == 5) {
+            embed.AddEmptyField(true);
+        }
+
         string stats = CreateStats();
         if (stats != string.Empty) {
-            embed.AddField("Stats:", stats);
+            embed.AddExtraLargeField("Stats:", stats);
         }
-        
-        embed
-            .AddExtraLargeField("Description:", CreateDescription())
-            .AddField("Builds Into:", CreateBuildsInto())
-            .WithThumbnail(_itemInfo.iconUrl);
 
-        await context.CreateCommandOk(embed);
+        string description = CreateDescription();
+        if (description != string.Empty) {
+            embed.AddExtraLargeField("Description:", CreateDescription());
+        }
+
+        if (!_itemInfo.response.FromItemsIds.NullOrEmpty()) {
+            embed.AddField("Builds From:", CreateItemList(_itemInfo.response.FromItemsIds));
+        }
+        if (!_itemInfo.response.IntoItemsIds.NullOrEmpty()) {
+            embed.AddField("Builds Into:", CreateItemList(_itemInfo.response.IntoItemsIds));
+        }
+
+        await context.CreateCommandOk(embed.WithThumbnail(_itemInfo.iconUrl));
     }
 
     private string CreateStats() {
-        // TODO: get right items depending on map
-        
         string content = _itemInfo.response.Description;
         int startIndex = content.IndexOf("<stats>", StringComparison.Ordinal);
         int endIndex = content.IndexOf("</stats>", StringComparison.Ordinal);
@@ -64,13 +75,10 @@ public class ItemCommand : CommandBase {
         string content = _itemInfo.response.Description;
         int startIndex = content.IndexOf("</stats>", StringComparison.Ordinal);
         int endIndex = content.IndexOf("</mainText>", StringComparison.Ordinal);
-
-        string description = content.Substring(startIndex + 8, endIndex - startIndex - 8).FormatLeagueTextForEmbed();
-        return description == string.Empty ? "None." : description;
+        return content.Substring(startIndex + 8, endIndex - startIndex - 8).FormatLeagueTextForEmbed();
     }
     
-    private string CreateBuildsInto() {
-        // TODO: this
-        return "-";
+    private string CreateItemList(IEnumerable<string> itemIds) {
+        return string.Join(", ", _dataDragonProxy.ItemNamesFromIds(itemIds));
     }
 }

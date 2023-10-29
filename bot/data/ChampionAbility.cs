@@ -1,4 +1,4 @@
-﻿namespace YordleYelper.bot.commands.choices; 
+﻿namespace YordleYelper.bot.data; 
 
 public enum ChampionAbility {
     Q = 0,

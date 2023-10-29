@@ -127,11 +127,13 @@
     <ItemGroup>
         <Compile Include="bot\commands\AbilityCommand.cs" />
         <Compile Include="bot\commands\ChampionCommand.cs" />
-        <Compile Include="bot\commands\choices\ChampionAbility.cs" />
         <Compile Include="bot\commands\CommandBase.cs" />
         <Compile Include="bot\commands\ItemCommand.cs" />
         <Compile Include="bot\commands\LastPlayedAllCommand.cs" />
         <Compile Include="bot\commands\LastPlayedCommand.cs" />
+        <Compile Include="bot\data\ChampionAbility.cs" />
+        <Compile Include="bot\data\Emote.cs" />
+        <Compile Include="bot\data\SortOrder.cs" />
         <Compile Include="bot\data_fetcher\data_dragon\DataDragonProxy.cs" />
         <Compile Include="bot\data_fetcher\data_dragon\responses\AllChampionsResponse.cs" />
         <Compile Include="bot\data_fetcher\data_dragon\responses\champion_info\AbilityInfo.cs" />
@@ -152,7 +154,6 @@
         <Compile Include="bot\DiscordBot.cs" />
         <Compile Include="bot\DiscordBotConfig.cs" />
         <Compile Include="bot\extensions\EmbedExtensions.cs" />
-        <Compile Include="bot\extensions\Emote.cs" />
         <Compile Include="bot\extensions\ListExtensions.cs" />
         <Compile Include="bot\extensions\StringExtensions.cs" />
         <Compile Include="bot\extensions\TimeSpanExtensions.cs" />
@@ -172,9 +173,6 @@
       <Content Include="src\config.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
-    </ItemGroup>
-    <ItemGroup>
-      <Folder Include="bot\attributes" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

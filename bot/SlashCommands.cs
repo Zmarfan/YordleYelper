@@ -2,7 +2,7 @@
 using DSharpPlus.Entities;
 using DSharpPlus.SlashCommands;
 using YordleYelper.bot.commands;
-using YordleYelper.bot.commands.choices;
+using YordleYelper.bot.data;
 using YordleYelper.bot.data_fetcher.data_dragon;
 using YordleYelper.bot.data_fetcher.data_dragon.responses;
 using YordleYelper.bot.data_fetcher.data_dragon.responses.items;
@@ -75,17 +75,19 @@ public class SlashCommands : ApplicationCommandModule {
         await new LastPlayedCommand(leagueAccount, champion, LeagueApiProxy).Execute(context);
     }
 
-    [SlashCommand("lastPlayedAll", "Shows when a player last played all champions!")]
-    public async Task lastPlayedAll(
+    [SlashCommand("lastplayedmultiple", "Shows when a player last played a multitude of champions!")]
+    public async Task LastPlayedMultiple(
         InteractionContext context, 
-        [Option("riotId", "Riot Id.")] string riotId
+        [Option("riotId", "Riot Id.")] string riotId,
+        [Option("amount", "Amount of champions to display.")] long amountToShow = long.MaxValue,
+        [Option("sortOrder", "Order to sort champions in.")] SortOrder sortOrder = SortOrder.Ascending
     ) {
         if (!TryGetLeagueAccount(riotId, out LeagueAccount leagueAccount)) {
             await context.NoSuchRiotIdResponse();
             return;
         }
 
-        await new LastPlayedAllCommand(leagueAccount, DataDragonProxy.AllChampionBasicInfos, LeagueApiProxy).Execute(context);
+        await new LastPlayedAllCommand(leagueAccount, DataDragonProxy.AllChampionBasicInfos, (int)amountToShow, sortOrder, LeagueApiProxy).Execute(context);
     }
     
     private static bool TryGetLeagueAccount(string riotId, out LeagueAccount leagueAccount) {

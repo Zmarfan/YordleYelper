@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using DSharpPlus.Entities;
 using DSharpPlus.SlashCommands;
+using YordleYelper.bot.data;
 using YordleYelper.bot.extensions;
 
 namespace YordleYelper.bot.response_creator; 

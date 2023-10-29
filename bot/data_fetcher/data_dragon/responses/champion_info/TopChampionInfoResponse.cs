@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
-using YordleYelper.bot.commands.choices;
+using YordleYelper.bot.data;
 using YordleYelper.bot.extensions;
 
 namespace YordleYelper.bot.data_fetcher.data_dragon.responses.champion_info; 

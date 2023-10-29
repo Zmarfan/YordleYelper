@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using DSharpPlus.Entities;
 using DSharpPlus.SlashCommands;
 using Microsoft.Extensions.Logging;
+using YordleYelper.bot.data;
 using YordleYelper.bot.extensions;
 using YordleYelper.bot.response_creator;
 

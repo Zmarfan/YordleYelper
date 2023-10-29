@@ -1,4 +1,5 @@
-﻿using YordleYelper.bot.extensions;
+﻿using YordleYelper.bot.data;
+using YordleYelper.bot.extensions;
 
 namespace YordleYelper.bot.data_fetcher.data_dragon.responses.champion_info; 
 

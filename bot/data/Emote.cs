@@ -1,7 +1,6 @@
 ﻿using System;
-using YordleYelper.bot.commands.choices;
 
-namespace YordleYelper.bot.extensions; 
+namespace YordleYelper.bot.data; 
 
 public class Emote {
     public static readonly Emote BULLET_BLUE = new(":small_blue_diamond:");

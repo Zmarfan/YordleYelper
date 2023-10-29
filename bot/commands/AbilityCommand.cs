@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using DSharpPlus.Entities;
 using DSharpPlus.SlashCommands;
-using YordleYelper.bot.commands.choices;
+using YordleYelper.bot.data;
 using YordleYelper.bot.data_fetcher.data_dragon;
 using YordleYelper.bot.data_fetcher.data_dragon.responses;
 using YordleYelper.bot.data_fetcher.data_dragon.responses.champion_info;

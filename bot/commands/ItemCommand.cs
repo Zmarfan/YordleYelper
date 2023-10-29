@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using DSharpPlus.Entities;
 using DSharpPlus.SlashCommands;
+using YordleYelper.bot.data;
 using YordleYelper.bot.data_fetcher;
 using YordleYelper.bot.data_fetcher.data_dragon;
 using YordleYelper.bot.data_fetcher.data_dragon.responses.items;

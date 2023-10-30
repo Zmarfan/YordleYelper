@@ -9,9 +9,6 @@ public struct AllChampionsResponse {
 }
 
 public struct BasicChampionInfo {
-    [JsonProperty("version")]
-    private string Version { get; set; }
-    
     [JsonProperty("id")]
     public string Id { get; set; }
     
@@ -26,6 +23,6 @@ public struct BasicChampionInfo {
     
     [JsonProperty("blurb")]
     public string Blurb { get; set; }
-    
-    public string PortraitImageUrl => $"{DataDragonProxy.CONTENT_BASE}cdn/{Version}/img/champion/{Id}.png";
+
+    public string PortraitImageUrl => LeagueImageUrlGenerator.PortraitImageUrl(Id);
 }

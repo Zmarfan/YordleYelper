@@ -21,22 +21,19 @@ public class LastPlayedMultipleCommand : CommandBase {
     private readonly int _amountToShow;
     private readonly SortOrder _sortOrder;
     private readonly LeagueApiProxy _leagueApiProxy;
-    private readonly DataDragonProxy _dataDragonProxy;
 
     public LastPlayedMultipleCommand(
         LeagueAccount leagueAccount,
         List<BasicChampionInfo> basicChampionInfos,
         int amountToShow,
         SortOrder sortOrder,
-        LeagueApiProxy leagueApiProxy,
-        DataDragonProxy dataDragonProxy
+        LeagueApiProxy leagueApiProxy
     ) {
         _leagueAccount = leagueAccount;
         _basicChampionInfos = basicChampionInfos;
         _amountToShow = amountToShow;
         _sortOrder = sortOrder;
         _leagueApiProxy = leagueApiProxy;
-        _dataDragonProxy = dataDragonProxy;
     }
     
     protected override async Task Run(InteractionContext context) {
@@ -55,7 +52,7 @@ public class LastPlayedMultipleCommand : CommandBase {
         Summoner summoner = _leagueApiProxy.GetSummonerByPuuid(_leagueAccount.puuid);
         await context.CreateCommandOk(b => b
             .WithDescription($"The last time **{_leagueAccount.gameName}** played each champion is as follows:")
-            .WithThumbnail(_dataDragonProxy.GetProfileIconUrlFromId(summoner.profileIconId))
+            .WithThumbnail(summoner.profileIconImageUrl)
         );
 
         while (championPlayTimes.Any()) {
@@ -64,7 +61,7 @@ public class LastPlayedMultipleCommand : CommandBase {
             string description = string.Join("\n", takeEntries);
             await context.Channel.SendMessageAsync(context.CreateCommandEmbedBuilderOk(b => b
                 .WithDescription(description)
-                .WithThumbnail(_dataDragonProxy.GetProfileIconUrlFromId(summoner.profileIconId))
+                .WithThumbnail(summoner.profileIconImageUrl)
             ));
         }
     }

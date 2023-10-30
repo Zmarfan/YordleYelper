@@ -10,9 +10,8 @@ using YordleYelper.bot.http_client;
 namespace YordleYelper.bot.data_fetcher.data_dragon; 
 
 public class DataDragonProxy {
-    public const string CONTENT_BASE = "https://ddragon.leagueoflegends.com/";
+    private const string CONTENT_BASE = "https://ddragon.leagueoflegends.com/";
     private readonly string _dataUrl;
-    private readonly string _imagesUrl;
 
     private readonly List<BasicChampionInfo> _championBasicInfos;
     private readonly Dictionary<string, ItemInfo> _itemInfos;
@@ -20,9 +19,8 @@ public class DataDragonProxy {
 
     public List<BasicChampionInfo> AllChampionBasicInfos => _championBasicInfos.ToList();
     
-    public DataDragonProxy(string version, ILogger logger) {
-        _dataUrl = $"{CONTENT_BASE}cdn/{version}/data/en_US/";
-        _imagesUrl = $"{CONTENT_BASE}cdn/{version}/img/";
+    public DataDragonProxy(ILogger logger) {
+        _dataUrl = $"{CONTENT_BASE}cdn/{VersionHolder.Version}/data/en_US/";
         _httpClient = new HttpClient(logger);
         _championBasicInfos = _httpClient.Get<AllChampionsResponse>($"{_dataUrl}champion.json").Result.Data.Values.ToList();
         _itemInfos = _httpClient.Get<AllItemsResponse>($"{_dataUrl}item.json").Result.Items
@@ -31,12 +29,8 @@ public class DataDragonProxy {
             .ToDictionary(entry => entry.Key, entry => new ItemInfo {
                 id = entry.Key,
                 response = entry.Value,
-                iconUrl = $"{_imagesUrl}item/{entry.Value.ImageName}"
+                iconUrl = LeagueImageUrlGenerator.ItemImageUrl(entry.Value.ImageName)
             });
-    }
-    
-    public string GetProfileIconUrlFromId(int id) {
-        return $"{_imagesUrl}profileicon/{id}.png";
     }
 
     public bool TryGetBasicChampionInfo(string championName, out BasicChampionInfo championInfo) {

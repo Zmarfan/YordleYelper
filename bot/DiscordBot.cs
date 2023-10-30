@@ -19,8 +19,8 @@ public class DiscordBot {
         DiscordBotConfig config = JsonConvert.DeserializeObject<DiscordBotConfig>(File.ReadAllText(@"src\config.json"));
         
         _client = new DiscordClient(config.DiscordConfiguration);
-        string version = GetCurrentVersion(_client.Logger);
-        SlashCommands.DataDragonProxy = new DataDragonProxy(version, _client.Logger);
+        VersionHolder.Init(GetCurrentVersion(_client.Logger));
+        SlashCommands.DataDragonProxy = new DataDragonProxy(_client.Logger);
         SlashCommands.LeagueApiProxy = new LeagueApiProxy(_client.Logger, config.LeagueApiAuthToken);
         _client.UseSlashCommands(new SlashCommandsConfiguration()).RegisterCommands<SlashCommands>();
     }

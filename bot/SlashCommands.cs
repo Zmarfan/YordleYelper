@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using DSharpPlus.Entities;
 using DSharpPlus.SlashCommands;
 using YordleYelper.bot.commands;
 using YordleYelper.bot.data;
@@ -88,7 +87,7 @@ public class SlashCommands : ApplicationCommandModule {
             return;
         }
 
-        await new LastPlayedMultipleCommand(leagueAccount, DataDragonProxy.AllChampionBasicInfos, (int)amountToShow, sortOrder, LeagueApiProxy, DataDragonProxy).Execute(context);
+        await new LastPlayedMultipleCommand(leagueAccount, DataDragonProxy.AllChampionBasicInfos, (int)amountToShow, sortOrder, LeagueApiProxy).Execute(context);
     }
     
     private static bool TryGetLeagueAccount(string riotId, out LeagueAccount leagueAccount) {

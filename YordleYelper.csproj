@@ -162,7 +162,9 @@
         <Compile Include="bot\http_client\HttpClient.cs" />
         <Compile Include="bot\http_client\HttpStatusException.cs" />
         <Compile Include="bot\response_creator\ResponseCreator.cs" />
+        <Compile Include="bot\LeagueImageUrlGenerator.cs" />
         <Compile Include="bot\SlashCommands.cs" />
+        <Compile Include="bot\VersionHolder.cs" />
         <Compile Include="Program.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>

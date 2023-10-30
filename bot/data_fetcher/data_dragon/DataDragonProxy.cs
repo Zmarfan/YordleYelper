@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using YordleYelper.bot.data_fetcher.data_dragon.responses;
@@ -12,33 +11,32 @@ namespace YordleYelper.bot.data_fetcher.data_dragon;
 
 public class DataDragonProxy {
     public const string CONTENT_BASE = "https://ddragon.leagueoflegends.com/";
-    private const string API = $"{CONTENT_BASE}api/";
-    private string Data => $"{CONTENT_BASE}cdn/{_version}/data/en_US/";
-    private string Images => $"{CONTENT_BASE}cdn/{_version}/img/";
+    private readonly string _dataUrl;
+    private readonly string _imagesUrl;
 
-    private readonly string _version;
     private readonly List<BasicChampionInfo> _championBasicInfos;
     private readonly Dictionary<string, ItemInfo> _itemInfos;
     private readonly HttpClient _httpClient;
 
     public List<BasicChampionInfo> AllChampionBasicInfos => _championBasicInfos.ToList();
     
-    public DataDragonProxy(ILogger logger) {
+    public DataDragonProxy(string version, ILogger logger) {
+        _dataUrl = $"{CONTENT_BASE}cdn/{version}/data/en_US/";
+        _imagesUrl = $"{CONTENT_BASE}cdn/{version}/img/";
         _httpClient = new HttpClient(logger);
-        _version = GetCurrentVersion();
-        _championBasicInfos = _httpClient.Get<AllChampionsResponse>($"{Data}champion.json").Result.Data.Values.ToList();
-        _itemInfos = _httpClient.Get<AllItemsResponse>($"{Data}item.json").Result.Items
+        _championBasicInfos = _httpClient.Get<AllChampionsResponse>($"{_dataUrl}champion.json").Result.Data.Values.ToList();
+        _itemInfos = _httpClient.Get<AllItemsResponse>($"{_dataUrl}item.json").Result.Items
             .Where(entry => entry.Value.Description != string.Empty)
             .Where(entry => entry.Value.Maps.Take(2).Any(map => map.Value))
             .ToDictionary(entry => entry.Key, entry => new ItemInfo {
                 id = entry.Key,
                 response = entry.Value,
-                iconUrl = $"{Images}item/{entry.Value.ImageName}"
+                iconUrl = $"{_imagesUrl}item/{entry.Value.ImageName}"
             });
     }
     
     public string GetProfileIconUrlFromId(int id) {
-        return $"{Images}profileicon/{id}.png";
+        return $"{_imagesUrl}profileicon/{id}.png";
     }
 
     public bool TryGetBasicChampionInfo(string championName, out BasicChampionInfo championInfo) {
@@ -46,7 +44,7 @@ public class DataDragonProxy {
     }
 
     public TopChampionInfoResponse GetChampionInfo(BasicChampionInfo basicInfo) {
-        return _httpClient.Get<TopChampionInfoResponse>($"{Data}champion/{basicInfo.Id}.json").Result;
+        return _httpClient.Get<TopChampionInfoResponse>($"{_dataUrl}champion/{basicInfo.Id}.json").Result;
     }
     
     public bool TryGetItemInfo(string itemName, out ItemInfo itemInfo) {
@@ -55,9 +53,5 @@ public class DataDragonProxy {
     
     public IEnumerable<string> ItemNamesFromIds(IEnumerable<string> itemIds) {
         return itemIds.Where(id => _itemInfos.ContainsKey(id)).Select(id => _itemInfos[id].response.Name);
-    }
-
-    private string GetCurrentVersion() {
-        return _httpClient.Get<List<string>>($"{API}versions.json").Result.First();
     }
 }

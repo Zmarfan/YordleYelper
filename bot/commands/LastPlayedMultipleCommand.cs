@@ -15,7 +15,7 @@ using YordleYelper.bot.response_creator;
 
 namespace YordleYelper.bot.commands; 
 
-public class LastPlayedAllCommand : CommandBase {
+public class LastPlayedMultipleCommand : CommandBase {
     private readonly LeagueAccount _leagueAccount;
     private readonly List<BasicChampionInfo> _basicChampionInfos;
     private readonly int _amountToShow;
@@ -23,7 +23,7 @@ public class LastPlayedAllCommand : CommandBase {
     private readonly LeagueApiProxy _leagueApiProxy;
     private readonly DataDragonProxy _dataDragonProxy;
 
-    public LastPlayedAllCommand(
+    public LastPlayedMultipleCommand(
         LeagueAccount leagueAccount,
         List<BasicChampionInfo> basicChampionInfos,
         int amountToShow,

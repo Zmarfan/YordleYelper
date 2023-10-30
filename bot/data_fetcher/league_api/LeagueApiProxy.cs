@@ -22,21 +22,18 @@ public class LeagueApiProxy {
         _httpClient = HttpClient.LeagueApiHttpClient(logger, authToken);
     }
     
-    public LeagueAccount GetLeagueAccountByPuuid(Puuid puuid) {
-        return _httpClient.Get<LeagueAccount>($"{API_BASE}/riot/account/v1/accounts/by-puuid/{puuid}").Result;
+    public LeagueAccountResponse GetLeagueAccountByPuuid(Puuid puuid) {
+        return _httpClient.Get<LeagueAccountResponse>($"{API_BASE}/riot/account/v1/accounts/by-puuid/{puuid}").Result;
     }
 
-    public Summoner GetSummonerByPuuid(Puuid puuid) {
-        return _httpClient.Get<Summoner>($"{REGION_API_BASE}/lol/summoner/v4/summoners/by-puuid/{puuid}").Result;
-    }
-    
     public bool TryGetLeagueAccount(string riotId, out LeagueAccount leagueAccount) {
         if (!TryGetPuuidByRiotId(riotId, out Puuid puuid)) {
             leagueAccount = default;
             return false;
         }
 
-        leagueAccount = GetLeagueAccountByPuuid(puuid);
+        LeagueAccountResponse leagueAccountResponse = GetLeagueAccountByPuuid(puuid);
+        leagueAccount = new LeagueAccount(leagueAccountResponse, GetSummonerByPuuid(puuid));
         return true;
     }
 
@@ -62,5 +59,9 @@ public class LeagueApiProxy {
             puuid = default;
             return false;
         }
+    }
+    
+    private Summoner GetSummonerByPuuid(Puuid puuid) {
+        return _httpClient.Get<Summoner>($"{REGION_API_BASE}/lol/summoner/v4/summoners/by-puuid/{puuid}").Result;
     }
 }

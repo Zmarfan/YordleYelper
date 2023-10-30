@@ -131,6 +131,7 @@
         <Compile Include="bot\commands\ItemCommand.cs" />
         <Compile Include="bot\commands\last_played\LastPlayedCommand.cs" />
         <Compile Include="bot\commands\last_played\LastPlayedMultipleCommand.cs" />
+        <Compile Include="bot\commands\masteries\MasteryCommand.cs" />
         <Compile Include="bot\commands\masteries\MasteryMultipleCommand.cs" />
         <Compile Include="bot\commands\masteries\MasteryEmbedCreator.cs" />
         <Compile Include="bot\data\ChampionAbility.cs" />
@@ -153,6 +154,7 @@
         <Compile Include="bot\data_fetcher\league_api\LeagueApiProxy.cs" />
         <Compile Include="bot\data_fetcher\league_api\responses\ChampionMasteryResponse.cs" />
         <Compile Include="bot\data_fetcher\league_api\responses\LeagueAccount.cs" />
+        <Compile Include="bot\data_fetcher\league_api\responses\LeagueAccountResponse.cs" />
         <Compile Include="bot\data_fetcher\league_api\responses\Summoner.cs" />
         <Compile Include="bot\DiscordBot.cs" />
         <Compile Include="bot\DiscordBotConfig.cs" />

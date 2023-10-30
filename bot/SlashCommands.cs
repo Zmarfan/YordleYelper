@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using DSharpPlus.SlashCommands;
 using YordleYelper.bot.commands;
 using YordleYelper.bot.commands.last_played;
@@ -83,6 +84,8 @@ public class SlashCommands : ApplicationCommandModule {
         [Option("amount", "Amount of champions to display.")] long amountToShow = 25,
         [Option("sortOrder", "Order to sort champions in.")] SortOrder sortOrder = SortOrder.Ascending
     ) {
+        amountToShow = Math.Max(amountToShow, 1);
+        
         if (!LeagueApiProxy.TryGetLeagueAccount(riotId, out LeagueAccount leagueAccount)) {
             await context.NoSuchRiotIdResponse();
             return;
@@ -91,18 +94,39 @@ public class SlashCommands : ApplicationCommandModule {
         await Run(context, new LastPlayedMultipleCommand(leagueAccount, DataDragonProxy.AllChampionBasicInfos, (int)amountToShow, sortOrder, LeagueApiProxy));
     }
     
-    [SlashCommand("mastery", "List of champions with most mastery points by a summoner.!")]
-    public async Task Mastery(
+    [SlashCommand("masteryMultiple", "List of champions with most mastery points by a summoner!")]
+    public async Task MasteryMultiple(
         InteractionContext context, 
         [Option("riotId", "Riot Id.")] string riotId,
-        [Option("amount", "Amount of top champions.")] long amount = 5
+        [Option("amount", "Amount of top champions.")] long amount = 5,
+        [Option("filterMastered", "Should filter out mastered champions?")] bool filterOutMastered = false
     ) {
+        amount = Math.Min(Math.Max(amount, 1), 10);
         if (!LeagueApiProxy.TryGetLeagueAccount(riotId, out LeagueAccount leagueAccount)) {
             await context.NoSuchRiotIdResponse();
             return;
         }
 
-        await Run(context, new MasteryMultipleCommand(leagueAccount, amount, DataDragonProxy.AllChampionBasicInfos, LeagueApiProxy));
+        await Run(context, new MasteryMultipleCommand(leagueAccount, amount, filterOutMastered, DataDragonProxy.AllChampionBasicInfos, LeagueApiProxy));
+    }
+    
+    [SlashCommand("mastery", "Provides mastery statistics for specific champion!")]
+    public async Task Mastery(
+        InteractionContext context, 
+        [Option("riotId", "Riot Id.")] string riotId,
+        [Option("champion", "Champion name.")] string championName
+    ) {
+        if (!LeagueApiProxy.TryGetLeagueAccount(riotId, out LeagueAccount leagueAccount)) {
+            await context.NoSuchRiotIdResponse();
+            return;
+        }
+        
+        if (!DataDragonProxy.TryGetBasicChampionInfo(championName, out BasicChampionInfo champion)) {
+            await context.NoSuchChampionResponse();
+            return;
+        }
+
+        await Run(context, new MasteryCommand(leagueAccount, champion, LeagueApiProxy));
     }
 
     private static async Task Run(InteractionContext context, CommandBase commandBase) {

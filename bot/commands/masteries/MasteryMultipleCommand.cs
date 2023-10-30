@@ -13,17 +13,20 @@ namespace YordleYelper.bot.commands.masteries;
 public class MasteryMultipleCommand : CommandBase {
     private readonly LeagueAccount _leagueAccount;
     private readonly long _amount;
+    private readonly bool _filterOutMastered;
     private readonly List<BasicChampionInfo> _basicChampionInfos;
     private readonly LeagueApiProxy _leagueApiProxy;
 
     public MasteryMultipleCommand(
         LeagueAccount leagueAccount,
         long amount,
+        bool filterOutMastered,
         List<BasicChampionInfo> basicChampionInfos,
         LeagueApiProxy leagueApiProxy
     ) {
         _leagueAccount = leagueAccount;
         _amount = amount;
+        _filterOutMastered = filterOutMastered;
         _basicChampionInfos = basicChampionInfos;
         _leagueApiProxy = leagueApiProxy;
     }
@@ -32,14 +35,14 @@ public class MasteryMultipleCommand : CommandBase {
         Dictionary<string, BasicChampionInfo> champByKey = _basicChampionInfos.ToDictionary(champ => champ.Key, champ => champ);
 
         IEnumerable<ChampionMasteryResponse> masteries = (await _leagueApiProxy.GetChampionMasteries(_leagueAccount))
-            .Take((int)_amount)
             .OrderByDescending(mastery => mastery.championLevel)
-            .ThenByDescending(mastery => mastery.championPoints);
+            .ThenByDescending(mastery => mastery.championPoints)
+            .Where(mastery => mastery.championLevel != 7 || !_filterOutMastered)
+            .Take((int)_amount);
 
-        Summoner summoner = _leagueApiProxy.GetSummonerByPuuid(_leagueAccount.puuid);
         await context.CreateCommandOk(e => e
-            .WithDescription($"The champions with the most mastery point for {summoner.name.ToBold()}:")
-            .WithThumbnail(summoner.profileIconImageUrl)
+            .WithDescription($"The champions with the most mastery point for {_leagueAccount.gameName.ToBold()}:")
+            .WithThumbnail(_leagueAccount.summoner.profileIconImageUrl)
         );
         
         foreach (ChampionMasteryResponse mastery in masteries) {

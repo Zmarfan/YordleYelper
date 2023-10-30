@@ -41,10 +41,9 @@ public class LastPlayedMultipleCommand : CommandBase {
             .Select((mastery, i) => $"{i + 1}. {champByKey[mastery.championId].Name.ToBold()}: {(DateTimeOffset.Now - mastery.lastPlayed).ToTimeSinceString()}")
             .ToList();
 
-        Summoner summoner = _leagueApiProxy.GetSummonerByPuuid(_leagueAccount.puuid);
         await context.CreateCommandOk(b => b
             .WithDescription($"The last time {_leagueAccount.gameName.ToBold()} played each champion is as follows:")
-            .WithThumbnail(summoner.profileIconImageUrl)
+            .WithThumbnail(_leagueAccount.summoner.profileIconImageUrl)
         );
 
         while (championPlayTimes.Any()) {
@@ -53,7 +52,7 @@ public class LastPlayedMultipleCommand : CommandBase {
             string description = string.Join("\n", takeEntries);
             await context.Channel.SendMessageAsync(context.CreateCommandEmbedBuilderOk(b => b
                 .WithDescription(description)
-                .WithThumbnail(summoner.profileIconImageUrl)
+                .WithThumbnail(_leagueAccount.summoner.profileIconImageUrl)
             ));
         }
     }

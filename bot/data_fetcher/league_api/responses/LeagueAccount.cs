@@ -7,15 +7,12 @@ public struct LeagueAccount {
     public readonly Puuid puuid;
     public readonly string gameName;
     public readonly string tagLine;
+    public readonly Summoner summoner;
 
-    [JsonConstructor]
-    public LeagueAccount(
-        [JsonProperty("puuid")] string puuid,
-        [JsonProperty("gameName")] string gameName,
-        [JsonProperty("tagLine")] string tagLine
-    ) {
-        this.puuid = new Puuid(puuid);
-        this.gameName = gameName;
-        this.tagLine = tagLine;
+    public LeagueAccount(LeagueAccountResponse leagueAccountResponse, Summoner summoner) {
+        puuid = leagueAccountResponse.puuid;
+        gameName = leagueAccountResponse.gameName;
+        tagLine = leagueAccountResponse.tagLine;
+        this.summoner = summoner;
     }
 }

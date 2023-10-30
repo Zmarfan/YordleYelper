@@ -36,6 +36,10 @@ public class DataDragonProxy {
                 iconUrl = $"{Images}item/{entry.Value.ImageName}"
             });
     }
+    
+    public string GetProfileIconUrlFromId(int id) {
+        return $"{Images}profileicon/{id}.png";
+    }
 
     public bool TryGetBasicChampionInfo(string championName, out BasicChampionInfo championInfo) {
         return _championBasicInfos.TryGetSimilarEntry(championName, entry => entry.Name, out championInfo);

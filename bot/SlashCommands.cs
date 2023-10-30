@@ -8,6 +8,7 @@ using YordleYelper.bot.data_fetcher.data_dragon.responses;
 using YordleYelper.bot.data_fetcher.data_dragon.responses.items;
 using YordleYelper.bot.data_fetcher.league_api;
 using YordleYelper.bot.data_fetcher.league_api.data;
+using YordleYelper.bot.data_fetcher.league_api.responses;
 using YordleYelper.bot.response_creator;
 
 namespace YordleYelper.bot; 
@@ -79,7 +80,7 @@ public class SlashCommands : ApplicationCommandModule {
     public async Task LastPlayedMultiple(
         InteractionContext context, 
         [Option("riotId", "Riot Id.")] string riotId,
-        [Option("amount", "Amount of champions to display.")] long amountToShow = long.MaxValue,
+        [Option("amount", "Amount of champions to display.")] long amountToShow = 500,
         [Option("sortOrder", "Order to sort champions in.")] SortOrder sortOrder = SortOrder.Ascending
     ) {
         if (!TryGetLeagueAccount(riotId, out LeagueAccount leagueAccount)) {
@@ -87,7 +88,7 @@ public class SlashCommands : ApplicationCommandModule {
             return;
         }
 
-        await new LastPlayedAllCommand(leagueAccount, DataDragonProxy.AllChampionBasicInfos, (int)amountToShow, sortOrder, LeagueApiProxy).Execute(context);
+        await new LastPlayedAllCommand(leagueAccount, DataDragonProxy.AllChampionBasicInfos, (int)amountToShow, sortOrder, LeagueApiProxy, DataDragonProxy).Execute(context);
     }
     
     private static bool TryGetLeagueAccount(string riotId, out LeagueAccount leagueAccount) {

@@ -26,6 +26,10 @@ public class LeagueApiProxy {
         return _httpClient.Get<LeagueAccount>($"{API_BASE}/riot/account/v1/accounts/by-puuid/{puuid}").Result;
     }
 
+    public Summoner GetSummonerByPuuid(Puuid puuid) {
+        return _httpClient.Get<Summoner>($"{REGION_API_BASE}/lol/summoner/v4/summoners/by-puuid/{puuid}").Result;
+    }
+    
     public bool TryGetPuuidByRiotId(string riotId, out Puuid puuid) {
         try {
             Dictionary<string, string> data = _httpClient.Get<Dictionary<string, string>>($"{API_BASE}/riot/account/v1/accounts/by-riot-id/{riotId}/EUW").Result;

@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
+using YordleYelper.bot.data_fetcher.league_api.data;
 
-namespace YordleYelper.bot.data_fetcher.league_api.data; 
+namespace YordleYelper.bot.data_fetcher.league_api.responses; 
 
 public struct LeagueAccount {
     public readonly Puuid puuid;

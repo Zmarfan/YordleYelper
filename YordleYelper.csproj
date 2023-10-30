@@ -146,11 +146,12 @@
         <Compile Include="bot\data_fetcher\data_dragon\responses\items\ItemInfo.cs" />
         <Compile Include="bot\data_fetcher\data_dragon\responses\items\ItemResponse.cs" />
         <Compile Include="bot\data_fetcher\data_dragon\responses\items\ItemsResponse.cs" />
-        <Compile Include="bot\data_fetcher\league_api\data\LeagueAccount.cs" />
         <Compile Include="bot\data_fetcher\league_api\data\Puuid.cs" />
         <Compile Include="bot\data_fetcher\league_api\data\SummonerId.cs" />
         <Compile Include="bot\data_fetcher\league_api\LeagueApiProxy.cs" />
         <Compile Include="bot\data_fetcher\league_api\responses\ChampionMasteryResponse.cs" />
+        <Compile Include="bot\data_fetcher\league_api\responses\LeagueAccount.cs" />
+        <Compile Include="bot\data_fetcher\league_api\responses\Summoner.cs" />
         <Compile Include="bot\DiscordBot.cs" />
         <Compile Include="bot\DiscordBotConfig.cs" />
         <Compile Include="bot\extensions\EmbedExtensions.cs" />

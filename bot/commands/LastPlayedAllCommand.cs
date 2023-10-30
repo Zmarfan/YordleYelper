@@ -21,19 +21,22 @@ public class LastPlayedAllCommand : CommandBase {
     private readonly int _amountToShow;
     private readonly SortOrder _sortOrder;
     private readonly LeagueApiProxy _leagueApiProxy;
+    private readonly DataDragonProxy _dataDragonProxy;
 
     public LastPlayedAllCommand(
         LeagueAccount leagueAccount,
         List<BasicChampionInfo> basicChampionInfos,
         int amountToShow,
         SortOrder sortOrder,
-        LeagueApiProxy leagueApiProxy
+        LeagueApiProxy leagueApiProxy,
+        DataDragonProxy dataDragonProxy
     ) {
         _leagueAccount = leagueAccount;
         _basicChampionInfos = basicChampionInfos;
         _amountToShow = amountToShow;
         _sortOrder = sortOrder;
         _leagueApiProxy = leagueApiProxy;
+        _dataDragonProxy = dataDragonProxy;
     }
     
     protected override async Task Run(InteractionContext context) {
@@ -49,15 +52,20 @@ public class LastPlayedAllCommand : CommandBase {
             .Select((mastery, i) => $"{i + 1}. **{champByKey[mastery.championId].Name}**: {(DateTimeOffset.Now - mastery.lastPlayed).ToTimeSinceString()}")
             .ToList();
 
+        Summoner summoner = _leagueApiProxy.GetSummonerByPuuid(_leagueAccount.puuid);
         await context.CreateCommandOk(b => b
             .WithDescription($"The last time **{_leagueAccount.gameName}** played each champion is as follows:")
+            .WithThumbnail(_dataDragonProxy.GetProfileIconUrlFromId(summoner.profileIconId))
         );
 
         while (championPlayTimes.Any()) {
             List<string> takeEntries = championPlayTimes.Take(50).ToList();
             championPlayTimes = championPlayTimes.Skip(50).ToList();
             string description = string.Join("\n", takeEntries);
-            await context.Channel.SendMessageAsync(context.CreateCommandEmbedBuilderOk(b => b.WithDescription(description)));
+            await context.Channel.SendMessageAsync(context.CreateCommandEmbedBuilderOk(b => b
+                .WithDescription(description)
+                .WithThumbnail(_dataDragonProxy.GetProfileIconUrlFromId(summoner.profileIconId))
+            ));
         }
     }
 }

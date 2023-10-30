@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using DSharpPlus.SlashCommands;
 using YordleYelper.bot.data_fetcher.data_dragon.responses;
 using YordleYelper.bot.data_fetcher.league_api;
@@ -20,8 +22,10 @@ public class MasteryCommand : CommandBase {
     }
     
     protected override async Task Run(InteractionContext context) {
+        List<ChampionMasteryResponse> masteries = await _leagueApiProxy.GetChampionMasteries(_leagueAccount);
+        long totalMastery = masteries.Sum(mastery => mastery.championPoints);
         ChampionMasteryResponse mastery = await _leagueApiProxy.GetChampionMastery(_leagueAccount, _championInfo);
-        await context.CreateCommandOk(_ => MasteryEmbedCreator.CreateChampionMasteryMessage(context, mastery, _championInfo)
+        await context.CreateCommandOk(_ => MasteryEmbedCreator.CreateChampionMasteryMessage(context, totalMastery, mastery, _championInfo)
             .WithDescription($"The mastery statistics of {_leagueAccount.gameName.ToBold()} for {_championInfo.Name.ToBold()}")
         );
     }

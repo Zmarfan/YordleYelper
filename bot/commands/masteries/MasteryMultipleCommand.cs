@@ -34,7 +34,9 @@ public class MasteryMultipleCommand : CommandBase {
     protected override async Task Run(InteractionContext context) {
         Dictionary<string, BasicChampionInfo> champByKey = _basicChampionInfos.ToDictionary(champ => champ.Key, champ => champ);
 
-        IEnumerable<ChampionMasteryResponse> masteries = (await _leagueApiProxy.GetChampionMasteries(_leagueAccount))
+        List<ChampionMasteryResponse> allMasteries = await _leagueApiProxy.GetChampionMasteries(_leagueAccount);
+        long totalMastery = allMasteries.Sum(mastery => mastery.championPoints);
+        IEnumerable<ChampionMasteryResponse> masteries = allMasteries
             .OrderByDescending(mastery => mastery.championLevel)
             .ThenByDescending(mastery => mastery.championPoints)
             .Where(mastery => mastery.championLevel != 7 || !_filterOutMastered)
@@ -47,7 +49,7 @@ public class MasteryMultipleCommand : CommandBase {
         
         foreach (ChampionMasteryResponse mastery in masteries) {
             await context.Channel.SendMessageAsync(
-                MasteryEmbedCreator.CreateChampionMasteryMessage(context, mastery, champByKey[mastery.championId])
+                MasteryEmbedCreator.CreateChampionMasteryMessage(context, totalMastery, mastery, champByKey[mastery.championId])
             );
         }
     }

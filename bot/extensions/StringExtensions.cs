@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -70,6 +71,20 @@ public static class StringExtensions {
 
     public static string ToString<T>(this IEnumerable<T> iEnumerable, Func<StringBuilder, T, StringBuilder> fromEntry) {
         return iEnumerable.Aggregate(new StringBuilder(), fromEntry.Invoke).ToString();
+    }
+    
+    public static string ToBold(this object text) {
+        return $"{BOLD}{text}{BOLD}";
+    }
+    
+    public static string ToItalics(this object text) {
+        return $"{ITALICS}{text}{ITALICS}";
+    }
+    
+    public static string SpaceSeparatedNumber(this int number) {
+        NumberFormatInfo nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
+        nfi.NumberGroupSeparator = " ";
+        return number.ToString("#,0", nfi);
     }
 
     public static StringBuilder AppendListEntry(this StringBuilder builder, Emote emote, string line) {

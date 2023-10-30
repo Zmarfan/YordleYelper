@@ -1,12 +1,13 @@
 ﻿using System.Threading.Tasks;
 using DSharpPlus.SlashCommands;
 using YordleYelper.bot.commands;
+using YordleYelper.bot.commands.last_played;
+using YordleYelper.bot.commands.masteries;
 using YordleYelper.bot.data;
 using YordleYelper.bot.data_fetcher.data_dragon;
 using YordleYelper.bot.data_fetcher.data_dragon.responses;
 using YordleYelper.bot.data_fetcher.data_dragon.responses.items;
 using YordleYelper.bot.data_fetcher.league_api;
-using YordleYelper.bot.data_fetcher.league_api.data;
 using YordleYelper.bot.data_fetcher.league_api.responses;
 using YordleYelper.bot.response_creator;
 
@@ -26,7 +27,7 @@ public class SlashCommands : ApplicationCommandModule {
             return;
         }
         
-        await new ChampionCommand(basicInfo, DataDragonProxy).Execute(context);
+        await Run(context, new ChampionCommand(basicInfo, DataDragonProxy));
     }
     
     [SlashCommand("ability", "Detailed information about a champion ability!")]
@@ -39,8 +40,8 @@ public class SlashCommands : ApplicationCommandModule {
             await context.NoSuchChampionResponse();
             return;
         }
-        
-        await new AbilityCommand(basicInfo, championAbility, DataDragonProxy).Execute(context);
+
+        await Run(context, new AbilityCommand(basicInfo, championAbility, DataDragonProxy));
     }
     
     [SlashCommand("item", "Detailed information about an item!")]
@@ -53,7 +54,7 @@ public class SlashCommands : ApplicationCommandModule {
             return;
         }
         
-        await new ItemCommand(itemInfo, DataDragonProxy).Execute(context);
+        await Run(context, new ItemCommand(itemInfo, DataDragonProxy));
     }
     
     [SlashCommand("lastplayed", "Shows when a player last played a given champion!")]
@@ -62,7 +63,7 @@ public class SlashCommands : ApplicationCommandModule {
         [Option("riotId", "Riot Id.")] string riotId,
         [Option("champion", "Champion name.")] string championName
     ) {
-        if (!TryGetLeagueAccount(riotId, out LeagueAccount leagueAccount)) {
+        if (!LeagueApiProxy.TryGetLeagueAccount(riotId, out LeagueAccount leagueAccount)) {
             await context.NoSuchRiotIdResponse();
             return;
         }
@@ -72,31 +73,39 @@ public class SlashCommands : ApplicationCommandModule {
             return;
         }
 
-        await new LastPlayedCommand(leagueAccount, champion, LeagueApiProxy).Execute(context);
+        await Run(context, new LastPlayedCommand(leagueAccount, champion, LeagueApiProxy));
     }
 
     [SlashCommand("lastplayedmultiple", "Shows when a player last played a multitude of champions!")]
     public async Task LastPlayedMultiple(
         InteractionContext context, 
         [Option("riotId", "Riot Id.")] string riotId,
-        [Option("amount", "Amount of champions to display.")] long amountToShow = 500,
+        [Option("amount", "Amount of champions to display.")] long amountToShow = 25,
         [Option("sortOrder", "Order to sort champions in.")] SortOrder sortOrder = SortOrder.Ascending
     ) {
-        if (!TryGetLeagueAccount(riotId, out LeagueAccount leagueAccount)) {
+        if (!LeagueApiProxy.TryGetLeagueAccount(riotId, out LeagueAccount leagueAccount)) {
             await context.NoSuchRiotIdResponse();
             return;
         }
 
-        await new LastPlayedMultipleCommand(leagueAccount, DataDragonProxy.AllChampionBasicInfos, (int)amountToShow, sortOrder, LeagueApiProxy).Execute(context);
+        await Run(context, new LastPlayedMultipleCommand(leagueAccount, DataDragonProxy.AllChampionBasicInfos, (int)amountToShow, sortOrder, LeagueApiProxy));
     }
     
-    private static bool TryGetLeagueAccount(string riotId, out LeagueAccount leagueAccount) {
-        if (!LeagueApiProxy.TryGetPuuidByRiotId(riotId, out Puuid puuid)) {
-            leagueAccount = default;
-            return false;
+    [SlashCommand("mastery", "List of champions with most mastery points by a summoner.!")]
+    public async Task Mastery(
+        InteractionContext context, 
+        [Option("riotId", "Riot Id.")] string riotId,
+        [Option("amount", "Amount of top champions.")] long amount = 5
+    ) {
+        if (!LeagueApiProxy.TryGetLeagueAccount(riotId, out LeagueAccount leagueAccount)) {
+            await context.NoSuchRiotIdResponse();
+            return;
         }
 
-        leagueAccount = LeagueApiProxy.GetLeagueAccountByPuuid(puuid);
-        return true;
+        await Run(context, new MasteryMultipleCommand(leagueAccount, amount, DataDragonProxy.AllChampionBasicInfos, LeagueApiProxy));
+    }
+
+    private static async Task Run(InteractionContext context, CommandBase commandBase) {
+        await commandBase.Execute(context);
     }
 }

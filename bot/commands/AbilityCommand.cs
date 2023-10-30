@@ -44,29 +44,28 @@ public class AbilityCommand : CommandBase {
     
     private static string CreateSpellDescription(TopChampionInfoResponse championInfo, AbilityInfo abilityInfo) {
         return new StringBuilder()
-            .AppendListEntry(Emote.BULLET_BLUE, $"**Champion:** {championInfo.Data.Name}")
+            .AppendListEntry(Emote.BULLET_BLUE, $"{"Champion:".ToBold()} {championInfo.Data.Name}")
             .AppendLine()
-            .AppendListEntry(Emote.BULLET_BLUE, $"**Ability Spell:** {abilityInfo.spellEmoji}")
+            .AppendListEntry(Emote.BULLET_BLUE, $"{"Ability Spell:".ToBold()} {abilityInfo.spellEmoji}")
             .AppendLine()
-            .AppendListEntry(Emote.BULLET_BLUE, $"**Ability Name:** {abilityInfo.response.Name}")
+            .AppendListEntry(Emote.BULLET_BLUE, $"{"Ability Name:".ToBold()} {abilityInfo.response.Name}")
             .AppendLine()
-            .AppendListEntry(Emote.BULLET_BLUE, $"**Cooldowns:** {abilityInfo.response.Cooldowns}")
+            .AppendListEntry(Emote.BULLET_BLUE, $"{"Cooldowns:".ToBold()} {abilityInfo.response.Cooldowns}")
             .AppendLine()
-            .AppendListEntry(Emote.BULLET_BLUE,
-                $"**Description:** {abilityInfo.response.Description.FormatLeagueTextForEmbed()}")
+            .AppendListEntry(Emote.BULLET_BLUE, $"{"Description:".ToBold()} {abilityInfo.response.Description.FormatLeagueTextForEmbed()}")
             .AppendLine()
-            .AppendListEntry(Emote.BULLET_BLUE, $"**Tooltip:**")
+            .AppendListEntry(Emote.BULLET_BLUE, "Tooltip:".ToBold())
             .AppendLine(abilityInfo.response.Tooltip.FormatLeagueTextForEmbed())
             .ToString();
     }
     
     private static string CreatePassiveDescription(TopChampionInfoResponse championInfo, PassiveInfo passiveInfo) {
         return new StringBuilder()
-            .AppendListEntry(Emote.BULLET_BLUE, $"**Champion:** {championInfo.Data.Name}")
+            .AppendListEntry(Emote.BULLET_BLUE, $"{"Champion:".ToBold()} {championInfo.Data.Name}")
             .AppendLine()
-            .AppendListEntry(Emote.BULLET_BLUE, $"**Passive Name:** {passiveInfo.response.Name}")
+            .AppendListEntry(Emote.BULLET_BLUE, $"{"Passive Name:".ToBold()}: {passiveInfo.response.Name}")
             .AppendLine()
-            .AppendListEntry(Emote.BULLET_BLUE, $"**Description:** {passiveInfo.response.Description.FormatLeagueTextForEmbed()}")
+            .AppendListEntry(Emote.BULLET_BLUE, $"{"Description:".ToBold()} {passiveInfo.response.Description.FormatLeagueTextForEmbed()}")
             .ToString();
     }
 }

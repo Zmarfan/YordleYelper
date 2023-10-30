@@ -1,19 +1,15 @@
 ﻿using System;
-using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
-using DSharpPlus.Entities;
 using DSharpPlus.SlashCommands;
 using YordleYelper.bot.data_fetcher.data_dragon.responses;
 using YordleYelper.bot.data_fetcher.league_api;
-using YordleYelper.bot.data_fetcher.league_api.data;
 using YordleYelper.bot.data_fetcher.league_api.responses;
 using YordleYelper.bot.extensions;
 using YordleYelper.bot.http_client;
 using YordleYelper.bot.response_creator;
 
-namespace YordleYelper.bot.commands; 
+namespace YordleYelper.bot.commands.last_played; 
 
 public class LastPlayedCommand : CommandBase {
     private readonly LeagueAccount _leagueAccount;
@@ -31,7 +27,7 @@ public class LastPlayedCommand : CommandBase {
             ChampionMasteryResponse mastery = await _leagueApiProxy.GetChampionMastery(_leagueAccount, _basicChampionInfo);
             string timeSince = (DateTimeOffset.Now - mastery.lastPlayed).ToTimeSinceString();
             await context.CreateCommandOk(b => b
-                .WithDescription($"The last time **{_leagueAccount.gameName}** played **{_basicChampionInfo.Name}** was {timeSince} ago")
+                .WithDescription($"The last time {_leagueAccount.gameName.ToBold()} played {_basicChampionInfo.Name.ToBold()} was {timeSince} ago")
                 .WithThumbnail(_basicChampionInfo.PortraitImageUrl)
             );
         }
@@ -41,7 +37,7 @@ public class LastPlayedCommand : CommandBase {
             }
             
             await context.CreateCommandOk(b => b
-                .WithDescription($"As far as I can tell; **{_leagueAccount.gameName}** has not played **{_basicChampionInfo.Name}** yet!")
+                .WithDescription($"As far as I can tell; {_leagueAccount.gameName.ToBold()} has not played {_basicChampionInfo.Name.ToBold()} yet!")
                 .WithThumbnail(_basicChampionInfo.PortraitImageUrl)
             );
         }

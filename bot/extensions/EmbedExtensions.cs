@@ -12,4 +12,8 @@ public static class EmbedExtensions {
     public static DiscordEmbedBuilder AddEmptyField(this DiscordEmbedBuilder embed, bool inline = false) {
         return embed.AddField(EMPTY, EMPTY, inline);
     }
+    
+    public static DiscordEmbedBuilder AddEmptyNameField(this DiscordEmbedBuilder embed, string value, bool inline = false) {
+        return embed.AddField(EMPTY, value, inline);
+    }
 }

@@ -10,8 +10,8 @@ public struct ChampionMasteryResponse {
     public readonly int championLevel;
     public readonly int championPoints;
     public readonly DateTimeOffset lastPlayed;
-    public readonly long championPointsSinceLastLevel;
-    public readonly long championPointsUntilNextLevel;
+    public readonly int championPointsSinceLastLevel;
+    public readonly int championPointsUntilNextLevel;
     public readonly bool chestGranted;
     public readonly int tokensEarned;
     public readonly SummonerId summonerId;
@@ -23,8 +23,8 @@ public struct ChampionMasteryResponse {
         [JsonProperty("championLevel")] int championLevel,
         [JsonProperty("championPoints")] int championPoints,
         [JsonProperty("lastPlayTime")] long lastPlayTime,
-        [JsonProperty("championPointsSinceLastLevel")] long championPointsSinceLastLevel,
-        [JsonProperty("championPointsUntilNextLevel")] long championPointsUntilNextLevel,
+        [JsonProperty("championPointsSinceLastLevel")] int championPointsSinceLastLevel,
+        [JsonProperty("championPointsUntilNextLevel")] int championPointsUntilNextLevel,
         [JsonProperty("chestGranted")] bool chestGranted,
         [JsonProperty("tokensEarned")] int tokensEarned,
         [JsonProperty("summonerId")] string summonerId

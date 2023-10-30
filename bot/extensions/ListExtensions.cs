@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using YordleYelper.bot.data;
 using YordleYelper.bot.extensions.word_similarity;
 
 namespace YordleYelper.bot.extensions; 
@@ -21,5 +22,11 @@ public static class ListExtensions {
 
     public static bool NullOrEmpty<T>(this IEnumerable<T> iEnumerable) {
         return iEnumerable == null || !iEnumerable.Any();
+    }
+    
+    public static IEnumerable<TSource> OrderBy<TSource, TKey>(this IEnumerable<TSource> iEnumerable, Func<TSource, TKey> keySelector, SortOrder sortOrder) {
+        return sortOrder == SortOrder.Ascending
+            ? iEnumerable.OrderBy(keySelector)
+            : iEnumerable.OrderByDescending(keySelector);
     }
 }

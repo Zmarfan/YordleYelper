@@ -30,7 +30,25 @@ public class LeagueApiProxy {
         return _httpClient.Get<Summoner>($"{REGION_API_BASE}/lol/summoner/v4/summoners/by-puuid/{puuid}").Result;
     }
     
-    public bool TryGetPuuidByRiotId(string riotId, out Puuid puuid) {
+    public bool TryGetLeagueAccount(string riotId, out LeagueAccount leagueAccount) {
+        if (!TryGetPuuidByRiotId(riotId, out Puuid puuid)) {
+            leagueAccount = default;
+            return false;
+        }
+
+        leagueAccount = GetLeagueAccountByPuuid(puuid);
+        return true;
+    }
+
+    public async Task<ChampionMasteryResponse> GetChampionMastery(LeagueAccount leagueAccount, BasicChampionInfo basicInfo) {
+        return await _httpClient.Get<ChampionMasteryResponse>($"{REGION_API_BASE}/lol/champion-mastery/v4/champion-masteries/by-puuid/{leagueAccount.puuid}/by-champion/{basicInfo.Key}");
+    }
+
+    public async Task<List<ChampionMasteryResponse>> GetChampionMasteries(LeagueAccount leagueAccount) {
+        return await _httpClient.Get<List<ChampionMasteryResponse>>($"{REGION_API_BASE}/lol/champion-mastery/v4/champion-masteries/by-puuid/{leagueAccount.puuid}");
+    }
+    
+    private bool TryGetPuuidByRiotId(string riotId, out Puuid puuid) {
         try {
             Dictionary<string, string> data = _httpClient.Get<Dictionary<string, string>>($"{API_BASE}/riot/account/v1/accounts/by-riot-id/{riotId}/EUW").Result;
             puuid = new Puuid(data["puuid"]);
@@ -44,13 +62,5 @@ public class LeagueApiProxy {
             puuid = default;
             return false;
         }
-    }
-
-    public async Task<ChampionMasteryResponse> GetChampionMastery(LeagueAccount leagueAccount, BasicChampionInfo basicInfo) {
-        return await _httpClient.Get<ChampionMasteryResponse>($"{REGION_API_BASE}/lol/champion-mastery/v4/champion-masteries/by-puuid/{leagueAccount.puuid}/by-champion/{basicInfo.Key}");
-    }
-
-    public async Task<List<ChampionMasteryResponse>> GetChampionMasteries(LeagueAccount leagueAccount) {
-        return await _httpClient.Get<List<ChampionMasteryResponse>>($"{REGION_API_BASE}/lol/champion-mastery/v4/champion-masteries/by-puuid/{leagueAccount.puuid}");
     }
 }

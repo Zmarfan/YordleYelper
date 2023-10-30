@@ -32,19 +32,19 @@ public class ChampionCommand : CommandBase {
     
     private static string CreateDescription(TopChampionInfoResponse fullInfo) {
         StringBuilder builder = new StringBuilder()
-            .AppendListEntry(Emote.BULLET_BLUE, $"**Name:** {fullInfo.Data.Name}")
+            .AppendListEntry(Emote.BULLET_BLUE, $"{"Name:".ToBold()} {fullInfo.Data.Name}")
             .AppendLine()
-            .AppendListEntry(Emote.BULLET_BLUE, $"**Title:** {fullInfo.Data.Title}")
+            .AppendListEntry(Emote.BULLET_BLUE, $"{"Title:".ToBold()} {fullInfo.Data.Title}")
             .AppendLine()
-            .AppendListEntry(Emote.BULLET_BLUE, $"**Lore:** {fullInfo.Data.Lore}");
+            .AppendListEntry(Emote.BULLET_BLUE, $"{"Lore:".ToBold()} {fullInfo.Data.Lore}");
 
         if (fullInfo.Data.AllyTips.Any() || fullInfo.Data.EnemyTips.Any()) {
             builder
                 .AppendLine()
-                .AppendListEntry(Emote.BULLET_BLUE, "**Ally Tips:**")
+                .AppendListEntry(Emote.BULLET_BLUE, "Ally Tips:".ToBold())
                 .AppendLine(fullInfo.Data.AllyTips.Aggregate(new StringBuilder(), (acc, tip) => acc.AppendListEntry(Emote.BULLET_WHITE, $"{tip}\n")).ToString())
                 .AppendLine(fullInfo.Data.AllyTips.ToString((acc, tip) => acc.AppendListEntry(Emote.BULLET_WHITE, $"{tip}\n")).ToString())
-                .AppendListEntry(Emote.BULLET_ORANGE, "**Enemy Tips:**")
+                .AppendListEntry(Emote.BULLET_ORANGE, "Enemy Tips:".ToBold())
                 .AppendLine(fullInfo.Data.EnemyTips.ToString((acc, tip) => acc.AppendListEntry(Emote.BULLET_WHITE, $"{tip}\n")).ToString());
         }
 

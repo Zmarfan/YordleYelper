@@ -137,6 +137,20 @@ public class SlashCommands : ApplicationCommandModule {
 
         await Run(context, new MasteryCommand(leagueAccount, champion, LeagueApiProxy));
     }
+    
+    [SlashCommand("masterydistribution", "Provides a pie chart over mastery points per champion!")]
+    public async Task MasteryDistribution(
+        InteractionContext context, 
+        [Option("riotId", "Riot Id.")] string riotId
+    ) {
+        LogCommandCall(context, riotId);
+        if (!LeagueApiProxy.TryGetLeagueAccount(riotId, out LeagueAccount leagueAccount)) {
+            await context.NoSuchRiotIdResponse();
+            return;
+        }
+
+        await Run(context, new MasteryDistributionCommand(leagueAccount, DataDragonProxy.AllChampionBasicInfos, LeagueApiProxy));
+    }
 
     private static async Task Run(InteractionContext context, CommandBase commandBase) {
         await commandBase.Execute(context);

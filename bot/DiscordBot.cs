@@ -7,10 +7,10 @@ using DSharpPlus;
 using DSharpPlus.SlashCommands;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using QuickChart;
 using YordleYelper.bot.data_fetcher.data_dragon;
 using YordleYelper.bot.data_fetcher.league_api;
 using YordleYelper.bot.http_client;
+using YordleYelper.bot.quick_chart_creator;
 
 namespace YordleYelper.bot; 
 
@@ -30,16 +30,6 @@ public class DiscordBot {
 
     public async Task Start() {
         await _client.ConnectAsync();
-
-        string test =
-            "{type: 'pie',data: {labels: ['Hello world', 'Test'], datasets: [{label: 'Foo',data: [1, 2, 3, 4, 5, 6],borderWidth: 0,}]},options: {cutoutPercentage: 15,plugins: {datalabels: {display: false}}}}";
-        Chart qc = new() {
-            Width = 500,
-            Height = 300,
-            Config = test
-        };
-
-        Console.WriteLine(qc.GetUrl());
         await Task.Delay(-1);
     }
     

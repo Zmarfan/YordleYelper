@@ -34,16 +34,18 @@ public class MasteryDistributionCommand : CommandBase {
             .Select(mastery => new KeyValuePair<string, long>(championInfoByKey[mastery.championId].Name, mastery.championPoints))
             .ToList();
 
+        string chartUrl = QuickChartCreator.CreatePieChart(
+            "Mastery Points per Champion Distribution Pie Chart",
+            800,
+            500,
+            data
+        );
+
+        Console.WriteLine(chartUrl);
         await context.CreateCommandOk(b => b
             .WithDescription($"The attached image shows the different mastery points per champion for {_leagueAccount.gameName.ToBold()}")
             .WithThumbnail(_leagueAccount.summoner.profileIconImageUrl)
-            .WithImageUrl(QuickChartCreator.CreatePieChart(
-                "Mastery Points per Champion Distribution Pie Chart",
-                800,
-                500,
-                data,
-                15
-            ))
+            .WithImageUrl(chartUrl)
         );
     }
 }

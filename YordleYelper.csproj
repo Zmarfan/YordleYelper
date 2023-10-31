@@ -65,9 +65,6 @@
         <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
           <HintPath>packages\Newtonsoft.Json.13.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
         </Reference>
-        <Reference Include="QuickChart, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-          <HintPath>packages\QuickChart.2.3.0\lib\net472\QuickChart.dll</HintPath>
-        </Reference>
         <Reference Include="System" />
         <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
           <HintPath>packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
@@ -178,7 +175,9 @@
         <Compile Include="bot\extensions\word_similarity\WordSimilarityChecker.cs" />
         <Compile Include="bot\http_client\HttpClient.cs" />
         <Compile Include="bot\http_client\HttpStatusException.cs" />
+        <Compile Include="bot\quick_chart_creator\QuickChart.cs" />
         <Compile Include="bot\quick_chart_creator\QuickChartCreator.cs" />
+        <Compile Include="bot\quick_chart_creator\QuickChartShortUrlResponse.cs" />
         <Compile Include="bot\response_creator\ResponseCreator.cs" />
         <Compile Include="bot\LeagueImageUrlGenerator.cs" />
         <Compile Include="bot\SlashCommands.cs" />

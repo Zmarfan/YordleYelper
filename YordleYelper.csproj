@@ -140,6 +140,7 @@
         <Compile Include="bot\commands\ItemCommand.cs" />
         <Compile Include="bot\commands\last_played\LastPlayedCommand.cs" />
         <Compile Include="bot\commands\last_played\LastPlayedMultipleCommand.cs" />
+        <Compile Include="bot\commands\masteries\MasteryChartCreator.cs" />
         <Compile Include="bot\commands\masteries\MasteryCommand.cs" />
         <Compile Include="bot\commands\masteries\MasteryDistributionCommand.cs" />
         <Compile Include="bot\commands\masteries\MasteryMultipleCommand.cs" />
@@ -176,7 +177,6 @@
         <Compile Include="bot\http_client\HttpClient.cs" />
         <Compile Include="bot\http_client\HttpStatusException.cs" />
         <Compile Include="bot\quick_chart_creator\QuickChart.cs" />
-        <Compile Include="bot\quick_chart_creator\QuickChartCreator.cs" />
         <Compile Include="bot\quick_chart_creator\QuickChartShortUrlResponse.cs" />
         <Compile Include="bot\response_creator\ResponseCreator.cs" />
         <Compile Include="bot\LeagueImageUrlGenerator.cs" />

@@ -14,34 +14,37 @@ namespace YordleYelper.bot.commands.masteries;
 
 public class MasteryDistributionCommand : CommandBase {
     private readonly LeagueAccount _leagueAccount;
+    private readonly bool _showAvailableChests;
     private readonly List<BasicChampionInfo> _championInfos;
     private readonly LeagueApiProxy _leagueApiProxy;
 
     public MasteryDistributionCommand(
         LeagueAccount leagueAccount,
+        bool showAvailableChests,
         List<BasicChampionInfo> championInfos,
         LeagueApiProxy leagueApiProxy
     ) {
         _leagueAccount = leagueAccount;
+        _showAvailableChests = showAvailableChests;
         _championInfos = championInfos;
         _leagueApiProxy = leagueApiProxy;
     }
     
     protected override async Task Run(InteractionContext context) {
         Dictionary<string, BasicChampionInfo> championInfoByKey = _championInfos.ToDictionary(c => c.Key, c => c);
-        List<KeyValuePair<string, long>> data = (await _leagueApiProxy.GetChampionMasteries(_leagueAccount))
+        List<(ChampionMasteryResponse, BasicChampionInfo)> data = (await _leagueApiProxy.GetChampionMasteries(_leagueAccount))
             .OrderByDescending(mastery => mastery.championPoints)
-            .Select(mastery => new KeyValuePair<string, long>(championInfoByKey[mastery.championId].Name, mastery.championPoints))
+            .Select(mastery => (mastery, championInfoByKey[mastery.championId]))
             .ToList();
 
-        string chartUrl = QuickChartCreator.CreatePieChart(
+        string chartUrl = MasteryChartCreator.CreatePieChart(
             "Mastery Points per Champion Distribution Pie Chart",
             800,
             500,
+            _showAvailableChests,
             data
         );
 
-        Console.WriteLine(chartUrl);
         await context.CreateCommandOk(b => b
             .WithDescription($"The attached image shows the different mastery points per champion for {_leagueAccount.gameName.ToBold()}")
             .WithThumbnail(_leagueAccount.summoner.profileIconImageUrl)

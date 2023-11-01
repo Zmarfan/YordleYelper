@@ -141,7 +141,8 @@ public class SlashCommands : ApplicationCommandModule {
     [SlashCommand("masterydistribution", "Provides a pie chart over mastery points per champion!")]
     public async Task MasteryDistribution(
         InteractionContext context, 
-        [Option("riotId", "Riot Id.")] string riotId
+        [Option("riotId", "Riot Id.")] string riotId,
+        [Option("showAvailableChests", "Should highlight those champions which have a mastery chest available?")] bool showAvailableChests = false
     ) {
         LogCommandCall(context, riotId);
         if (!LeagueApiProxy.TryGetLeagueAccount(riotId, out LeagueAccount leagueAccount)) {
@@ -149,7 +150,7 @@ public class SlashCommands : ApplicationCommandModule {
             return;
         }
 
-        await Run(context, new MasteryDistributionCommand(leagueAccount, DataDragonProxy.AllChampionBasicInfos, LeagueApiProxy));
+        await Run(context, new MasteryDistributionCommand(leagueAccount, showAvailableChests, DataDragonProxy.AllChampionBasicInfos, LeagueApiProxy));
     }
 
     private static async Task Run(InteractionContext context, CommandBase commandBase) {

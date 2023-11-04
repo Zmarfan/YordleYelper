@@ -12,10 +12,10 @@ namespace YordleYelper.bot.commands;
 public abstract class CommandBase {
     public async Task Execute(InteractionContext context) {
         try {
-            context.Client.Logger.Log(LogLevel.Information, $"Running: {GetType()}");
+            context.Client.Logger.LogInformation($"Running: {GetType()}");
             await Run(context);
         } catch (Exception e) {
-            context.Client.Logger.Log(LogLevel.Error, e, $"Command error in {GetType()}!");
+            context.Client.Logger.LogError(e, $"Command error in {GetType()}!");
             await CreateDefaultErrorResponse(context);
         }
     }

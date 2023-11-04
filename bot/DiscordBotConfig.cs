@@ -5,6 +5,18 @@ using Newtonsoft.Json;
 namespace YordleYelper.bot; 
 
 public struct DiscordBotConfig {
+    [JsonProperty("mysqlServer")]
+    public string MySqlServer { get; private set; }
+    
+    [JsonProperty("mySqlUserId")]
+    public string MySqlUserId { get; private set; }
+    
+    [JsonProperty("mySqlPassword")]
+    public string MySqlPassword { get; private set; }
+    
+    [JsonProperty("mySqlDatabase")]
+    public string MySqlDatabase { get; private set; }
+    
     [JsonProperty("discordAuthToken")]
     public string DiscordAuthToken { get; private set; }
     

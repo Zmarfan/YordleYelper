@@ -19,9 +19,9 @@ public class DataDragonProxy {
 
     public List<BasicChampionInfo> AllChampionBasicInfos => _championBasicInfos.ToList();
     
-    public DataDragonProxy(ILogger logger) {
+    public DataDragonProxy() {
         _dataUrl = $"{CONTENT_BASE}cdn/{VersionHolder.Version}/data/en_US/";
-        _httpClient = new HttpClient(logger);
+        _httpClient = new HttpClient();
         _championBasicInfos = _httpClient.Get<AllChampionsResponse>($"{_dataUrl}champion.json").Result.Data.Values.ToList();
         _itemInfos = _httpClient.Get<AllItemsResponse>($"{_dataUrl}item.json").Result.Items
             .Where(entry => entry.Value.Description != string.Empty)

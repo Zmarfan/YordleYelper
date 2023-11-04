@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using System.Web;
-using Microsoft.Extensions.Logging;
 using YordleYelper.bot.data_fetcher.data_dragon.responses;
 using YordleYelper.bot.data_fetcher.league_api.data;
 using YordleYelper.bot.data_fetcher.league_api.responses;
@@ -18,8 +16,8 @@ public class LeagueApiProxy {
 
     private readonly HttpClient _httpClient;
     
-    public LeagueApiProxy(ILogger logger, string authToken) {
-        _httpClient = HttpClient.LeagueApiHttpClient(logger, authToken);
+    public LeagueApiProxy(string authToken) {
+        _httpClient = HttpClient.LeagueApiHttpClient(authToken);
     }
     
     public LeagueAccountResponse GetLeagueAccountByPuuid(Puuid puuid) {

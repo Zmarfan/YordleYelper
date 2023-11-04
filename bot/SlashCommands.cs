@@ -158,6 +158,6 @@ public class SlashCommands : ApplicationCommandModule {
     }
     
     private static void LogCommandCall(InteractionContext context, params object[] parameters) {
-        Logger.Log(LogLevel.Information, $"Command: {context.CommandName} was called with parameters: [{string.Join(", ", parameters)}] by user: {context.User.Username}");
+        Logger.LogInformation($"Command: {context.CommandName} was called with parameters: [{string.Join(", ", parameters)}] by user: {context.User.Username}");
     }
 }

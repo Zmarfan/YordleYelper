@@ -9,14 +9,10 @@ namespace YordleYelper.bot.http_client;
 
 public class HttpClient {
     private readonly System.Net.Http.HttpClient _client = new();
-    private readonly ILogger _logger;
+    private readonly ILogger _logger = DiscordBot.Logger;
 
-    public HttpClient(ILogger logger) {
-        _logger = logger;
-    }
-
-    public static HttpClient LeagueApiHttpClient(ILogger logger, string authToken) {
-        HttpClient client = new(logger);
+    public static HttpClient LeagueApiHttpClient(string authToken) {
+        HttpClient client = new();
         client._client.DefaultRequestHeaders.Add("X-Riot-Token", authToken);
         return client;
     }
@@ -26,7 +22,7 @@ public class HttpClient {
     }
     
     public async Task<string> GetRaw(string endpoint) {
-        _logger.Log(LogLevel.Information, $"Http get request for: {endpoint}");
+        _logger.LogInformation($"Http get request for: {endpoint}");
         HttpResponseMessage response = await _client.GetAsync(endpoint);
         HttpStatusCode statusCode = response.StatusCode;
         try {

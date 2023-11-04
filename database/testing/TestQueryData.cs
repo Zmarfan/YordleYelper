@@ -3,13 +3,13 @@
 namespace YordleYelper.database.testing; 
 
 public class TestQueryData : IQueryData {
-    [QueryParameter("p_test_arg")] public readonly string pTestArg;
+    [QueryParameter("p_name")] public readonly string name;
     
-    [QueryParameter("p_test_arg_2")] public readonly int pTestArg2;
+    [QueryParameter("p_age")] public readonly int age;
 
-    public TestQueryData(string pTestArg, int pTestArg2) {
-        this.pTestArg = pTestArg;
-        this.pTestArg2 = pTestArg2;
+    public TestQueryData(string name, int age) {
+        this.name = name;
+        this.age = age;
     }
 
     public string GetStoredProcedureName => "test_proc_with_arg";

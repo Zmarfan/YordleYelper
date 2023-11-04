@@ -33,7 +33,7 @@ public class DiscordBot {
         _client.UseSlashCommands(new SlashCommandsConfiguration()).RegisterCommands<SlashCommands>();
 
 
-        List<TestRecord> records = new DatabaseBase().ExecuteListQuery<TestRecord>(new TestQueryData("my_string", 1293));
+        new DatabaseBase().ExecuteVoidQuery(new TestQueryData("my_string", 1293));
         Console.WriteLine("asd");
     }
 

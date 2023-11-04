@@ -221,8 +221,8 @@
         <Compile Include="database\DatabaseUtil.cs" />
         <Compile Include="database\IQueryData.cs" />
         <Compile Include="database\QueryParameterField.cs" />
-        <Compile Include="database\sql_parser\RecordConstructionInfo.cs" />
-        <Compile Include="database\sql_parser\MySqlCommandExtensions.cs" />
+        <Compile Include="database\QueryType.cs" />
+        <Compile Include="database\QueryDataConstructor.cs" />
         <Compile Include="database\testing\TestQueryData.cs" />
         <Compile Include="database\testing\TestRecord.cs" />
         <Compile Include="Program.cs" />
@@ -236,6 +236,9 @@
       <Content Include="src\config.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="database\sql_parser" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

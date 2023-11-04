@@ -6,7 +6,6 @@ using System.Reflection;
 using Microsoft.Extensions.Logging;
 using MySqlConnector;
 using YordleYelper.database.attributes;
-using YordleYelper.database.sql_parser;
 
 namespace YordleYelper.database; 
 
@@ -21,17 +20,12 @@ public static class DatabaseUtil {
                 .Select(field => new QueryParameterField(field.GetCustomAttribute<QueryParameter>().name, field))
                 .ToList();
         });
-    
-    private static readonly Dictionary<Type, RecordConstructionInfo> RECORD_CONSTRUCTION_BY_TYPE = Assembly
-        .GetAssembly(typeof(MySqlCommandExtensions))
-        .GetTypes()
-        .Where(type => type.GetProperties().Any(property => property.IsDefined(typeof(RecordParameter))))
-        .ToDictionary(type => type, type => new RecordConstructionInfo(type));
 
     public static List<T> ExecuteQuery<T>(
         MySqlConnection connection,
         MySqlTransaction transaction,
         IQueryData queryData,
+        QueryType queryType,
         ILogger logger
     ) {
         try {
@@ -39,9 +33,14 @@ public static class DatabaseUtil {
             command.CommandType = CommandType.StoredProcedure;
             command.Transaction = transaction;
             command.Parameters.AddRange(GetQueryDataParameters(queryData));
-            command.ExecuteNonQuery();
+            Console.WriteLine(command.ExecuteNonQuery());
 
-            return ParseToList<T>(command, logger);
+            return queryType switch {
+                QueryType.VOID => new List<T>(),
+                QueryType.VALUE => ParseToBasicList<T>(command, logger),
+                QueryType.RECORD => ParseToList<T>(command, logger),
+                _ => throw new ArgumentException($"There is no query handling for {queryType}")
+            };
         } catch (Exception e) {
             logger.LogError(e, $"Unable to execute query for query data: {queryData}");
             throw;
@@ -53,22 +52,35 @@ public static class DatabaseUtil {
             .Select(info => new MySqlParameter(info.name, info.fieldInfo.GetValue(queryData)))
             .ToArray();
     }
+    
+    private static List<T> ParseToBasicList<T>(MySqlCommand command, ILogger logger) {
+        try {
+            return ConstructDataList(command, QueryDataConstructor.ConstructValue<T>);
+        }
+        catch (Exception e) {
+            logger.LogError(e, "Unable to parse query to value list");
+            throw;
+        }
+    }
 
     private static List<T> ParseToList<T>(MySqlCommand command, ILogger logger) {
         try {
-            RecordConstructionInfo constructionInfo = RECORD_CONSTRUCTION_BY_TYPE[typeof(T)];
-            using MySqlDataReader reader = command.ExecuteReader();
-
-            List<T> records = new();
-            while (reader.Read()) {
-                records.Add(constructionInfo.ConstructRecord<T>(reader));
-            }
-
-            return records;
+            return ConstructDataList(command, QueryDataConstructor.ConstructRecord<T>);
         }
         catch (Exception e) {
             logger.LogError(e, "Unable to parse query to record list");
             throw;
         }
+    }
+    
+    private static List<T> ConstructDataList<T>(MySqlCommand command, Func<MySqlDataReader, T> valueConstructor) {
+        using MySqlDataReader reader = command.ExecuteReader();
+
+        List<T> records = new();
+        while (reader.Read()) {
+            records.Add(valueConstructor.Invoke(reader));
+        }
+
+        return records;
     }
 }

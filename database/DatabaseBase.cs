@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.Extensions.Logging;
 using MySqlConnector;
 using YordleYelper.bot;
+using YordleYelper.database.testing;
 
 namespace YordleYelper.database; 
 
@@ -16,7 +17,19 @@ public class DatabaseBase {
     }
     
     public List<T> ExecuteListQuery<T>(IQueryData queryData) {
-        return ExecuteAnyQuery<T>(queryData);
+        return ExecuteAnyQuery<T>(queryData, QueryType.RECORD);
+    }
+    
+    public T ExecuteBasicQuery<T>(IQueryData queryData) {
+        return ExecuteBasicListQuery<T>(queryData).First();
+    }
+    
+    public List<T> ExecuteBasicListQuery<T>(IQueryData queryData) {
+        return ExecuteAnyQuery<T>(queryData, QueryType.VALUE);
+    }
+    
+    public void ExecuteVoidQuery(IQueryData queryData) {
+        ExecuteAnyQuery<int>(queryData, QueryType.VOID);
     }
 
     private MySqlConnection GetConnection() {
@@ -30,11 +43,11 @@ public class DatabaseBase {
         }
     }
     
-    private List<T> ExecuteAnyQuery<T>(IQueryData queryData) {
+    private List<T> ExecuteAnyQuery<T>(IQueryData queryData, QueryType queryType) {
         using MySqlConnection connection = GetConnection();
         using MySqlTransaction transaction = connection.BeginTransaction();
         try {
-            List<T> result = DatabaseUtil.ExecuteQuery<T>(connection, transaction, queryData, _logger);
+            List<T> result = DatabaseUtil.ExecuteQuery<T>(connection, transaction, queryData, queryType, _logger);
             
             transaction.Commit();
             return result;

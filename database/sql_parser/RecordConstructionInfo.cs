@@ -8,6 +8,8 @@ using YordleYelper.database.attributes;
 namespace YordleYelper.database.sql_parser; 
 
 public class RecordConstructionInfo {
+    private static readonly Dictionary<Type, Func<MySqlDataReader, string, object>> READER_GET_FIELD_VALUE_BY_TYPE = new();
+
     private readonly List<(PropertyInfo, string)> _properties;
     
     public RecordConstructionInfo(Type type) {
@@ -22,11 +24,20 @@ public class RecordConstructionInfo {
         T record = Activator.CreateInstance<T>();
         
         foreach ((PropertyInfo, string) property in _properties) {
-            MethodInfo methodInfo = reader.GetType().GetMethod("GetFieldValue")!.MakeGenericMethod(property.Item1.PropertyType);
-            object value = methodInfo.Invoke(reader, new object[] { reader.GetOrdinal(property.Item2) });
-            property.Item1.SetValue(record, value);
+            property.Item1.SetValue(record, GetValueGetter(reader, property).Invoke(reader, property.Item2));
         }
 
         return record;
+    }
+
+    private Func<MySqlDataReader, string, object> GetValueGetter(MySqlDataReader reader, (PropertyInfo, string) property) {
+        if (READER_GET_FIELD_VALUE_BY_TYPE.TryGetValue(property.Item1.PropertyType, out Func<MySqlDataReader, string, object> valueGetter)) {
+            return valueGetter;
+        }
+        MethodInfo methodInfo = reader.GetType().GetMethod("GetFieldValue")!.MakeGenericMethod(property.Item1.PropertyType);
+        valueGetter = (r, name) => methodInfo.Invoke(reader, new object[] { r.GetOrdinal(name) });
+        READER_GET_FIELD_VALUE_BY_TYPE.Add(property.Item1.PropertyType, valueGetter);
+
+        return valueGetter;
     }
 }

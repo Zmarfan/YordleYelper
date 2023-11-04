@@ -21,6 +21,12 @@ public static class DatabaseUtil {
                 .Select(field => new QueryParameterField(field.GetCustomAttribute<QueryParameter>().name, field))
                 .ToList();
         });
+    
+    private static readonly Dictionary<Type, RecordConstructionInfo> RECORD_CONSTRUCTION_BY_TYPE = Assembly
+        .GetAssembly(typeof(MySqlCommandExtensions))
+        .GetTypes()
+        .Where(type => type.GetProperties().Any(property => property.IsDefined(typeof(RecordParameter))))
+        .ToDictionary(type => type, type => new RecordConstructionInfo(type));
 
     public static List<T> ExecuteQuery<T>(
         MySqlConnection connection,
@@ -35,7 +41,7 @@ public static class DatabaseUtil {
             command.Parameters.AddRange(GetQueryDataParameters(queryData));
             command.ExecuteNonQuery();
 
-            return command.ParseToList<T>(logger);
+            return ParseToList<T>(command, logger);
         } catch (Exception e) {
             logger.LogError(e, $"Unable to execute query for query data: {queryData}");
             throw;
@@ -46,5 +52,23 @@ public static class DatabaseUtil {
         return QUERY_DATA_FIELDS_BY_TYPE[queryData.GetType()]
             .Select(info => new MySqlParameter(info.name, info.fieldInfo.GetValue(queryData)))
             .ToArray();
+    }
+
+    private static List<T> ParseToList<T>(MySqlCommand command, ILogger logger) {
+        try {
+            RecordConstructionInfo constructionInfo = RECORD_CONSTRUCTION_BY_TYPE[typeof(T)];
+            using MySqlDataReader reader = command.ExecuteReader();
+
+            List<T> records = new();
+            while (reader.Read()) {
+                records.Add(constructionInfo.ConstructRecord<T>(reader));
+            }
+
+            return records;
+        }
+        catch (Exception e) {
+            logger.LogError(e, "Unable to parse query to record list");
+            throw;
+        }
     }
 }

@@ -4,32 +4,31 @@ using System.Linq;
 using Microsoft.Extensions.Logging;
 using MySqlConnector;
 using YordleYelper.bot;
-using YordleYelper.database.testing;
 
 namespace YordleYelper.database; 
 
-public class DatabaseBase {
+public class Database {
     private readonly DiscordBotConfig _config = DiscordBot.Config;
     private readonly ILogger _logger = DiscordBot.Logger;
 
-    public T ExecuteQuery<T>(IQueryData queryData) {
-        return ExecuteListQuery<T>(queryData).First();
+    public T ExecuteQuery<T>(IQueryData<T> queryData) {
+        return ExecuteListQuery(queryData).First();
     }
     
-    public List<T> ExecuteListQuery<T>(IQueryData queryData) {
-        return ExecuteAnyQuery<T>(queryData, QueryType.RECORD);
+    public List<T> ExecuteListQuery<T>(IQueryData<T> queryData) {
+        return ExecuteAnyQuery(queryData, QueryType.RECORD);
     }
     
-    public T ExecuteBasicQuery<T>(IQueryData queryData) {
-        return ExecuteBasicListQuery<T>(queryData).First();
+    public T ExecuteBasicQuery<T>(IQueryData<T> queryData) {
+        return ExecuteBasicListQuery(queryData).First();
     }
     
-    public List<T> ExecuteBasicListQuery<T>(IQueryData queryData) {
-        return ExecuteAnyQuery<T>(queryData, QueryType.VALUE);
+    public List<T> ExecuteBasicListQuery<T>(IQueryData<T> queryData) {
+        return ExecuteAnyQuery(queryData, QueryType.VALUE);
     }
     
-    public void ExecuteVoidQuery(IQueryData queryData) {
-        ExecuteAnyQuery<int>(queryData, QueryType.VOID);
+    public void ExecuteVoidQuery(IQueryData<VoidRecord> queryData) {
+        ExecuteAnyQuery(queryData, QueryType.VOID);
     }
 
     private MySqlConnection GetConnection() {
@@ -43,7 +42,7 @@ public class DatabaseBase {
         }
     }
     
-    private List<T> ExecuteAnyQuery<T>(IQueryData queryData, QueryType queryType) {
+    private List<T> ExecuteAnyQuery<T>(IQueryData<T> queryData, QueryType queryType) {
         using MySqlConnection connection = GetConnection();
         using MySqlTransaction transaction = connection.BeginTransaction();
         try {
@@ -51,7 +50,7 @@ public class DatabaseBase {
             
             transaction.Commit();
             return result;
-        } catch (Exception e) {
+        } catch (MySqlException e) {
             _logger.LogError(e, "Unable to execute query! Rolling back!");
             transaction.Rollback();
             throw;

@@ -12,7 +12,7 @@ namespace YordleYelper.database;
 public static class DatabaseUtil {
     private static readonly Dictionary<Type, List<QueryParameterField>> QUERY_DATA_FIELDS_BY_TYPE = Assembly.GetAssembly(typeof(DatabaseUtil))
         .GetTypes()
-        .Where(type => typeof(IQueryData).IsAssignableFrom(type))
+        .Where(type => type.GetInterfaces().Any(inter => inter.IsGenericType && inter.GetGenericTypeDefinition() == typeof(IQueryData<>)))
         .ToDictionary(type => type, type => {
             return type
                 .GetFields()
@@ -24,7 +24,7 @@ public static class DatabaseUtil {
     public static List<T> ExecuteQuery<T>(
         MySqlConnection connection,
         MySqlTransaction transaction,
-        IQueryData queryData,
+        IQueryData<T> queryData,
         QueryType queryType,
         ILogger logger
     ) {
@@ -33,7 +33,7 @@ public static class DatabaseUtil {
             command.CommandType = CommandType.StoredProcedure;
             command.Transaction = transaction;
             command.Parameters.AddRange(GetQueryDataParameters(queryData));
-            Console.WriteLine(command.ExecuteNonQuery());
+            command.ExecuteNonQuery();
 
             return queryType switch {
                 QueryType.VOID => new List<T>(),
@@ -47,7 +47,7 @@ public static class DatabaseUtil {
         }
     }
 
-    private static MySqlParameter[] GetQueryDataParameters(IQueryData queryData) {
+    private static MySqlParameter[] GetQueryDataParameters<T>(IQueryData<T> queryData) {
         return QUERY_DATA_FIELDS_BY_TYPE[queryData.GetType()]
             .Select(info => new MySqlParameter(info.name, info.fieldInfo.GetValue(queryData)))
             .ToArray();

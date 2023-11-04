@@ -1,5 +1,5 @@
 ﻿namespace YordleYelper.database; 
 
-public interface IQueryData {
+public interface IQueryData<T> {
     string GetStoredProcedureName { get; }
 }

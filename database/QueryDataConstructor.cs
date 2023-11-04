@@ -24,7 +24,7 @@ public static class QueryDataConstructor {
 
     public static T ConstructRecord<T>(MySqlDataReader reader) {
         T record = Activator.CreateInstance<T>();
-        
+
         foreach ((PropertyInfo, string) property in RECORD_PROPERTIES[typeof(T)]) {
             property.Item1.SetValue(record, GetValueGetterFromType(reader, property.Item1.PropertyType).Invoke(reader, reader.GetOrdinal(property.Item2)));
         }

@@ -31,5 +31,11 @@ end;
 drop procedure if exists mark_player_as_initialized;
 create procedure mark_player_as_initialized(in p_puuid varchar(79))
 begin
-    update registered_users set has_been_initialized = true where puuid = p_puuid;
+    update 
+        registered_users 
+    set 
+        has_been_initialized = true,
+        last_matches_check = current_timestamp
+    where 
+        puuid = p_puuid;
 end;

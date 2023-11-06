@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using YordleYelper.bot.commands;
 using YordleYelper.bot.commands.last_played;
 using YordleYelper.bot.commands.masteries;
+using YordleYelper.bot.commands.register;
 using YordleYelper.bot.data;
 using YordleYelper.bot.data_fetcher.data_dragon;
 using YordleYelper.bot.data_fetcher.data_dragon.responses;
@@ -12,13 +13,29 @@ using YordleYelper.bot.data_fetcher.data_dragon.responses.items;
 using YordleYelper.bot.data_fetcher.league_api;
 using YordleYelper.bot.data_fetcher.league_api.responses;
 using YordleYelper.bot.response_creator;
+using YordleYelper.database;
 
 namespace YordleYelper.bot; 
 
 public class SlashCommands : ApplicationCommandModule {
+    public static Database Database;
     public static DataDragonProxy DataDragonProxy;
     public static LeagueApiProxy LeagueApiProxy;
     public static ILogger Logger;
+    
+    [SlashCommand("register", "Register Riot Id for statistics collection")]
+    public async Task Register(
+        InteractionContext context, 
+        [Option("riotId", "Riot Id.")] string riotId
+    ) {
+        LogCommandCall(context, riotId);
+        if (!LeagueApiProxy.TryGetLeagueAccount(riotId, out LeagueAccount leagueAccount)) {
+            await context.NoSuchRiotIdResponse();
+            return;
+        }
+        
+        await Run(context, new RegisterCommand(leagueAccount, Database));
+    }
     
     [SlashCommand("champion", "General overview of a champion: Name, title, lore and tips!")]
     public async Task Champion(

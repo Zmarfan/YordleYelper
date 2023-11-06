@@ -31,7 +31,7 @@ public class DiscordBot {
         Logger = _client.Logger;
         VersionHolder.Init(GetCurrentVersion());
 
-        Database database = new(new DatabaseConfig {
+        SlashCommands.Database = new Database(new DatabaseConfig {
             Database = Config.MySqlDatabase,
             Password = Config.MySqlPassword,
             Server = Config.MySqlServer,
@@ -40,7 +40,7 @@ public class DiscordBot {
         SlashCommands.DataDragonProxy = new DataDragonProxy();
         SlashCommands.LeagueApiProxy = new LeagueApiProxy(Config.LeagueApiAuthToken);
         SlashCommands.Logger = _client.Logger;
-        _backgroundHandler = new BackgroundHandler(SlashCommands.LeagueApiProxy, database);
+        _backgroundHandler = new BackgroundHandler(SlashCommands.LeagueApiProxy, SlashCommands.Database);
         
         _client.UseSlashCommands(new SlashCommandsConfiguration()).RegisterCommands<SlashCommands>();
     }
@@ -49,6 +49,7 @@ public class DiscordBot {
         await _client.ConnectAsync();
         while (true) {
             try {
+                Logger.LogInformation("Starting background job!");
                 _backgroundHandler.Run();
             }
             catch (Exception e) {

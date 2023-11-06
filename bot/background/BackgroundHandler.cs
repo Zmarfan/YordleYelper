@@ -19,7 +19,6 @@ public class BackgroundHandler {
 
     public void Run() {
         List<Puuid> notInitializedPuuids = _database.ExecuteBasicListQuery(new GetNotInitializedPlayerPuuidsQueryData());
-        // 1. if any new player added -> fetch all their matches (should be 10 requests) then mark player as have done daily check. break;
         if (notInitializedPuuids.Any()) {
             InitializePlayer(notInitializedPuuids.First());
             return;

@@ -51,6 +51,7 @@ public class Database {
         using MySqlConnection connection = GetConnection();
         using MySqlTransaction transaction = connection.BeginTransaction();
         try {
+            _logger.LogInformation($"Making database call: {queryData}, {queryType}");
             List<T> result = DatabaseUtil.ExecuteQuery(connection, transaction, queryData, queryType, _logger);
             
             transaction.Commit();

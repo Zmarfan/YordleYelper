@@ -182,6 +182,8 @@
         <Compile Include="bot\commands\masteries\MasteryDistributionCommand.cs" />
         <Compile Include="bot\commands\masteries\MasteryMultipleCommand.cs" />
         <Compile Include="bot\commands\masteries\MasteryEmbedCreator.cs" />
+        <Compile Include="bot\commands\register\RegisterCommand.cs" />
+        <Compile Include="bot\commands\register\RegisterUserQueryData.cs" />
         <Compile Include="bot\data\ChampionAbility.cs" />
         <Compile Include="bot\data\Emote.cs" />
         <Compile Include="bot\data\SortOrder.cs" />
@@ -238,6 +240,7 @@
     </ItemGroup>
     <ItemGroup>
       <Content Include="bot\background\background.sql" />
+      <Content Include="bot\commands\register\register.sql" />
       <Content Include="src\config.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using YordleYelper.bot.data;
 
@@ -12,6 +13,7 @@ public struct MatchDataInfoResponse {
     public readonly GameMode gameMode;
     public readonly GameType gameType;
     public readonly Map mapId;
+    public readonly List<ParticipantResponse> participants;
 
     [JsonConstructor]
     public MatchDataInfoResponse(
@@ -21,7 +23,8 @@ public struct MatchDataInfoResponse {
         [JsonProperty("gameDuration")] long gameDuration,
         [JsonProperty("gameMode")] string gameMode,
         [JsonProperty("gameType")] string gameType,
-        [JsonProperty("mapId")] int mapId
+        [JsonProperty("mapId")] int mapId,
+        [JsonProperty("participants")] List<ParticipantResponse> participants
     ) {
         this.gameCreation = DateTimeOffset.FromUnixTimeMilliseconds(gameCreation).DateTime;
         this.gameStartTimestamp = DateTimeOffset.FromUnixTimeMilliseconds(gameStartTimestamp).DateTime;
@@ -30,5 +33,6 @@ public struct MatchDataInfoResponse {
         this.gameMode = GameMode.FromCode(gameMode);
         this.gameType = GameType.FromCode(gameType);
         this.mapId = Map.FromCode(mapId);
+        this.participants = participants;
     }
 }

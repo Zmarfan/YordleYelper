@@ -14,7 +14,8 @@ public struct MatchDataInfoResponse {
     public readonly GameType gameType;
     public readonly Map mapId;
     public readonly List<ParticipantResponse> participants;
-
+    public readonly List<TeamResponse> teams;
+    
     [JsonConstructor]
     public MatchDataInfoResponse(
         [JsonProperty("gameCreation")] long gameCreation,
@@ -24,7 +25,8 @@ public struct MatchDataInfoResponse {
         [JsonProperty("gameMode")] string gameMode,
         [JsonProperty("gameType")] string gameType,
         [JsonProperty("mapId")] int mapId,
-        [JsonProperty("participants")] List<ParticipantResponse> participants
+        [JsonProperty("participants")] List<ParticipantResponse> participants,
+        [JsonProperty("teams")] List<TeamResponse> teams
     ) {
         this.gameCreation = DateTimeOffset.FromUnixTimeMilliseconds(gameCreation).DateTime;
         this.gameStartTimestamp = DateTimeOffset.FromUnixTimeMilliseconds(gameStartTimestamp).DateTime;
@@ -34,5 +36,6 @@ public struct MatchDataInfoResponse {
         this.gameType = GameType.FromCode(gameType);
         this.mapId = Map.FromCode(mapId);
         this.participants = participants;
+        this.teams = teams;
     }
 }

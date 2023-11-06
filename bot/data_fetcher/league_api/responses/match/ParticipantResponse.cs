@@ -4,6 +4,8 @@ using YordleYelper.bot.data_fetcher.league_api.data;
 namespace YordleYelper.bot.data_fetcher.league_api.responses.match; 
 
 public struct ParticipantResponse {
+    // TODO: add challenges and perks
+    
     public readonly Puuid puuid;
     public readonly bool leftTeam;
     public readonly int participantId;

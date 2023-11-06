@@ -212,10 +212,12 @@
         <Compile Include="bot\data_fetcher\league_api\responses\ChampionMasteryResponse.cs" />
         <Compile Include="bot\data_fetcher\league_api\responses\LeagueAccount.cs" />
         <Compile Include="bot\data_fetcher\league_api\responses\LeagueAccountResponse.cs" />
+        <Compile Include="bot\data_fetcher\league_api\responses\match\BanResponse.cs" />
         <Compile Include="bot\data_fetcher\league_api\responses\match\MatchDataInfoResponse.cs" />
         <Compile Include="bot\data_fetcher\league_api\responses\match\MatchDataMetaDataResponse.cs" />
         <Compile Include="bot\data_fetcher\league_api\responses\match\MatchDataResponse.cs" />
         <Compile Include="bot\data_fetcher\league_api\responses\match\ParticipantResponse.cs" />
+        <Compile Include="bot\data_fetcher\league_api\responses\match\TeamResponse.cs" />
         <Compile Include="bot\data_fetcher\league_api\responses\Summoner.cs" />
         <Compile Include="bot\DiscordBot.cs" />
         <Compile Include="bot\DiscordBotConfig.cs" />

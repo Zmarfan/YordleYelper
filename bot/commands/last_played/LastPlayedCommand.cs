@@ -25,7 +25,7 @@ public class LastPlayedCommand : CommandBase {
     protected override async Task Run(InteractionContext context) {
         try {
             ChampionMasteryResponse mastery = await _leagueApiProxy.GetChampionMastery(_leagueAccount, _basicChampionInfo);
-            string timeSince = (DateTimeOffset.Now - mastery.lastPlayed).ToTimeSinceString();
+            string timeSince = (DateTime.Now - mastery.lastPlayed).ToTimeSinceString();
             await context.CreateCommandOk(b => b
                 .WithDescription($"The last time {_leagueAccount.gameName.ToBold()} played {_basicChampionInfo.Name.ToBold()} was {timeSince} ago")
                 .WithThumbnail(_basicChampionInfo.PortraitImageUrl)

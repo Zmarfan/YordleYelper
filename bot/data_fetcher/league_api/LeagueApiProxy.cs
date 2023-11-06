@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using YordleYelper.bot.data_fetcher.data_dragon.responses;
 using YordleYelper.bot.data_fetcher.league_api.data;
 using YordleYelper.bot.data_fetcher.league_api.responses;
+using YordleYelper.bot.data_fetcher.league_api.responses.match;
 using YordleYelper.bot.http_client;
 
 namespace YordleYelper.bot.data_fetcher.league_api; 
@@ -45,6 +46,10 @@ public class LeagueApiProxy {
     
     public List<string> FetchMatchesByPuuid(Puuid puuid, int startIndex) {
         return _httpClient.Get<List<string>>($"{API_BASE}/lol/match/v5/matches/by-puuid/{puuid}/ids?start={startIndex}&count=100").Result;
+    }
+    
+    public MatchDataResponse FetchMatchData(string matchId) {
+        return _httpClient.Get<MatchDataResponse>($"{API_BASE}/lol/match/v5/matches/{matchId}").Result;
     }
     
     private bool TryGetPuuidByRiotId(string riotId, out Puuid puuid) {

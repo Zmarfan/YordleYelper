@@ -11,9 +11,10 @@ create table game_types(
 );
 
 create table stat_perks(
-    perk varchar(100) not null,
+    id int not null,
+    name varchar(100) not null,
 
-    constraint stat_perks_pk primary key (perk)
+    constraint stat_perks_pk primary key (id)
 );
 
 create table map_ids(
@@ -231,9 +232,9 @@ create table match_participants(
     secondary_perk_1 int not null,
     secondary_perk_2 int not null,
     
-    stat_perk_offensive varchar(50) not null,
-    stat_perk_flex varchar(50) not null,
-    stat_perk_defensive varchar(50) not null,
+    stat_perk_offensive int not null,
+    stat_perk_flex int not null,
+    stat_perk_defensive int not null,
     
     spell_q_casts int not null,
     spell_w_casts int not null,
@@ -326,7 +327,7 @@ create table match_participants(
     constraint match_participants_pk primary key (puuid, match_id),
     constraint match_participants_puuid foreign key (puuid) references registered_users(puuid),
     constraint match_participants_match_id foreign key (match_id) references matches(id),
-    constraint match_participants_stat_perk_offensive foreign key (stat_perk_offensive) references stat_perks(perk),
-    constraint match_participants_stat_perk_flex foreign key (stat_perk_flex) references stat_perks(perk),
-    constraint match_participants_stat_perk_defensive foreign key (stat_perk_defensive) references stat_perks(perk)
+    constraint match_participants_stat_perk_offensive foreign key (stat_perk_offensive) references stat_perks(id),
+    constraint match_participants_stat_perk_flex foreign key (stat_perk_flex) references stat_perks(id),
+    constraint match_participants_stat_perk_defensive foreign key (stat_perk_defensive) references stat_perks(id)
 );

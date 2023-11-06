@@ -168,8 +168,11 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="bot\background\BackgroundHandler.cs" />
+        <Compile Include="bot\background\FetchMatchIdsWithNoDataQueryData.cs" />
+        <Compile Include="bot\background\GetDailyUsersDataFetchQueryData.cs" />
         <Compile Include="bot\background\GetNotInitalizedPlayerPuuidsQueryData.cs" />
         <Compile Include="bot\background\InsertMatchIdsQueryData.cs" />
+        <Compile Include="bot\background\MarkPlayerAsCompletedDailyDataFetchQueryData.cs" />
         <Compile Include="bot\background\MarkPlayerAsInitializedQueryData.cs" />
         <Compile Include="bot\commands\AbilityCommand.cs" />
         <Compile Include="bot\commands\ChampionCommand.cs" />
@@ -186,7 +189,11 @@
         <Compile Include="bot\commands\register\RegisterUserQueryData.cs" />
         <Compile Include="bot\data\ChampionAbility.cs" />
         <Compile Include="bot\data\Emote.cs" />
+        <Compile Include="bot\data\GameMode.cs" />
+        <Compile Include="bot\data\GameType.cs" />
+        <Compile Include="bot\data\Map.cs" />
         <Compile Include="bot\data\SortOrder.cs" />
+        <Compile Include="bot\data\StatPerk.cs" />
         <Compile Include="bot\data_fetcher\data_dragon\DataDragonProxy.cs" />
         <Compile Include="bot\data_fetcher\data_dragon\responses\AllChampionsResponse.cs" />
         <Compile Include="bot\data_fetcher\data_dragon\responses\champion_info\AbilityInfo.cs" />
@@ -205,6 +212,9 @@
         <Compile Include="bot\data_fetcher\league_api\responses\ChampionMasteryResponse.cs" />
         <Compile Include="bot\data_fetcher\league_api\responses\LeagueAccount.cs" />
         <Compile Include="bot\data_fetcher\league_api\responses\LeagueAccountResponse.cs" />
+        <Compile Include="bot\data_fetcher\league_api\responses\match\MatchDataInfoResponse.cs" />
+        <Compile Include="bot\data_fetcher\league_api\responses\match\MatchDataMetaDataResponse.cs" />
+        <Compile Include="bot\data_fetcher\league_api\responses\match\MatchDataResponse.cs" />
         <Compile Include="bot\data_fetcher\league_api\responses\Summoner.cs" />
         <Compile Include="bot\DiscordBot.cs" />
         <Compile Include="bot\DiscordBotConfig.cs" />

@@ -9,7 +9,7 @@ public struct ChampionMasteryResponse {
     public readonly string championId;
     public readonly int championLevel;
     public readonly int championPoints;
-    public readonly DateTimeOffset lastPlayed;
+    public readonly DateTime lastPlayed;
     public readonly int championPointsSinceLastLevel;
     public readonly int championPointsUntilNextLevel;
     public readonly bool chestGranted;
@@ -33,7 +33,7 @@ public struct ChampionMasteryResponse {
         this.championId = championId;
         this.championLevel = championLevel;
         this.championPoints = championPoints;
-        lastPlayed = DateTimeOffset.FromUnixTimeMilliseconds(lastPlayTime);
+        lastPlayed = DateTimeOffset.FromUnixTimeMilliseconds(lastPlayTime).DateTime;
         this.championPointsSinceLastLevel = championPointsSinceLastLevel;
         this.championPointsUntilNextLevel = championPointsUntilNextLevel;
         this.chestGranted = chestGranted;

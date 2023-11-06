@@ -27,7 +27,7 @@ public static class MasteryEmbedCreator {
             .AddField("Status", mastery.championLevel == 7 ? Emote.SPARKLES + "Mastered" + Emote.SPARKLES : $"{mastery.tokensEarned} Token{(mastery.tokensEarned > 1 ? "s" : "")}", true)
              .AddField("Mastery Percentage", showMasteryPercentage, true)
             .AddField("Chest", Emote.FromBool(mastery.chestGranted).ToString(), true)
-            .AddField("Last Played", (DateTimeOffset.Now - mastery.lastPlayed).ToTimeSinceString() + " ago")
+            .AddField("Last Played", (DateTime.Now - mastery.lastPlayed).ToTimeSinceString() + " ago")
             .WithThumbnail(championInfo.PortraitImageUrl)
         );
     }

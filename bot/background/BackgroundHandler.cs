@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using YordleYelper.bot.data_fetcher.league_api;
 using YordleYelper.bot.data_fetcher.league_api.data;
+using YordleYelper.bot.data_fetcher.league_api.responses.match;
 using YordleYelper.bot.http_client;
 using YordleYelper.database;
 
@@ -24,8 +25,22 @@ public class BackgroundHandler {
             return;
         }
 
-        // 2. if the daily fetch isn't done for any player do so.
-        // 3. Otherwise fetch match data for match ids in db that doesn't have any data
+        List<Puuid> dailyDataFetchUsers = _database.ExecuteBasicListQuery(new GetDailyUsersDataFetchQueryData()).Take(10).ToList();
+        if (dailyDataFetchUsers.Any()) {
+            foreach (Puuid puuid in dailyDataFetchUsers) {
+                List<string> matchIds = _leagueApiProxy.FetchMatchesByPuuid(puuid, 0);
+                matchIds.Reverse();
+                InsertMatchIds(matchIds);
+                _database.ExecuteVoidQuery(new MarkPlayerAsCompletedDailyDataFetchQueryData(puuid));
+            }
+            return;
+        }
+
+        List<string> matchIdsToFetchDataFor = _database.ExecuteBasicListQuery(new FetchMatchIdsWithNoDataQueryData()).Take(10).ToList();
+        foreach (string matchId in matchIdsToFetchDataFor) {
+            MatchDataResponse matchData = _leagueApiProxy.FetchMatchData(matchId);
+            Console.WriteLine();
+        }
     }
 
     private void InitializePlayer(Puuid puuid) {

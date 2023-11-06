@@ -39,3 +39,32 @@ begin
     where 
         puuid = p_puuid;
 end;
+
+drop procedure if exists get_daily_users_data_fetch;
+create procedure get_daily_users_data_fetch()
+begin
+    select
+        users.puuid
+    from
+        registered_users users
+    where
+        users.has_been_initialized = true and (users.last_matches_check + interval 1 day) <= current_timestamp;
+end;
+
+drop procedure if exists mark_player_as_completed_daily_data_fetch;
+create procedure mark_player_as_completed_daily_data_fetch(in p_puuid varchar(79))
+begin
+    update registered_users set last_matches_check = current_timestamp where puuid = p_puuid;
+end;
+
+drop procedure if exists fetch_match_ids_with_no_data;
+create procedure fetch_match_ids_with_no_data()
+begin
+    select
+        match_ids.id
+    from
+        match_ids
+        left join match_participants participants on participants.match_id = match_ids.id
+    where
+        participants.match_id is null;
+end;

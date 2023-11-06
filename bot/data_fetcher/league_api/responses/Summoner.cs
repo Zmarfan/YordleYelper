@@ -7,7 +7,7 @@ namespace YordleYelper.bot.data_fetcher.league_api.responses;
 public struct Summoner {
     public readonly string accountId;
     public readonly string profileIconImageUrl;
-    public readonly DateTimeOffset revisionDate;
+    public readonly DateTime revisionDate;
     public readonly string name;
     public readonly string summonerId;
     public readonly Puuid puuid;
@@ -25,7 +25,7 @@ public struct Summoner {
     ) {
         this.accountId = accountId;
         profileIconImageUrl = LeagueImageUrlGenerator.GetProfileIconUrlFromId(profileIconId);
-        this.revisionDate = DateTimeOffset.FromUnixTimeMilliseconds(revisionDate);
+        this.revisionDate = DateTimeOffset.FromUnixTimeMilliseconds(revisionDate).DateTime;
         this.name = name;
         this.summonerId = summonerId;
         this.puuid = new Puuid(puuid);

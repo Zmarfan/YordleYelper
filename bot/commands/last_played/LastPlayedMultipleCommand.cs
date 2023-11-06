@@ -36,9 +36,9 @@ public class LastPlayedMultipleCommand : CommandBase {
     protected override async Task Run(InteractionContext context) {
         Dictionary<string, BasicChampionInfo> champByKey = _basicChampionInfos.ToDictionary(champ => champ.Key, champ => champ);
         List<string> championPlayTimes = (await _leagueApiProxy.GetChampionMasteries(_leagueAccount))
-            .OrderBy(mastery => Math.Abs((DateTimeOffset.Now - mastery.lastPlayed).TotalMilliseconds), _sortOrder)
+            .OrderBy(mastery => Math.Abs((DateTime.Now - mastery.lastPlayed).TotalMilliseconds), _sortOrder)
             .Take(_amountToShow)
-            .Select((mastery, i) => $"{i + 1}. {champByKey[mastery.championId].Name.ToBold()}: {(DateTimeOffset.Now - mastery.lastPlayed).ToTimeSinceString()}")
+            .Select((mastery, i) => $"{i + 1}. {champByKey[mastery.championId].Name.ToBold()}: {(DateTime.Now - mastery.lastPlayed).ToTimeSinceString()}")
             .ToList();
 
         await context.CreateCommandOk(b => b

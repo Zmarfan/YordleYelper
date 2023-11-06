@@ -167,6 +167,10 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="bot\background\BackgroundHandler.cs" />
+        <Compile Include="bot\background\GetNotInitalizedPlayerPuuidsQueryData.cs" />
+        <Compile Include="bot\background\InsertMatchIdsQueryData.cs" />
+        <Compile Include="bot\background\MarkPlayerAsInitializedQueryData.cs" />
         <Compile Include="bot\commands\AbilityCommand.cs" />
         <Compile Include="bot\commands\ChampionCommand.cs" />
         <Compile Include="bot\commands\CommandBase.cs" />
@@ -233,6 +237,7 @@
       <None Include="packages.config" />
     </ItemGroup>
     <ItemGroup>
+      <Content Include="bot\background\background.sql" />
       <Content Include="src\config.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>

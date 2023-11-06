@@ -43,6 +43,10 @@ public class LeagueApiProxy {
         return await _httpClient.Get<List<ChampionMasteryResponse>>($"{REGION_API_BASE}/lol/champion-mastery/v4/champion-masteries/by-puuid/{leagueAccount.puuid}");
     }
     
+    public List<string> FetchMatchesByPuuid(Puuid puuid, int startIndex) {
+        return _httpClient.Get<List<string>>($"{API_BASE}/lol/match/v5/matches/by-puuid/{puuid}/ids?start={startIndex}&count=100").Result;
+    }
+    
     private bool TryGetPuuidByRiotId(string riotId, out Puuid puuid) {
         try {
             Dictionary<string, string> data = _httpClient.Get<Dictionary<string, string>>($"{API_BASE}/riot/account/v1/accounts/by-riot-id/{riotId}/EUW").Result;

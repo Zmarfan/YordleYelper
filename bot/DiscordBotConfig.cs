@@ -31,6 +31,9 @@ public struct DiscordBotConfig {
 
     [JsonProperty("minimumLogLevel")]
     public LogLevel MinimumLogLevel { get; private set; }
+    
+    [JsonProperty("taskDelayTime")]
+    public int TaskDelayTime { get; private set; }
 
     public DiscordConfiguration DiscordConfiguration => new() {
         Token = DiscordAuthToken,

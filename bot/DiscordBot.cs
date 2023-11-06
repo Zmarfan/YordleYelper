@@ -34,7 +34,15 @@ public class DiscordBot {
 
     public async Task Start() {
         await _client.ConnectAsync();
-        await Task.Delay(-1);
+        while (true) {
+            await Task.Delay(Config.TaskDelayTime);
+            
+            // max 10 requests per iteration should be about 60 request/min leaving 40 requests to chat requests.
+            
+            // 1. if any new player added -> fetch all their matches (should be 10 requests) then mark player as have done daily check. break;
+            // 2. if the daily fetch isn't done for any player do so.
+            // 3. Otherwise fetch match data for match ids in db that doesn't have any data
+        }
     }
     
     private static string GetCurrentVersion() {

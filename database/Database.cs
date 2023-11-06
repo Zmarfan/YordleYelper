@@ -3,13 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using MySqlConnector;
-using YordleYelper.bot;
+using YordleYelper.database.config;
 
 namespace YordleYelper.database; 
 
 public class Database {
-    private readonly DiscordBotConfig _config = DiscordBot.Config;
-    private readonly ILogger _logger = DiscordBot.Logger;
+    private readonly DatabaseConfig _config;
+    private readonly ILogger _logger;
+
+    public Database(DatabaseConfig config, ILogger logger) {
+        _config = config;
+        _logger = logger;
+    }
 
     public T ExecuteQuery<T>(IQueryData<T> queryData) {
         return ExecuteListQuery(queryData).First();
@@ -33,7 +38,7 @@ public class Database {
 
     private MySqlConnection GetConnection() {
         try {
-            MySqlConnection connection = new($"Server={_config.MySqlServer};User ID={_config.MySqlUserId};Password={_config.MySqlPassword};Database={_config.MySqlDatabase}");
+            MySqlConnection connection = new($"Server={_config.Server};User ID={_config.UserId};Password={_config.Password};Database={_config.Database}");
             connection.Open();
             return connection;
         } catch (Exception e) {
@@ -46,7 +51,7 @@ public class Database {
         using MySqlConnection connection = GetConnection();
         using MySqlTransaction transaction = connection.BeginTransaction();
         try {
-            List<T> result = DatabaseUtil.ExecuteQuery<T>(connection, transaction, queryData, queryType, _logger);
+            List<T> result = DatabaseUtil.ExecuteQuery(connection, transaction, queryData, queryType, _logger);
             
             transaction.Commit();
             return result;

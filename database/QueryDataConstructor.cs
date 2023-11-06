@@ -41,7 +41,7 @@ public static class QueryDataConstructor {
             return valueGetter;
         }
         MethodInfo methodInfo = reader.GetType().GetMethod("GetFieldValue")!.MakeGenericMethod(type);
-        valueGetter = (r, index) => methodInfo.Invoke(reader, new object[] { index });
+        valueGetter = (r, index) => methodInfo.Invoke(r, new object[] { index });
         READER_GET_FIELD_VALUE_BY_TYPE.Add(type, valueGetter);
 
         return valueGetter;

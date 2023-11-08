@@ -4,8 +4,6 @@ using YordleYelper.bot.data_fetcher.league_api.data;
 namespace YordleYelper.bot.data_fetcher.league_api.responses.match; 
 
 public struct ParticipantResponse {
-    // TODO: add challenges and perks
-    
     public readonly Puuid puuid;
     public readonly bool leftTeam;
     public readonly int participantId;
@@ -131,6 +129,7 @@ public struct ParticipantResponse {
     public readonly int pushPings;
     public readonly int visionClearedPings;
     public readonly ChallengesResponse challenges;
+    public readonly PerksResponse perks;
 
     [JsonConstructor]
     public ParticipantResponse(
@@ -251,7 +250,8 @@ public struct ParticipantResponse {
         [JsonProperty("onMyWayPings")] int onMyWayPings,
         [JsonProperty("pushPings")] int pushPings,
         [JsonProperty("visionClearedPings")] int visionClearedPings,
-        [JsonProperty("challenges")] ChallengesResponse challenges
+        [JsonProperty("challenges")] ChallengesResponse challenges,
+        [JsonProperty("perks")] PerksResponse perks
      ) {
         this.puuid = new Puuid(puuid);
         leftTeam = teamId == 100;
@@ -368,5 +368,6 @@ public struct ParticipantResponse {
         this.pushPings = pushPings;
         this.visionClearedPings = visionClearedPings;
         this.challenges = challenges;
+        this.perks = perks;
     }
 }

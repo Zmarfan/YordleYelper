@@ -6,7 +6,7 @@ public readonly struct Puuid {
     private readonly string _id;
 
     public Puuid(string id) {
-        if (id.Length != 78) {
+        if (id.Length != 78 && !id.StartsWith("BOT")) {
             throw new ArgumentException("Invalid Player Universal Unique Identifier due to length!");
         }
         

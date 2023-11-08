@@ -11,6 +11,9 @@ public class GameMode {
     public static readonly GameMode TUTORIAL = Add("TUTORIAL");
     public static readonly GameMode ONE_FOR_ALL = Add("ONEFORALL");
     public static readonly GameMode FIRST_BLOOD = Add("FIRSTBLOOD");
+    public static readonly GameMode URF = Add("URF");
+    public static readonly GameMode CHERRY = Add("CHERRY");
+    public static readonly GameMode NEXUSBLITZ = Add("NEXUSBLITZ");
 
     public readonly string code;
 

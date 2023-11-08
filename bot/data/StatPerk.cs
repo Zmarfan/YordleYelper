@@ -6,6 +6,7 @@ namespace YordleYelper.bot.data;
 public class StatPerk {
     private static readonly Dictionary<int, StatPerk> CODE_TO_STAT_PERK = new();
     
+    public static readonly StatPerk NONE = Add(0);
     public static readonly StatPerk ADAPTIVE_FORCE = Add(5008);
     public static readonly StatPerk ARMOR = Add(5002);
     public static readonly StatPerk ATTACK_SPEED = Add(5005);

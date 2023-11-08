@@ -9,6 +9,7 @@ public class Map {
     public static readonly Map RIFT = Add(11);
     public static readonly Map ARAM = Add(12);
     public static readonly Map NEXUS_BLITZ = Add(21);
+    public static readonly Map ARENA = Add(30);
 
     public readonly int code;
 

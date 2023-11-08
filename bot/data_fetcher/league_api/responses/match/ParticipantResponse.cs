@@ -253,7 +253,7 @@ public struct ParticipantResponse {
         [JsonProperty("challenges")] ChallengesResponse challenges,
         [JsonProperty("perks")] PerksResponse perks
      ) {
-        this.puuid = new Puuid(puuid);
+        this.puuid = puuid == "BOT" ? new Puuid($"{puuid} {participantId}") : new Puuid(puuid);
         leftTeam = teamId == 100;
         this.participantId = participantId;
         this.summonerName = summonerName;

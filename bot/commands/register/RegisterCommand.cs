@@ -20,7 +20,7 @@ public class RegisterCommand : CommandBase {
         _database.ExecuteVoidQuery(new RegisterUserQueryData(_leagueAccount));
         
         await context.CreateCommandOk(e => e
-            .WithDescription($"Successfully registered {_leagueAccount.gameName.ToBold()} for data collection!")
+            .WithDescription($"Successfully registered {_leagueAccount.gameName.ToBold()} for data collection!\nYou can expect to view your statistics in about 30 min up to a few hours!")
             .WithThumbnail(_leagueAccount.summoner.profileIconImageUrl)
         );
     }

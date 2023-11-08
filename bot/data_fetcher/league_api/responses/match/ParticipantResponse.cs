@@ -130,6 +130,7 @@ public struct ParticipantResponse {
     public readonly int onMyWayPings;
     public readonly int pushPings;
     public readonly int visionClearedPings;
+    public readonly ChallengesResponse challenges;
 
     [JsonConstructor]
     public ParticipantResponse(
@@ -249,7 +250,8 @@ public struct ParticipantResponse {
         [JsonProperty("needVisionPings")] int needVisionPings,
         [JsonProperty("onMyWayPings")] int onMyWayPings,
         [JsonProperty("pushPings")] int pushPings,
-        [JsonProperty("visionClearedPings")] int visionClearedPings
+        [JsonProperty("visionClearedPings")] int visionClearedPings,
+        [JsonProperty("challenges")] ChallengesResponse challenges
      ) {
         this.puuid = new Puuid(puuid);
         leftTeam = teamId == 100;
@@ -365,5 +367,6 @@ public struct ParticipantResponse {
         this.onMyWayPings = onMyWayPings;
         this.pushPings = pushPings;
         this.visionClearedPings = visionClearedPings;
+        this.challenges = challenges;
     }
 }

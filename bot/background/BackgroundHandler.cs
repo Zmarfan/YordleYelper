@@ -27,20 +27,12 @@ public class BackgroundHandler {
 
         List<Puuid> dailyDataFetchUsers = _database.ExecuteBasicListQuery(new GetDailyUsersDataFetchQueryData()).Take(10).ToList();
         if (dailyDataFetchUsers.Any()) {
-            foreach (Puuid puuid in dailyDataFetchUsers) {
-                List<string> matchIds = _leagueApiProxy.FetchMatchesByPuuid(puuid, 0);
-                matchIds.Reverse();
-                InsertMatchIds(matchIds);
-                _database.ExecuteVoidQuery(new MarkPlayerAsCompletedDailyDataFetchQueryData(puuid));
-            }
+            FetchDailyDataBatch(dailyDataFetchUsers);
             return;
         }
 
         List<string> matchIdsToFetchDataFor = _database.ExecuteBasicListQuery(new FetchMatchIdsWithNoDataQueryData()).Take(10).ToList();
-        foreach (string matchId in matchIdsToFetchDataFor) {
-            MatchDataResponse matchData = _leagueApiProxy.FetchMatchData(matchId);
-            Console.WriteLine();
-        }
+        FetchMatchData(matchIdsToFetchDataFor);
     }
 
     private void InitializePlayer(Puuid puuid) {
@@ -57,6 +49,22 @@ public class BackgroundHandler {
         _database.ExecuteVoidQuery(new MarkPlayerAsInitializedQueryData(puuid));
     }
 
+    private void FetchDailyDataBatch(List<Puuid> dailyDataFetchUsers) {
+        foreach (Puuid puuid in dailyDataFetchUsers) {
+            List<string> matchIds = _leagueApiProxy.FetchMatchesByPuuid(puuid, 0);
+            matchIds.Reverse();
+            InsertMatchIds(matchIds);
+            _database.ExecuteVoidQuery(new MarkPlayerAsCompletedDailyDataFetchQueryData(puuid));
+        }
+    }
+    
+    private void FetchMatchData(List<string> matchIdsToFetchDataFor) {
+        foreach (string matchId in matchIdsToFetchDataFor) {
+            MatchDataResponse matchData = _leagueApiProxy.FetchMatchData(matchId);
+            Console.WriteLine();
+        }
+    }
+    
     private void InsertMatchIds(List<string> matchIds) {
         _database.ExecuteVoidQuery(new InsertMatchIdsQueryData(matchIds));
     }

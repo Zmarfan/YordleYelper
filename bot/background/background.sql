@@ -68,3 +68,105 @@ begin
     where
         participants.match_id is null;
 end;
+
+drop procedure if exists insert_match_data;
+create procedure insert_match_data(
+    in p_match_id varchar(255),
+    in p_game_creation_timestamp timestamp,
+    in p_game_start_timestamp timestamp,
+    in p_game_end_timestamp timestamp,
+    in p_game_duration int,
+    in p_game_mode varchar(100),
+    in p_game_type varchar(100),
+    in p_map_id int
+)
+begin
+    insert into matches (
+        match_id,
+        game_creation_timestamp,
+        game_start_timestamp,
+        game_end_timestamp,
+        game_duration,
+        game_mode,
+        game_type,
+        map_id
+    ) values (
+        p_match_id,
+        p_game_creation_timestamp,
+        p_game_start_timestamp,
+        p_game_end_timestamp,
+        p_game_duration,
+        p_game_mode,
+        p_game_type,
+        p_map_id
+    );
+end;
+
+drop procedure if exists insert_match_team_data;
+create procedure insert_match_team_data(
+    in p_match_id varchar(255),
+    in p_left_team bool,
+    in p_win bool,
+    in p_champion_id_ban_1 int,
+    in p_champion_id_ban_2 int,
+    in p_champion_id_ban_3 int,
+    in p_champion_id_ban_4 int,
+    in p_champion_id_ban_5 int,
+    in p_first_to_take_baron bool,
+    in p_first_to_take_champion bool,
+    in p_first_to_take_dragon bool,
+    in p_first_to_take_inhibitor bool,
+    in p_first_to_take_rift_herald bool,
+    in p_first_to_take_tower bool,
+    in p_baron_amount int,
+    in p_champion_amount int,
+    in p_dragon_amount int,
+    in p_inhibitor_amount int,
+    in p_rift_herald_amount int,
+    in p_tower_amount int
+)
+begin
+    insert into match_teams (
+        match_id,
+        left_team,
+        win,
+        champion_id_ban_1,
+        champion_id_ban_2,
+        champion_id_ban_3,
+        champion_id_ban_4,
+        champion_id_ban_5,
+        first_to_take_baron,
+        first_to_take_champion,
+        first_to_take_dragon,
+        first_to_take_inhibitor,
+        first_to_take_rift_herald,
+        first_to_take_tower,
+        baron_amount,
+        champion_amount,
+        dragon_amount,
+        inhibitor_amount,
+        rift_herald_amount,
+        tower_amount
+    ) values (
+        p_match_id,
+        p_left_team,
+        p_win,
+        p_champion_id_ban_1,
+        p_champion_id_ban_2,
+        p_champion_id_ban_3,
+        p_champion_id_ban_4,
+        p_champion_id_ban_5,
+        p_first_to_take_baron,
+        p_first_to_take_champion,
+        p_first_to_take_dragon,
+        p_first_to_take_inhibitor,
+        p_first_to_take_rift_herald,
+        p_first_to_take_tower,
+        p_baron_amount,
+        p_champion_amount,
+        p_dragon_amount,
+        p_inhibitor_amount,
+        p_rift_herald_amount,
+        p_tower_amount
+    );
+end;

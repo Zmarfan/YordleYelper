@@ -29,4 +29,8 @@ public static class ListExtensions {
             ? iEnumerable.OrderBy(keySelector)
             : iEnumerable.OrderByDescending(keySelector);
     }
+
+    public static TObject OrNull<TValue, TObject>(this IList<TValue> list, int index, Func<TValue, TObject> dataMapper) {
+        return index < list.Count ? dataMapper.Invoke(list[index]) : default;
+    }
 }

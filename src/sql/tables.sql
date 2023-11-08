@@ -44,17 +44,17 @@ create table match_ids(
 );
 
 create table matches(
-    id varchar(255) not null,
-    game_creation timestamp not null,
-    game_start_time timestamp not null,
+    match_id varchar(255) not null,
+    game_creation_timestamp timestamp not null,
+    game_start_timestamp timestamp not null,
     game_end_timestamp timestamp not null,
     game_duration int not null,
     game_mode varchar(100) not null,
     game_type varchar(100) not null,
     map_id int not null,
     
-    constraint matches_pk primary key (id),
-    constraint matches_match_id foreign key (id) references match_ids(id),
+    constraint matches_pk primary key (match_id),
+    constraint matches_match_id foreign key (match_id) references match_ids(id),
     constraint matches_game_mode foreign key (game_mode) references game_modes(mode),
     constraint matches_game_type foreign key (game_type) references game_types(type),
     constraint matches_map_id foreign key (map_id) references map_ids(id)
@@ -77,14 +77,14 @@ create table match_teams(
     first_to_take_dragon bool not null,
     first_to_take_inhibitor bool not null,
     first_to_take_rift_herald bool not null,
-    first_to_take_rift_tower bool not null,
+    first_to_take_tower bool not null,
 
     baron_amount int not null,
     champion_amount int not null,
     dragon_amount int not null,
     inhibitor_amount int not null,
     rift_herald_amount int not null,
-    rift_tower_amount int not null,
+    tower_amount int not null,
     
     constraint match_teams_pk primary key (match_id, left_team),
     constraint match_teams_match_id foreign key (match_id) references match_ids(id)
@@ -229,7 +229,7 @@ create table match_participant_challenges(
 
     constraint match_participant_challenges_pk primary key (puuid, match_id),
     constraint match_participant_challenges_puuid foreign key (puuid) references registered_users(puuid),
-    constraint match_participant_challenges_match_id foreign key (match_id) references matches(id)
+    constraint match_participant_challenges_match_id foreign key (match_id) references matches(match_id)
 );
 
 create table match_participants(
@@ -389,7 +389,7 @@ create table match_participants(
 
     constraint match_participants_pk primary key (puuid, match_id),
     constraint match_participants_puuid foreign key (puuid) references registered_users(puuid),
-    constraint match_participants_match_id foreign key (match_id) references matches(id),
+    constraint match_participants_match_id foreign key (match_id) references matches(match_id),
     constraint match_participants_left_team foreign key (match_id, left_team) references match_teams(match_id, left_team),
     constraint match_participants_stat_perk_offensive foreign key (stat_perk_offensive) references stat_perks(id),
     constraint match_participants_stat_perk_flex foreign key (stat_perk_flex) references stat_perks(id),

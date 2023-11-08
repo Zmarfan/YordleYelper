@@ -68,6 +68,7 @@ public class BackgroundHandler {
             
             foreach (ParticipantResponse participant in matchData.Info.participants) {
                 _database.ExecuteVoidQuery(new InsertMatchParticipantDataQueryData(matchData, participant));
+                _database.ExecuteVoidQuery(new InsertMatchParticipantChallengesDataQueryData(matchData, participant));
             }
         }
     }

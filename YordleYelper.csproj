@@ -175,6 +175,7 @@
         <Compile Include="bot\background\MarkPlayerAsCompletedDailyDataFetchQueryData.cs" />
         <Compile Include="bot\background\MarkPlayerAsInitializedQueryData.cs" />
         <Compile Include="bot\background\match\InsertMatchDataQueryData.cs" />
+        <Compile Include="bot\background\match\InsertMatchParticipantChallengesDataQueryData.cs" />
         <Compile Include="bot\background\match\InsertMatchParticipantDataQueryData.cs" />
         <Compile Include="bot\background\match\InsertMatchTeamDataQueryData.cs" />
         <Compile Include="bot\commands\AbilityCommand.cs" />

@@ -20,7 +20,7 @@ public class RegisterCommand : CommandBase {
         _database.ExecuteVoidQuery(new RegisterUserQueryData(_leagueAccount));
         
         await context.CreateCommandOk(e => e
-            .WithDescription($"Successfully registered {_leagueAccount.gameName.ToBold()} for data collection!\nYou can expect to view your statistics in about 30 min up to a few hours!")
+            .WithDescription($"Successfully registered {_leagueAccount.gameName.ToBold()} for data collection!\nYou can expect to view your complete statistics in about 36 min up to a few hours depending on how many newly registered users there are!\nThe data set will start with your 1000 latest games but will continuously update as you play more matches!")
             .WithThumbnail(_leagueAccount.summoner.profileIconImageUrl)
         );
     }

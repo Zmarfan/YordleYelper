@@ -228,7 +228,6 @@ create table match_participant_challenges(
     wards_guarded float,
 
     constraint match_participant_challenges_pk primary key (puuid, match_id),
-    constraint match_participant_challenges_puuid foreign key (puuid) references registered_users(puuid),
     constraint match_participant_challenges_match_id foreign key (match_id) references matches(match_id)
 );
 
@@ -273,6 +272,9 @@ create table match_participants(
     
     primary_perk_style int not null,
     primary_perk int not null,
+    primary_perk_var_1 int not null,
+    primary_perk_var_2 int not null,
+    primary_perk_var_3 int not null,
     primary_perk_1 int not null,
     primary_perk_1_var_1 int not null,
     primary_perk_1_var_2 int not null,
@@ -388,7 +390,6 @@ create table match_participants(
     vision_cleared_pings int not null,
 
     constraint match_participants_pk primary key (puuid, match_id),
-    constraint match_participants_puuid foreign key (puuid) references registered_users(puuid),
     constraint match_participants_match_id foreign key (match_id) references matches(match_id),
     constraint match_participants_left_team foreign key (match_id, left_team) references match_teams(match_id, left_team),
     constraint match_participants_stat_perk_offensive foreign key (stat_perk_offensive) references stat_perks(id),

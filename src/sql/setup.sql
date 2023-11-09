@@ -7,6 +7,7 @@ insert into game_modes (mode) values ('FIRSTBLOOD');
 insert into game_modes (mode) values ('URF');
 insert into game_modes (mode) values ('CHERRY');
 insert into game_modes (mode) values ('NEXUSBLITZ');
+insert into game_modes (mode) values ('ULTBOOK');
 
 insert into game_types (type) values ('CUSTOM_GAME');
 insert into game_types (type) values ('TUTORIAL_GAME');

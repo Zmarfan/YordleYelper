@@ -178,6 +178,7 @@
         <Compile Include="bot\background\match\InsertMatchParticipantChallengesDataQueryData.cs" />
         <Compile Include="bot\background\match\InsertMatchParticipantDataQueryData.cs" />
         <Compile Include="bot\background\match\InsertMatchTeamDataQueryData.cs" />
+        <Compile Include="bot\background\match\RemoveInvalidMatchIdQueryData.cs" />
         <Compile Include="bot\commands\AbilityCommand.cs" />
         <Compile Include="bot\commands\ChampionCommand.cs" />
         <Compile Include="bot\commands\CommandBase.cs" />

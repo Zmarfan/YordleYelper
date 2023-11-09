@@ -5,6 +5,7 @@ namespace YordleYelper.bot.data;
 public class GameMode {
     private static readonly Dictionary<string, GameMode> CODE_TO_MODE = new();
     
+    public static readonly GameMode NONE = Add("");
     public static readonly GameMode CLASSIC = Add("CLASSIC");
     public static readonly GameMode ODIN = Add("ODIN");
     public static readonly GameMode ARAM = Add("ARAM");
@@ -14,6 +15,7 @@ public class GameMode {
     public static readonly GameMode URF = Add("URF");
     public static readonly GameMode CHERRY = Add("CHERRY");
     public static readonly GameMode NEXUSBLITZ = Add("NEXUSBLITZ");
+    public static readonly GameMode ULTBOOK = Add("ULTBOOK");
 
     public readonly string code;
 

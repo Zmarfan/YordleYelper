@@ -28,6 +28,12 @@ begin
     end while;
 end;
 
+drop procedure if exists remove_invalid_match_id;
+create procedure remove_invalid_match_id(in p_match_id varchar(255))
+begin
+    delete from match_ids where id = p_match_id;
+end;
+
 drop procedure if exists mark_player_as_initialized;
 create procedure mark_player_as_initialized(in p_puuid varchar(79))
 begin

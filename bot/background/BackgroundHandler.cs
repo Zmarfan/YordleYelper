@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using YordleYelper.bot.background.match;
+using YordleYelper.bot.data;
 using YordleYelper.bot.data_fetcher.league_api;
 using YordleYelper.bot.data_fetcher.league_api.data;
 using YordleYelper.bot.data_fetcher.league_api.responses.match;
@@ -62,6 +63,11 @@ public class BackgroundHandler {
     private void FetchMatchData(List<string> matchIdsToFetchDataFor) {
         foreach (string matchId in matchIdsToFetchDataFor) {
             MatchDataResponse matchData = _leagueApiProxy.FetchMatchData(matchId);
+            Console.WriteLine(matchData.MetaData.MatchId);
+            if (matchData.Info.gameMode == GameMode.NONE) {
+                _database.ExecuteVoidQuery(new RemoveInvalidMatchIdQueryData(matchId));
+                break;
+            }
             _database.ExecuteVoidQuery(new InsertMatchDataQueryData(matchData));
             _database.ExecuteVoidQuery(new InsertMatchTeamDataQueryData(matchData, matchData.Info.teams[0]));
             _database.ExecuteVoidQuery(new InsertMatchTeamDataQueryData(matchData, matchData.Info.teams[1]));

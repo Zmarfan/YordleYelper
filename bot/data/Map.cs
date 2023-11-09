@@ -6,6 +6,7 @@ namespace YordleYelper.bot.data;
 public class Map {
     private static readonly Dictionary<int, Map> CODE_TO_MAP = new();
     
+    public static readonly Map NONE = Add(0);
     public static readonly Map RIFT = Add(11);
     public static readonly Map ARAM = Add(12);
     public static readonly Map NEXUS_BLITZ = Add(21);

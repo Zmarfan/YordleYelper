@@ -6,6 +6,7 @@ namespace YordleYelper.bot.data;
 public class GameType {
     private static readonly Dictionary<string, GameType> CODE_TO_TYPE = new();
     
+    public static readonly GameType NONE = Add("");
     public static readonly GameType CUSTOM_GAME = Add("CUSTOM_GAME");
     public static readonly GameType TUTORIAL_GAME = Add("TUTORIAL_GAME");
     public static readonly GameType MATCHED_GAME = Add("MATCHED_GAME");

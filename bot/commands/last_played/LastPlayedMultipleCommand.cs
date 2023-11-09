@@ -13,6 +13,8 @@ using YordleYelper.bot.response_creator;
 namespace YordleYelper.bot.commands.last_played; 
 
 public class LastPlayedMultipleCommand : CommandBase {
+    private const int CHAMPIONS_TO_SHOW_PER_MESSAGE = 20;
+    
     private readonly LeagueAccount _leagueAccount;
     private readonly List<BasicChampionInfo> _basicChampionInfos;
     private readonly int _amountToShow;
@@ -35,10 +37,9 @@ public class LastPlayedMultipleCommand : CommandBase {
     
     protected override async Task Run(InteractionContext context) {
         Dictionary<string, BasicChampionInfo> champByKey = _basicChampionInfos.ToDictionary(champ => champ.Key, champ => champ);
-        List<string> championPlayTimes = (await _leagueApiProxy.GetChampionMasteries(_leagueAccount))
+        List<ChampionMasteryResponse> masteries = (await _leagueApiProxy.GetChampionMasteries(_leagueAccount))
             .OrderBy(mastery => Math.Abs((DateTime.Now - mastery.lastPlayed).TotalMilliseconds), _sortOrder)
             .Take(_amountToShow)
-            .Select((mastery, i) => $"{i + 1}. {champByKey[mastery.championId].Name.ToBold()}: {(DateTime.Now - mastery.lastPlayed).ToTimeSinceString()}")
             .ToList();
 
         await context.CreateCommandOk(b => b
@@ -46,13 +47,13 @@ public class LastPlayedMultipleCommand : CommandBase {
             .WithThumbnail(_leagueAccount.summoner.profileIconImageUrl)
         );
 
-        while (championPlayTimes.Any()) {
-            List<string> takeEntries = championPlayTimes.Take(50).ToList();
-            championPlayTimes = championPlayTimes.Skip(50).ToList();
-            string description = string.Join("\n", takeEntries);
+        for (int i = 0; i < masteries.Count; i += CHAMPIONS_TO_SHOW_PER_MESSAGE) {
+            List<ChampionMasteryResponse> takeAmount = masteries.Skip(i).Take(CHAMPIONS_TO_SHOW_PER_MESSAGE).ToList();
             await context.Channel.SendMessageAsync(context.CreateCommandEmbedBuilderOk(b => b
-                .WithDescription(description)
                 .WithThumbnail(_leagueAccount.summoner.profileIconImageUrl)
+                .AddField("No.", string.Join(".\n", Enumerable.Range(i + 1, takeAmount.Count)), true)
+                .AddField("Champion", string.Join("\n", takeAmount.Select(mastery => champByKey[mastery.championId].Name)), true)
+                .AddField("Last Played", string.Join("\n", takeAmount.Select(mastery => (DateTime.Now - mastery.lastPlayed).ToTimeSinceString())), true)
             ));
         }
     }

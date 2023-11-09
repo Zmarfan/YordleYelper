@@ -12,6 +12,7 @@ using YordleYelper.bot.data_fetcher.data_dragon.responses;
 using YordleYelper.bot.data_fetcher.data_dragon.responses.items;
 using YordleYelper.bot.data_fetcher.league_api;
 using YordleYelper.bot.data_fetcher.league_api.responses;
+using YordleYelper.bot.extensions;
 using YordleYelper.bot.response_creator;
 using YordleYelper.database;
 
@@ -31,6 +32,11 @@ public class SlashCommands : ApplicationCommandModule {
         LogCommandCall(context, riotId);
         if (!LeagueApiProxy.TryGetLeagueAccount(riotId, out LeagueAccount leagueAccount)) {
             await context.NoSuchRiotIdResponse();
+            return;
+        }
+
+        if (IsLeagueAccountRegistered(leagueAccount)) {
+            await context.CreateCommandError(b => b.WithDescription($"{leagueAccount.gameName.ToBold()} has already been registered!"));
             return;
         }
         
@@ -170,6 +176,10 @@ public class SlashCommands : ApplicationCommandModule {
         await Run(context, new MasteryDistributionCommand(leagueAccount, showAvailableChests, DataDragonProxy.AllChampionBasicInfos, LeagueApiProxy));
     }
 
+    private static bool IsLeagueAccountRegistered(LeagueAccount leagueAccount) {
+        return Database.ExecuteBasicQuery(new IsLeagueAccountRegisteredQueryData(leagueAccount.puuid));
+    }
+    
     private static async Task Run(InteractionContext context, CommandBase commandBase) {
         await commandBase.Execute(context);
     }

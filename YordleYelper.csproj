@@ -182,6 +182,7 @@
         <Compile Include="bot\commands\AbilityCommand.cs" />
         <Compile Include="bot\commands\ChampionCommand.cs" />
         <Compile Include="bot\commands\CommandBase.cs" />
+        <Compile Include="bot\commands\IsLeagueAccountRegisteredQueryData.cs" />
         <Compile Include="bot\commands\ItemCommand.cs" />
         <Compile Include="bot\commands\last_played\LastPlayedCommand.cs" />
         <Compile Include="bot\commands\last_played\LastPlayedMultipleCommand.cs" />
@@ -263,7 +264,7 @@
     </ItemGroup>
     <ItemGroup>
       <Content Include="bot\background\background.sql" />
-      <Content Include="bot\commands\register\register.sql" />
+      <Content Include="bot\commands\commands.sql" />
       <Content Include="src\config.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>

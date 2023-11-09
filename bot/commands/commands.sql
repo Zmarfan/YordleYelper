@@ -1,4 +1,10 @@
-﻿drop procedure if exists register_user;
+﻿drop procedure if exists is_league_account_registered;
+create procedure is_league_account_registered(in p_puuid varchar(78))
+begin
+    select exists(select * from registered_users users where users.puuid = p_puuid) from dual;
+end;
+
+drop procedure if exists register_user;
 create procedure register_user(
     in p_puuid varchar(78),
     in p_account_id varchar(56),
@@ -16,7 +22,7 @@ begin
         tag_line,
         summoner_name,
         has_been_initialized
-    ) 
+    )
     values (
         p_puuid,
         p_account_id,

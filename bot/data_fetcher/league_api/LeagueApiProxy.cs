@@ -8,6 +8,7 @@ using YordleYelper.bot.data_fetcher.league_api.data;
 using YordleYelper.bot.data_fetcher.league_api.responses;
 using YordleYelper.bot.data_fetcher.league_api.responses.match;
 using YordleYelper.bot.http_client;
+using YordleYelper.database;
 
 namespace YordleYelper.bot.data_fetcher.league_api; 
 

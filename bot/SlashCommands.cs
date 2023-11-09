@@ -132,7 +132,7 @@ public class SlashCommands : ApplicationCommandModule {
     public async Task LastPlayedMultiple(
         InteractionContext context, 
         [Option("riotId", "Riot Id.")] string riotId,
-        [Option("amount", "Amount of champions to display.")] long amountToShow = 25,
+        [Option("amount", "Amount of champions to display.")] long amountToShow = 20,
         [Option("sortOrder", "Order to sort champions in.")] SortOrder sortOrder = SortOrder.Ascending
     ) {
         LogCommandCall(context, riotId, amountToShow, sortOrder);

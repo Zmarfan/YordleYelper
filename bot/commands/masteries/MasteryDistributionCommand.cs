@@ -37,7 +37,7 @@ public class MasteryDistributionCommand : CommandBase {
             .Select(mastery => (mastery, championInfoByKey[mastery.championId]))
             .ToList();
 
-        string chartUrl = MasteryChartCreator.CreatePieChart(
+        string chartUrl = MasteryChartCreator.CreateChart(
             "Mastery Points per Champion Distribution Pie Chart",
             800,
             500,

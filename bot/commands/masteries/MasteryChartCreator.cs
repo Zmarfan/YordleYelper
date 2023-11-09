@@ -2,8 +2,9 @@
 using System.Linq;
 using YordleYelper.bot.data_fetcher.data_dragon.responses;
 using YordleYelper.bot.data_fetcher.league_api.responses;
+using YordleYelper.bot.quick_chart_creator;
 
-namespace YordleYelper.bot.quick_chart_creator; 
+namespace YordleYelper.bot.commands.masteries; 
 
 public static class MasteryChartCreator {
     private const string CONFIG_TEMPLATE = "{{type: 'outlabeledPie',data: {{ labels: [{1}],datasets: [{{ backgroundColor: [{2}], data: [{3}],borderWidth: 0, }}]}},options: {{ title: {{ display: true, text: '{0}'}},cutoutPercentage: 15, plugins: {{ legend: false, outlabels: {{text:'%l',color:'white',stretch:8,font:{{resizable:true,minSize: 5,maxSize: 10}} }}, datalabels: {{display: false}} }}}}}}";
@@ -34,7 +35,7 @@ public static class MasteryChartCreator {
         "'#5D5D5D'"
     };
     
-    public static string CreatePieChart(
+    public static string CreateChart(
         string title,
         int width,
         int height,

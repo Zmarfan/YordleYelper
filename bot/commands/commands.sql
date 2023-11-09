@@ -52,3 +52,20 @@ begin
     where
         participants.puuid = p_puuid and participants.champion_id = p_champion_id;
 end;
+
+drop procedure if exists fetch_champion_plays_per_day;
+create procedure fetch_champion_plays_per_day(in p_puuid varchar(78),in p_champion_id varchar(255))
+begin
+    select
+        count(*) as amount,
+        date(matches.game_start_timestamp) date
+    from
+        matches
+        inner join match_participants participants on participants.match_id = matches.match_id
+    where
+        participants.puuid = p_puuid and champion_id = p_champion_id
+    group by
+        date
+    order by
+        date;
+end;

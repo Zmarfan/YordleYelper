@@ -40,7 +40,7 @@ public class DiscordBot {
         SlashCommands.DataDragonProxy = new DataDragonProxy();
         SlashCommands.LeagueApiProxy = new LeagueApiProxy(Config.LeagueApiAuthToken);
         SlashCommands.Logger = _client.Logger;
-        _backgroundHandler = new BackgroundHandler(SlashCommands.LeagueApiProxy, SlashCommands.Database);
+        _backgroundHandler = new BackgroundHandler(SlashCommands.LeagueApiProxy, SlashCommands.Database, Logger);
         
         _client.UseSlashCommands(new SlashCommandsConfiguration()).RegisterCommands<SlashCommands>();
     }

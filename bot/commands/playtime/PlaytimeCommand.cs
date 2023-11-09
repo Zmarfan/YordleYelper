@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using DSharpPlus.SlashCommands;
 using YordleYelper.bot.data_fetcher.data_dragon.responses;
@@ -22,8 +23,10 @@ public class PlaytimeCommand : CommandBase {
 
     protected override async Task Run(InteractionContext context) {
         ChampionPlaytimeRecord playtimeData = _database.ExecuteQuery(new FetchChampionPlayTimeDataQueryData(_leagueAccount, _championInfo));
+        List<PlaysPerDayRecord> playsPerDayRecords = _database.ExecuteListQuery(new FetchChampionPlaysPerDayQueryData(_leagueAccount, _championInfo));
+        string chartUrl = PlayTimeChartCreator.CreateChart($"{_championInfo.Name} games per day for {_leagueAccount.gameName}", 800, 400, playsPerDayRecords);
         await context.CreateCommandOk(b => b
-            .WithDescription($"The statistics shown below regarding playtime are based on the last 1000+ games {_leagueAccount.gameName.ToBold()} has played!\n")
+            .WithDescription($"The statistics shown below regarding playtime are based on the last 1000+ games {_leagueAccount.gameName.ToBold()} has played!")
             .AddExtraLargeField("Champion", _championInfo.Name, true)
             .AddExtraLargeField("First Played", playtimeData.TotalAmount == 0 ? "-" : playtimeData.FirstPlayed.ToShortDateString(), true)
             .AddExtraLargeField("Last Played", playtimeData.TotalAmount == 0 ? "-" : playtimeData.LastPlayed.ToShortDateString(), true)
@@ -34,6 +37,7 @@ public class PlaytimeCommand : CommandBase {
             .AddField("Rift Playtime", TimeSpan.FromSeconds(playtimeData.RiftPlaytimeInSeconds).ToTimeSinceString(), true)
             .AddField("Aram Playtime", TimeSpan.FromSeconds(playtimeData.AramPlaytimeInSeconds).ToTimeSinceString(), true)
             .WithThumbnail(_championInfo.PortraitImageUrl)
+            .WithImageUrl(chartUrl)
         );
     }
 }

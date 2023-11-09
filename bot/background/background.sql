@@ -41,7 +41,7 @@ begin
         registered_users 
     set 
         has_been_initialized = true,
-        last_matches_check = current_timestamp
+        last_matches_check = timestamp(current_date)
     where 
         puuid = p_puuid;
 end;
@@ -60,7 +60,7 @@ end;
 drop procedure if exists mark_player_as_completed_daily_data_fetch;
 create procedure mark_player_as_completed_daily_data_fetch(in p_puuid varchar(79))
 begin
-    update registered_users set last_matches_check = current_timestamp where puuid = p_puuid;
+    update registered_users set last_matches_check = timestamp(current_date) where puuid = p_puuid;
 end;
 
 drop procedure if exists fetch_match_ids_with_no_data;

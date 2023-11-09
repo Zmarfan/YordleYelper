@@ -51,4 +51,8 @@ public static class ResponseCreator {
     public static async Task NoSuchRiotIdResponse(this InteractionContext context) {
         await context.CreateCommandError(b => b.WithDescription("Unable to find player with specified Riot Id!"));
     }
+    
+    public static async Task NoSuchRegisteredRiotId(this InteractionContext context) {
+        await context.CreateCommandError(b => b.WithDescription("The specified Riot Id has not been registered for data collection!"));
+    }
 }

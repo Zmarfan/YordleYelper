@@ -33,3 +33,22 @@ begin
         false
     );
 end;
+
+drop procedure if exists fetch_champion_play_time_data;
+create procedure fetch_champion_play_time_data(in p_puuid varchar(78),in p_champion_id varchar(255))
+begin
+    select
+        coalesce(sum(matches.game_duration), 0) as total_play_time_in_seconds,
+        coalesce(sum(if(matches.game_mode = 'CLASSIC', matches.game_duration, 0)), 0) as rift_playtime_in_seconds,
+        coalesce(sum(if(matches.game_mode = 'ARAM', matches.game_duration, 0)), 0) as aram_playtime_in_seconds,
+        count(*) as total_amount,
+        coalesce(sum(if(matches.game_mode = 'CLASSIC', 1, 0)), 0) as rift_amount,
+        coalesce(sum(if(matches.game_mode = 'ARAM', 1, 0)), 0) as aram_amount,
+        coalesce(min(matches.game_start_timestamp), current_timestamp) as first_played,
+        coalesce(max(matches.game_start_timestamp), current_timestamp) as last_played
+    from
+        matches
+        inner join match_participants participants on participants.match_id = matches.match_id
+    where
+        participants.puuid = p_puuid and participants.champion_id = p_champion_id;
+end;

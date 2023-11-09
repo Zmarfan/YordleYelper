@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using YordleYelper.bot.commands;
 using YordleYelper.bot.commands.last_played;
 using YordleYelper.bot.commands.masteries;
+using YordleYelper.bot.commands.playtime;
 using YordleYelper.bot.commands.register;
 using YordleYelper.bot.data;
 using YordleYelper.bot.data_fetcher.data_dragon;
@@ -41,6 +42,27 @@ public class SlashCommands : ApplicationCommandModule {
         }
         
         await Run(context, new RegisterCommand(leagueAccount, Database));
+    }
+    
+    [SlashCommand("playtime", "View playtime for a champion!")]
+    public async Task Playtime(
+        InteractionContext context, 
+        [Option("riotId", "Riot Id.")] string riotId,
+        [Option("champion", "Champion name.")] string championName
+    ) {
+        LogCommandCall(context, riotId, championName);
+        
+        if (!TryGetRegisteredLeagueAccount(riotId, out LeagueAccount leagueAccount)) {
+            await context.NoSuchRegisteredRiotId();
+            return;
+        }
+        
+        if (!DataDragonProxy.TryGetBasicChampionInfo(championName, out BasicChampionInfo basicInfo)) {
+            await context.NoSuchChampionResponse();
+            return;
+        }
+
+        await Run(context, new PlaytimeCommand(leagueAccount, basicInfo, Database));
     }
     
     [SlashCommand("champion", "General overview of a champion: Name, title, lore and tips!")]
@@ -178,6 +200,10 @@ public class SlashCommands : ApplicationCommandModule {
 
     private static bool IsLeagueAccountRegistered(LeagueAccount leagueAccount) {
         return Database.ExecuteBasicQuery(new IsLeagueAccountRegisteredQueryData(leagueAccount.puuid));
+    }
+
+    private static bool TryGetRegisteredLeagueAccount(string riotId, out LeagueAccount leagueAccount) {
+        return LeagueApiProxy.TryGetLeagueAccount(riotId, out leagueAccount) && IsLeagueAccountRegistered(leagueAccount);
     }
     
     private static async Task Run(InteractionContext context, CommandBase commandBase) {

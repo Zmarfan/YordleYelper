@@ -191,6 +191,9 @@
         <Compile Include="bot\commands\masteries\MasteryDistributionCommand.cs" />
         <Compile Include="bot\commands\masteries\MasteryMultipleCommand.cs" />
         <Compile Include="bot\commands\masteries\MasteryEmbedCreator.cs" />
+        <Compile Include="bot\commands\playtime\ChampionPlaytimeRecord.cs" />
+        <Compile Include="bot\commands\playtime\FetchChampionPlayTimeDataQueryData.cs" />
+        <Compile Include="bot\commands\playtime\PlaytimeCommand.cs" />
         <Compile Include="bot\commands\register\RegisterCommand.cs" />
         <Compile Include="bot\commands\register\RegisterUserQueryData.cs" />
         <Compile Include="bot\data\ChampionAbility.cs" />

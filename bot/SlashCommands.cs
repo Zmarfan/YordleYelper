@@ -48,7 +48,9 @@ public class SlashCommands : ApplicationCommandModule {
     public async Task Playtime(
         InteractionContext context, 
         [Option("riotId", "Riot Id.")] string riotId,
-        [Option("champion", "Champion name.")] string championName
+        [Option("champion", "Champion name.")] string championName,
+        [Option("compareAgainstAll", "Should the provided champion play amount per day be compared with all champions played?")] bool compareAgainstAll = true,
+        [Option("separateGameMode", "Should the provided champion play amount per day be separated by game mode?")] bool separateGameMode = true
     ) {
         LogCommandCall(context, riotId, championName);
         
@@ -62,7 +64,7 @@ public class SlashCommands : ApplicationCommandModule {
             return;
         }
 
-        await Run(context, new PlaytimeCommand(leagueAccount, basicInfo, Database));
+        await Run(context, new PlaytimeCommand(leagueAccount, basicInfo, compareAgainstAll, separateGameMode, Database));
     }
     
     [SlashCommand("champion", "General overview of a champion: Name, title, lore and tips!")]

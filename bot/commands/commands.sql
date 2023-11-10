@@ -58,12 +58,15 @@ create procedure fetch_champion_plays_per_day(in p_puuid varchar(78),in p_champi
 begin
     select
         count(*) as amount,
+        sum(if(participants.champion_id = p_champion_id, 1, 0)) as champion_total_amount,
+        sum(if(participants.champion_id = p_champion_id and matches.game_mode = 'CLASSIC', 1, 0)) as champion_rift_amount,
+        sum(if(participants.champion_id = p_champion_id and matches.game_mode = 'ARAM', 1, 0)) as champion_aram_amount,
         date(matches.game_start_timestamp) date
     from
         matches
         inner join match_participants participants on participants.match_id = matches.match_id
     where
-        participants.puuid = p_puuid and champion_id = p_champion_id
+        participants.puuid = p_puuid
     group by
         date
     order by

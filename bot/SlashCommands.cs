@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using DSharpPlus.Entities;
 using DSharpPlus.SlashCommands;
 using Microsoft.Extensions.Logging;
 using YordleYelper.bot.commands;
@@ -37,7 +38,7 @@ public class SlashCommands : ApplicationCommandModule {
         }
 
         if (IsLeagueAccountRegistered(leagueAccount)) {
-            await context.CreateCommandError(b => b.WithDescription($"{leagueAccount.gameName.ToBold()} has already been registered!"));
+            await context.CreateResponseAsync(context.CommandErrorEmbed(new DiscordEmbedBuilder().WithDescription($"{leagueAccount.gameName.ToBold()} has already been registered!")));
             return;
         }
         

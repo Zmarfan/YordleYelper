@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Threading.Tasks;
+using DSharpPlus.Entities;
 using DSharpPlus.SlashCommands;
 using YordleYelper.bot.data_fetcher.data_dragon.responses;
 using YordleYelper.bot.data_fetcher.league_api;
@@ -26,7 +27,7 @@ public class LastPlayedCommand : CommandBase {
         try {
             ChampionMasteryResponse mastery = await _leagueApiProxy.GetChampionMastery(_leagueAccount, _basicChampionInfo);
             string timeSince = (DateTime.Now - mastery.lastPlayed).ToTimeSinceString();
-            await context.CreateCommandOk(b => b
+            await context.RespondCommandOk(new DiscordEmbedBuilder()
                 .WithDescription($"The last time {_leagueAccount.gameName.ToBold()} played {_basicChampionInfo.Name.ToBold()} was {timeSince} ago")
                 .WithThumbnail(_basicChampionInfo.PortraitImageUrl)
             );
@@ -36,7 +37,7 @@ public class LastPlayedCommand : CommandBase {
                 throw;
             }
             
-            await context.CreateCommandOk(b => b
+            await context.RespondCommandOk(new DiscordEmbedBuilder()
                 .WithDescription($"As far as I can tell; {_leagueAccount.gameName.ToBold()} has not played {_basicChampionInfo.Name.ToBold()} yet!")
                 .WithThumbnail(_basicChampionInfo.PortraitImageUrl)
             );

@@ -19,13 +19,13 @@ public static class MasteryEmbedCreator {
         double masteryPercentage = Math.Round(mastery.championPoints / (double)totalMasteryPoints * 100, 2);
         string showMasteryPercentage = (masteryPercentage < 0.1f ? "< 0.1" : masteryPercentage.ToString("0.0")) + "%";
         
-        return context.CreateCommandEmbedBuilderOk(b => b
+        return context.CommandOkEmbed(new DiscordEmbedBuilder()
             .WithDescription($"The mastery statistics for {championInfo.Name.ToBold()}\n\u200B")
             .AddField("Level", Emote.NumberToEmoteString(mastery.championLevel), true)
             .AddField("Points", mastery.championPoints.SpaceSeparatedNumber(), true)
             .AddField("Points Next Lvl.", mastery.championPointsUntilNextLevel.SpaceSeparatedNumber(), true)
             .AddField("Status", mastery.championLevel == 7 ? Emote.SPARKLES + "Mastered" + Emote.SPARKLES : $"{mastery.tokensEarned} Token{(mastery.tokensEarned > 1 ? "s" : "")}", true)
-             .AddField("Mastery Percentage", showMasteryPercentage, true)
+            .AddField("Mastery Percentage", showMasteryPercentage, true)
             .AddField("Chest", Emote.FromBool(mastery.chestGranted).ToString(), true)
             .AddField("Last Played", (DateTime.Now - mastery.lastPlayed).ToTimeSinceString() + " ago")
             .WithThumbnail(championInfo.PortraitImageUrl)

@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using DSharpPlus.Entities;
 using DSharpPlus.SlashCommands;
 using YordleYelper.bot.data_fetcher.league_api.responses;
 using YordleYelper.bot.extensions;
@@ -19,7 +20,7 @@ public class RegisterCommand : CommandBase {
     protected override async Task Run(InteractionContext context) {
         _database.ExecuteVoidQuery(new RegisterUserQueryData(_leagueAccount));
         
-        await context.CreateCommandOk(e => e
+        await context.RespondCommandOk(new DiscordEmbedBuilder()
             .WithDescription($"Successfully registered {_leagueAccount.gameName.ToBold()} for data collection!\nYou can expect to view your complete statistics in about 36 min up to a few hours depending on how many newly registered users there are!\nThe data set will start with your 1000 latest games but will continuously update as you play more matches!")
             .WithThumbnail(_leagueAccount.summoner.profileIconImageUrl)
         );

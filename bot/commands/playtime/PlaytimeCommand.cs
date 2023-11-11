@@ -27,13 +27,11 @@ public class PlaytimeCommand : CommandBase {
         _database = database;
     }
 
-    protected override bool Defered => true;
-
     protected override async Task Run(InteractionContext context) {
         ChampionPlaytimeRecord playtimeData = _database.ExecuteQuery(new FetchChampionPlayTimeDataQueryData(_leagueAccount, _championInfo));
         List<PlaysPerDayRecord> playsPerDayRecords = _database.ExecuteListQuery(new FetchChampionPlaysPerDayQueryData(_leagueAccount, _championInfo));
         string chartUrl = PlayTimeChartCreator.CreateChart($"{_championInfo.Name} games per day for {_leagueAccount.gameName}", 800, 400, playsPerDayRecords, _compareAgainstAll, _separateGameMode);
-        await context.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(context.CreateCommandEmbedBuilderOk(b => b
+        await context.RespondCommandOk(new DiscordEmbedBuilder()
             .WithDescription($"The statistics shown below regarding playtime are based on the last 1000+ games {_leagueAccount.gameName.ToBold()} has played!")
             .AddExtraLargeField("Champion", _championInfo.Name, true)
             .AddExtraLargeField("First Played", playtimeData.TotalAmount == 0 ? "-" : playtimeData.FirstPlayed.ToShortDateString(), true)
@@ -46,6 +44,6 @@ public class PlaytimeCommand : CommandBase {
             .AddField("Aram Playtime", TimeSpan.FromSeconds(playtimeData.AramPlaytimeInSeconds).ToTimeSinceString(), true)
             .WithThumbnail(_championInfo.PortraitImageUrl)
             .WithImageUrl(chartUrl)
-        )));
+        );
     }
 }

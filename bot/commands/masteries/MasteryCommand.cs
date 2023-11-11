@@ -25,7 +25,7 @@ public class MasteryCommand : CommandBase {
         List<ChampionMasteryResponse> masteries = await _leagueApiProxy.GetChampionMasteries(_leagueAccount);
         long totalMastery = masteries.Sum(mastery => mastery.championPoints);
         ChampionMasteryResponse mastery = await _leagueApiProxy.GetChampionMastery(_leagueAccount, _championInfo);
-        await context.CreateCommandOk(_ => MasteryEmbedCreator.CreateChampionMasteryMessage(context, totalMastery, mastery, _championInfo)
+        await context.RespondCommandOk(MasteryEmbedCreator.CreateChampionMasteryMessage(context, totalMastery, mastery, _championInfo)
             .WithDescription($"The mastery statistics of {_leagueAccount.gameName.ToBold()} for {_championInfo.Name.ToBold()}")
         );
     }

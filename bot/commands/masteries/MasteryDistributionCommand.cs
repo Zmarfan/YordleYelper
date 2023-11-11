@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DSharpPlus.Entities;
 using DSharpPlus.SlashCommands;
 using YordleYelper.bot.data_fetcher.data_dragon.responses;
 using YordleYelper.bot.data_fetcher.league_api;
@@ -45,7 +46,7 @@ public class MasteryDistributionCommand : CommandBase {
             data
         );
 
-        await context.CreateCommandOk(b => b
+        await context.RespondCommandOk(new DiscordEmbedBuilder()
             .WithDescription($"The attached image shows the different mastery points per champion for {_leagueAccount.gameName.ToBold()}")
             .WithThumbnail(_leagueAccount.summoner.profileIconImageUrl)
             .WithImageUrl(chartUrl)

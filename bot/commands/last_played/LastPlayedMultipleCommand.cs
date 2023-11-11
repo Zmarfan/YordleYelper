@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DSharpPlus.Entities;
 using DSharpPlus.SlashCommands;
 using YordleYelper.bot.data;
 using YordleYelper.bot.data_fetcher.data_dragon.responses;
@@ -42,14 +43,14 @@ public class LastPlayedMultipleCommand : CommandBase {
             .Take(_amountToShow)
             .ToList();
 
-        await context.CreateCommandOk(b => b
+        await context.RespondCommandOk(new DiscordEmbedBuilder()
             .WithDescription($"The last time {_leagueAccount.gameName.ToBold()} played each champion is as follows:")
             .WithThumbnail(_leagueAccount.summoner.profileIconImageUrl)
         );
 
         for (int i = 0; i < masteries.Count; i += CHAMPIONS_TO_SHOW_PER_MESSAGE) {
             List<ChampionMasteryResponse> takeAmount = masteries.Skip(i).Take(CHAMPIONS_TO_SHOW_PER_MESSAGE).ToList();
-            await context.Channel.SendMessageAsync(context.CreateCommandEmbedBuilderOk(b => b
+            await context.Channel.SendMessageAsync(context.CommandOkEmbed(new DiscordEmbedBuilder()
                 .WithThumbnail(_leagueAccount.summoner.profileIconImageUrl)
                 .AddField("No.", string.Join(".\n", Enumerable.Range(i + 1, takeAmount.Count)), true)
                 .AddField("Champion", string.Join("\n", takeAmount.Select(mastery => champByKey[mastery.championId].Name)), true)

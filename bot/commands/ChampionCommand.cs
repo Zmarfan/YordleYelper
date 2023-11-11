@@ -24,7 +24,7 @@ public class ChampionCommand : CommandBase {
     protected override async Task Run(InteractionContext context) {
         TopChampionInfoResponse fullInfo = _dataDragonProxy.GetChampionInfo(_basicChampionInfo);
         
-        await context.CreateCommandOk(b => b
+        await context.RespondCommandOk(new DiscordEmbedBuilder()
             .WithDescription(CreateDescription(fullInfo))
             .WithThumbnail(fullInfo.PortraitImageUrl)
         );

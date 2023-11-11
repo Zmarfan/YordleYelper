@@ -76,6 +76,7 @@ public class BackgroundHandler {
     
     private void FetchMatchData(List<string> matchIdsToFetchDataFor) {
         foreach (string matchId in matchIdsToFetchDataFor) {
+            _logger.LogInformation($"Currently attempting to handle/insert the data fetched for match id: {matchId}");
             MatchDataResponse matchData;
             try {
                 matchData = _leagueApiProxy.FetchMatchData(matchId);
@@ -88,8 +89,6 @@ public class BackgroundHandler {
                 continue;
             }
 
-            Console.WriteLine(matchData.MetaData.MatchId);
-            
             if (matchData.Info.gameMode == GameMode.NONE) {
                 _database.ExecuteVoidQuery(new RemoveInvalidMatchIdQueryData(matchId));
                 continue;

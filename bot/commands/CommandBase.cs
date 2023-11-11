@@ -13,6 +13,9 @@ public abstract class CommandBase {
     public async Task Execute(InteractionContext context) {
         try {
             context.Client.Logger.LogInformation($"Running: {GetType()}");
+            if (Defered) {
+                await context.DeferAsync();
+            }
             await Run(context);
         } catch (Exception e) {
             context.Client.Logger.LogError(e, $"Command error in {GetType()}!");
@@ -21,11 +24,17 @@ public abstract class CommandBase {
     }
 
     protected abstract Task Run(InteractionContext context);
+    protected virtual bool Defered => false;
 
-    private static async Task CreateDefaultErrorResponse(BaseContext context) {
-        await context.Create(b => b
+    private async Task CreateDefaultErrorResponse(BaseContext context) {
+        DiscordEmbedBuilder embedBuilder = new DiscordEmbedBuilder()
             .WithTitle($"{Emote.INTERNAL_ERROR}{Emote.INTERNAL_ERROR} Yikes! {Emote.INTERNAL_ERROR}{Emote.INTERNAL_ERROR}")
-            .WithDescription("There was an internal error! Please try again later!")
-        );
+            .WithDescription("There was an internal error! Please try again later!");
+        if (Defered) {
+            await context.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(embedBuilder));
+        }
+        else {
+            await context.Create(_ => embedBuilder);
+        }
     }
 }

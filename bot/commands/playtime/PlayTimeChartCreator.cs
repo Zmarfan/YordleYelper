@@ -6,7 +6,7 @@ using YordleYelper.bot.quick_chart_creator;
 namespace YordleYelper.bot.commands.playtime; 
 
 public static class PlayTimeChartCreator {
-    private const string CONFIG_TEMPLATE = "{{type: 'bar',data: {{ datasets: [ {0} ]}},options: {{ title: {{ display: true, text: '{1}' }}, scales: {{ xAxes: [{{ stacked: true, barPercentage: 1.25, type: 'time', time: {{ parser: 'YYYY-MM-DD', minUnit: 'day' }}, scaleLabel: {{ display: true, labelString: 'Date' }} }}], yAxes: [{{ stacked: true, scaleLabel: {{ display: true, labelString: 'Games' }}, ticks: {{ precision: 0, beginAtZero: true }} }}] }} }}}}";
+    private const string CONFIG_TEMPLATE = "{{type: 'bar',data: {{ datasets: [ {0} ]}},options: {{ title: {{ display: true, text: \"{1}\" }}, scales: {{ xAxes: [{{ stacked: true, barPercentage: 1.25, type: 'time', time: {{ parser: 'YYYY-MM-DD', minUnit: 'day' }}, scaleLabel: {{ display: true, labelString: 'Date' }} }}], yAxes: [{{ stacked: true, scaleLabel: {{ display: true, labelString: 'Games' }}, ticks: {{ precision: 0, beginAtZero: true }} }}] }} }}}}";
     private const string DATA_SET_TEMPLATE = "{{label: '{0}', backgroundColor: '{1}', data: [{2}] }}";
     
     private const string ALL_COLOR = "#666699";
